@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prüfprotokoll Magnetpulverprüfung – Schaeffler</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sg:#00893d;       /* Schaeffler Green */
+  --sg2:#006b30;      /* Green darker */
+  --sg3:#e8f5ee;      /* Green light bg */
+  --sa:#1a1a1a;       /* Anthrazit */
+  --sa2:#333333;
+  --sa3:#555555;
+  --gbg:#e8e8e8;
+  --gmid:#bbb;
+  --bdr:#d0d0d0;
+  --wh:#fff;
+  --ok-bg:#d6f0dc;--ok-b:#00893d;--ok-t:#005a28;
+  --wn-bg:#fff3cd;--wn-b:#d48f00;--wn-t:#7a5200;
+  --er-bg:#fde8e8;--er-b:#c0392b;--er-t:#7b241c;
+}
+html{font-size:17px}
+body{background:#e0e0e0;font-family:'Barlow',Arial,sans-serif;color:var(--sa);padding:14px 10px 70px}
+.app{max-width:1600px;margin:0 auto}
+
+/* ── SCHAEFFLER HEADER ── */
+.hdr{
+display:flex;align-items:stretch;justify-content:space-between;
+background:var(--wh);border:1.5px solid var(--bdr);
+border-bottom:3px solid var(--sg);
+overflow:hidden;
+}
+.hdr-left{
+display:flex;align-items:center;gap:0;
+}
+.hdr-greenbar{
+width:6px;background:var(--sg);flex-shrink:0;
+}
+.hdr-text{padding:12px 16px}
+.hdr-text h1{
+font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+font-size:clamp(15px,3.5vw,20px);font-weight:700;
+text-transform:uppercase;letter-spacing:.5px;color:var(--sa);
+}
+.hdr-text p{font-size:11px;color:var(--sa3);font-style:italic;margin-top:2px}
+
+.schaeffler-logo{
+display:flex;align-items:center;padding:10px 16px;flex-shrink:0;
+}
+.schaeffler-logo svg{height:38px;width:auto}
+
+/* ── NAVIGATION ── */
+.nav{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
+.nav-btn{background:var(--wh);border:2px solid var(--sg);color:var(--sg);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;padding:10px 20px;border-radius:4px;cursor:pointer;transition:all .15s}
+.nav-btn.active{background:var(--sg);color:var(--wh)}
+.nav-btn:hover{background:var(--sg3)}
+.nav-btn.special{background:var(--sa2);border-color:var(--sa2);color:var(--wh)}
+.nav-btn.special:hover{background:var(--sa)}
+.view{display:none}
+.view.active{display:block}
+
+/* ── GITHUB CONFIG ── */
+.github-config{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;border-top:4px solid var(--sg)}
+.github-config h3{color:var(--sg);margin-bottom:15px;font-size:18px;font-family:'Barlow Condensed',sans-serif}
+.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-bottom:15px}
+.config-item{display:flex;flex-direction:column;gap:5px}
+.config-item label{font-size:13px;font-weight:700;text-transform:uppercase;color:var(--sa2)}
+.config-item input{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:14px;font-family:inherit}
+.config-item input:focus{border-color:var(--sg);outline:none;background:#f0faf4}
+.warning{background:var(--wn-bg);border-left:4px solid var(--wn-b);padding:12px 15px;font-size:13px;margin:15px 0;color:var(--wn-t);border-radius:0 4px 4px 0}
+.github-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+
+/* ── DROPDOWN EDITOR ── */
+.dropdown-editor{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px}
+.dropdown-editor h3{color:var(--sg);margin-bottom:15px;font-size:16px}
+.dropdown-tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
+.dropdown-tab{background:var(--gbg);border:1.5px solid var(--gmid);padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:600;font-size:13px}
+.dropdown-tab.active{background:var(--sg);border-color:var(--sg);color:var(--wh)}
+.dropdown-panel{display:none}
+.dropdown-panel.active{display:block}
+.dropdown-list{background:#f9f9f9;border:1.5px solid var(--gmid);border-radius:4px;padding:10px;margin-bottom:15px;max-height:300px;overflow-y:auto}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid #eee;background:var(--wh);margin-bottom:5px;border-radius:4px}
+.dropdown-item:last-child{border-bottom:none}
+.dropdown-item input{flex:1;padding:6px 8px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px}
+.dropdown-item .remove{color:var(--er-b);cursor:pointer;font-weight:700;padding:0 8px}
+.add-dropdown-item{display:flex;gap:10px;margin-top:10px}
+.add-dropdown-item input{flex:1;padding:8px;border:1.5px solid var(--gmid);border-radius:4px}
+.add-dropdown-item button{background:var(--sg);color:var(--wh);border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:700}
+
+/* ── CARD ── */
+.card{background:var(--wh);border:1.5px solid var(--bdr);border-top:none;margin-bottom:15px}
+.sec{
+background:var(--sa);color:var(--wh);
+font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+padding:6px 14px;border-left:4px solid var(--sg);
+}
+
+/* ── LAYOUT ── */
+.g2{display:grid;grid-template-columns:1fr 1fr}
+.g2 .br{border-right:1.5px solid #e0e0e0}
+@media(max-width:580px){.g2{grid-template-columns:1fr}.g2 .br{border-right:none;border-bottom:1.5px solid #e0e0e0}}
+
+/* ── FIELD ── */
+.f{padding:7px 14px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:3px}
+.lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--sa2)}
+.sub{font-size:12px;color:#888;font-style:italic}
+.fv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+.fs{font-size:15px;color:var(--sa)}
+
+/* ── INLINE ROW ── */
+.ir{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:46px;flex-wrap:wrap}
+.ir.alt{background:#fafafa}
+.irl{flex:1;min-width:0}
+.irr{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.unit{font-size:14px;color:var(--sa3);white-space:nowrap}
+
+/* ── INPUTS ── */
+input[type=text],input[type=datetime-local]{
+background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;
+padding:8px 10px;font-size:15px;font-family:inherit;color:var(--sa);
+transition:border-color .15s,background .15s;
+}
+input[type=text]:focus,input[type=datetime-local]:focus{outline:none;border-color:var(--sg);background:#f0faf4}
+.full{width:100%}
+.w70{width:76px}.w90{width:96px}.w110{width:116px}
+
+/* ── SELECT ── */
+select{
+background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;
+padding:8px 30px 8px 10px;font-size:15px;font-family:inherit;color:var(--sa);
+appearance:none;-webkit-appearance:none;cursor:pointer;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 9px center;
+transition:border-color .15s;
+}
+select:focus{outline:none;border-color:var(--sg)}
+select.full{width:100%}
+select.eq-dd{
+background:var(--wh);border:1.5px solid var(--sg);color:var(--sa);
+font-weight:700;border-radius:4px;padding:8px 30px 8px 10px;
+font-size:15px;font-family:inherit;
+appearance:none;-webkit-appearance:none;cursor:pointer;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23333'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 9px center;min-width:150px;
+}
+select.eq-dd:focus{outline:none;border-color:var(--sg2)}
+
+/* ── TOLERANCE INPUT ── */
+input.tol{
+background:var(--wh);border:1.5px solid var(--gmid);border-radius:4px;
+padding:8px 10px;font-size:15px;font-weight:700;font-family:inherit;
+color:var(--sa);width:88px;transition:border-color .2s,background .2s,color .2s;
+}
+input.tol:focus{outline:none}
+input.tol.ok{background:var(--ok-bg);border-color:var(--ok-b);color:var(--ok-t)}
+input.tol.wn{background:var(--wn-bg);border-color:var(--wn-b);color:var(--wn-t)}
+input.tol.er{background:var(--er-bg);border-color:var(--er-b);color:var(--er-t)}
+
+/* ── BADGE ── */
+.badge{font-size:13px;font-weight:700;padding:4px 9px;border-radius:3px;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
+.badge.wn{background:var(--wn-bg);color:var(--wn-t);border:1px solid var(--wn-b)}
+.badge.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
+.badge.nu{background:#f0f0f0;color:#999;border:1px solid #ccc}
+
+/* ── NUM INPUT ── */
+input.num{
+border:1.5px solid var(--sg);border-radius:4px;
+padding:8px 8px;font-size:15px;font-weight:700;color:var(--sg);
+font-family:inherit;background:var(--wh);width:90px;text-align:center;
+-moz-appearance:textfield;appearance:textfield;
+}
+input.num:focus{outline:none;border-color:var(--sg2);color:var(--sg2)}
+input.num::-webkit-outer-spin-button,input.num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* ── MAG GRID ── */
+.magg{display:grid;grid-template-columns:1fr 1fr}
+.magc{border-right:1.5px solid #e0e0e0}
+.magc:last-child{border-right:none}
+@media(max-width:520px){.magg{grid-template-columns:1fr}.magc{border-right:none;border-bottom:1.5px solid #e0e0e0}.magc:last-child{border-bottom:none}}
+.maghdr{
+background:var(--sg3);
+font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+font-size:14px;font-weight:700;text-transform:uppercase;
+letter-spacing:1px;padding:7px 14px;color:var(--sg2);
+border-bottom:1px solid #c5e3d0;border-left:3px solid var(--sg);
+}
+.magr{display:flex;align-items:center;padding:9px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:50px}
+.magl{width:96px;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa2);flex-shrink:0;line-height:1.3}
+.mags{font-size:12px;color:#888;font-style:italic;font-weight:400;display:block}
+
+/* ── DORNE ── */
+.dornesec{padding:10px 14px;border-bottom:1px solid #f0f0f0}
+.dorneg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+@media(max-width:480px){.dorneg{grid-template-columns:1fr}}
+.dorneitem{display:flex;flex-direction:column;gap:4px}
+.dorneitem label{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3);letter-spacing:.3px}
+
+/* ── DORN MODE TOGGLE ── */
+.dorne-mode{display:flex;gap:0;margin:8px 0 10px;border:1.5px solid var(--sg);border-radius:4px;overflow:hidden;width:fit-content}
+.dorne-toggle{padding:6px 16px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
+.dorne-toggle.active{background:var(--sg);color:#fff}
+.dorne-toggle:hover:not(.active){background:var(--sg3);color:var(--sg2)}
+
+/* ── CARD-ID ── */
+.card-resolved{margin-top:5px;padding:5px 10px;border-radius:4px;font-size:12px;font-weight:700}
+.card-resolved.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
+.card-resolved.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
+input.card-ok{border-color:var(--sg)!important;background:#f0faf4!important}
+input.card-er{border-color:var(--er-b)!important}
+
+/* ── SKIZZE ── */
+.skizg{display:grid;grid-template-columns:1fr 1fr}
+.skizc{border-right:1.5px solid #e0e0e0;padding:10px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100px}
+.skizc:last-child{border-right:none}
+.skizt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--sa2);margin-bottom:8px}
+.skizc img{max-width:100%;max-height:120px;object-fit:contain;border-radius:4px}
+
+/* ── CHECKBOX ── */
+.cbr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f0;gap:14px;min-height:50px}
+.cbr.alt{background:#fafafa}
+.cbl{flex:1;min-width:0}
+.cbl .de{font-size:15px;font-weight:600;color:var(--sa);line-height:1.3}
+.cbl .en{font-size:13px;color:#888;font-style:italic;margin-top:2px}
+input.cbox-inp{
+width:34px;height:34px;flex-shrink:0;
+border:2px solid #bbb;border-radius:6px;
+appearance:none;-webkit-appearance:none;
+background:#f0f0f0;cursor:pointer;
+transition:border-color .15s,background .15s;
+position:relative;
+}
+input.cbox-inp:checked{
+border-color:var(--sg);background:var(--sg);
+}
+input.cbox-inp::after{
+content:'';
+position:absolute;
+left:9px;top:4px;
+width:12px;height:18px;
+border-right:3px solid #fff;
+border-bottom:3px solid #fff;
+transform:rotate(40deg);
+opacity:0;
+transition:opacity .12s;
+}
+input.cbox-inp:checked::after{opacity:1}
+input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
+
+/* ── LEGENDE ── */
+.leg{display:flex;gap:14px;align-items:center;padding:7px 14px;background:#f8faf9;border-bottom:1.5px solid #d8ead0;flex-wrap:wrap}
+.legt{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3)}
+.legi{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--sa2)}
+.legd{width:12px;height:12px;border-radius:2px;border:1.5px solid;flex-shrink:0}
+.legd.ok{background:var(--ok-bg);border-color:var(--ok-b)}
+.legd.wn{background:var(--wn-bg);border-color:var(--wn-b)}
+.legd.er{background:var(--er-bg);border-color:var(--er-b)}
+
+/* ── ERGEBNIS ── */
+.ergg{display:grid;grid-template-columns:1fr 1fr 1fr}
+@media(max-width:480px){.ergg{grid-template-columns:1fr}}
+.ergo{padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border-right:1px solid #e8e8e8;cursor:pointer;transition:background .15s;user-select:none}
+.ergo:last-child{border-right:none}
+@media(max-width:480px){.ergo{border-right:none;border-bottom:1px solid #e8e8e8}.ergo:last-child{border-bottom:none}}
+.ergo:hover{background:#f5f5f5}
+.ergc{width:36px;height:36px;border-radius:50%;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .15s}
+.ergo.ok{background:var(--ok-bg)}.ergo.ok .ergc{border-color:var(--ok-b);background:var(--ok-b);color:#fff}
+.ergo.er{background:var(--er-bg)}.ergo.er .ergc{border-color:var(--er-b);background:var(--er-b);color:#fff}
+.ergl{font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;color:var(--sa)}
+.ergs{font-size:13px;color:#888;font-style:italic;text-align:center}
+
+/* ── PERSONAL ── */
+.persg{display:grid;grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.persg{grid-template-columns:1fr}}
+.persg>*:not(:last-child){border-right:1.5px solid #e0e0e0}
+@media(max-width:600px){.persg>*:not(:last-child){border-right:none;border-bottom:1.5px solid #e0e0e0}}
+
+/* ── META ── */
+.meta{background:#f0f0f0;border:1.5px solid var(--bdr);border-top:none;padding:5px 14px;font-size:12px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+
+/* ── BUTTONS ── */
+.acts{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.btn{border:none;cursor:pointer;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 24px;font-size:15px;border-radius:4px;transition:background .15s}
+.btn.pri{background:var(--sg);color:var(--wh)}.btn.pri:hover{background:var(--sg2)}
+.btn.sec{background:var(--sa2);color:var(--wh);font-size:14px}.btn.sec:hover{background:var(--sa)}
+.btn.special{background:var(--sa);color:var(--wh)}.btn.special:hover{background:var(--sa2)}
+
+/* ── STATISTIK TABELLEN ── */
+.stats-controls{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;display:flex;gap:15px;flex-wrap:wrap;align-items:center;border-top:4px solid var(--sg)}
+.control-group{display:flex;align-items:center;gap:10px}
+.control-group label{font-weight:700;font-size:13px;text-transform:uppercase;color:var(--sa2)}
+.control-group select,.control-group input{padding:8px 12px;border:1.5px solid var(--gmid);border-radius:4px;font-size:14px;background:var(--gbg)}
+.control-group input[type=date]{width:140px}
+.control-group input[type=password]{width:140px}
+.stats-table-container{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;overflow-x:auto}
+.stats-table{width:100%;border-collapse:collapse;font-size:14px}
+.stats-table th{background:var(--sg3);color:var(--sg2);padding:12px 10px;text-align:left;font-weight:700;border-bottom:2px solid var(--sg)}
+.stats-table td{padding:10px;border-bottom:1px solid #eee}
+.stats-table tr:hover{background:#f5f5f5}
+.stats-chart{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:15px;height:350px}
+.stats-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+.summary-card{background:var(--sg3);padding:20px;border-radius:4px;text-align:center;border-left:4px solid var(--sg)}
+.summary-card .value{font-size:28px;font-weight:700;color:var(--sg)}
+.summary-card .label{font-size:13px;color:var(--sa3);margin-top:8px;text-transform:uppercase}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modal-content{background:var(--wh);border-radius:8px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;border-top:4px solid var(--sg)}
+.modal-header{padding:20px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:var(--sa)}
+.modal-close{font-size:28px;cursor:pointer;color:#999;line-height:1}
+.modal-close:hover{color:var(--er-b)}
+.modal-body{padding:20px}
+.modal-footer{padding:20px;border-top:1px solid #eee;display:flex;gap:10px;justify-content:flex-end}
+.form-group{margin-bottom:15px}
+.form-group label{display:block;font-weight:700;margin-bottom:5px;color:var(--sa2);text-transform:uppercase;font-size:13px}
+.form-group input{width:100%;padding:10px;border:1.5px solid var(--gmid);border-radius:4px;font-size:15px}
+.employee-list{margin-top:20px;border-top:1px solid #eee;padding-top:15px}
+.employee-list h3{font-size:14px;color:var(--sa3);margin-bottom:10px}
+.employee-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;margin-bottom:5px;border-radius:4px}
+.employee-info{font-weight:600}
+.employee-remove{color:var(--er-b);cursor:pointer;font-size:12px;padding:3px 8px;border-radius:3px;background:var(--er-bg);border:1px solid var(--er-b)}
+
+/* ── PRÜFER LEVEL CHECKBOXEN ── */
+.pruefer-levels{display:flex;gap:15px;margin-top:10px;flex-wrap:wrap}
+.level-item{display:flex;align-items:center;gap:5px}
+.level-item input[type=checkbox]{width:18px;height:18px;cursor:pointer}
+.level-item label{font-size:14px;font-weight:600;color:var(--sa2);cursor:pointer}
+
+/* ─── DRUCKOPTIMIERUNG ─── */
+@media print{
+  @page{size:A4 portrait;margin:8mm 10mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html{font-size:11px}
+  body{background:#fff!important;padding:0!important}
+  .app{max-width:100%}
+  
+  .nav, .acts, #succ, .modal, .github-config, .dropdown-editor, 
+  .stats-controls, .stats-table-container, .stats-chart, .stats-summary,
+  .nav-btn, .btn, .dorne-mode {
+    display:none!important;
+  }
+  
+  #view-protokoll {
+    display:block!important;
+  }
+  
+  .hdr{border-bottom:2px solid var(--sg)!important}
+  .hdr-text h1{font-size:14px!important}
+  .hdr-text p{font-size:9px!important}
+  .schaeffler-logo img{height:26px!important}
+  .sec{font-size:10px!important;padding:4px 10px!important}
+  .f{padding:4px 10px!important}
+  .lbl{font-size:11px!important}
+  .fs{font-size:11px!important}
+  .ir,.cbr{padding:4px 10px!important;min-height:32px!important}
+  .unit{font-size:10px!important}
+  .badge{font-size:10px!important;padding:2px 6px!important}
+  input.tol,input.num,input[type=text],input[type=datetime-local],select{
+    font-size:11px!important;padding:3px 6px!important;border-width:1px!important
+  }
+  select.eq-dd{font-size:11px!important;min-width:100px!important}
+  .magr{padding:4px 10px!important;min-height:32px!important}
+  .magl{font-size:10px!important;width:70px!important}
+  .mags{font-size:8px!important}
+  .maghdr{font-size:10px!important;padding:4px 10px!important}
+  .num{width:60px!important}
+  .cbl .de{font-size:11px!important}
+  input.cbox-inp{width:22px!important;height:22px!important}
+  .ergo{padding:6px!important}
+  .ergc{width:24px!important;height:24px!important;font-size:12px!important}
+  .ergl{font-size:10px!important}
+  .ergs{font-size:9px!important}
+  .card-field-wrap{display:none!important}
+  .card-resolved{display:block!important;font-size:10px!important;padding:2px 6px!important}
+  .skizc{min-height:60px!important;padding:4px 10px!important}
+  .skizt{font-size:9px!important}
+  .meta{font-size:9px!important;padding:4px 10px!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SCHAEFFLER HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-greenbar"></div>
+    <div class="hdr-text">
+      <h1>Prüfprotokoll Magnetpulverprüfung</h1>
+      <p>Test protocol for magnetic particle testing &nbsp;·&nbsp; FBL_INFSW01044_01</p>
+    </div>
+  </div>
+  <div class="schaeffler-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Schaeffler_logo.svg" alt="Schaeffler" style="height:38px;width:auto">
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button class="nav-btn active" onclick="switchView('protokoll')">📋 Prüfprotokoll</button>
+  <button class="nav-btn" onclick="switchView('statistik')">📊 Statistische Auswertung</button>
+  <button class="nav-btn" onclick="switchView('gespeichert')">💾 Gespeicherte Protokolle</button>
+  <button class="nav-btn" onclick="switchView('github')">🔧 GitHub</button>
+  <button class="nav-btn" onclick="switchView('dropdowns')">📋 Dropdowns bearbeiten</button>
+  <button class="nav-btn special" onclick="openCardModal()">👤 Mitarbeiter</button>
+</div>
+
+<!-- VIEW: GITHUB KONFIGURATION -->
+<div id="view-github" class="view">
+  <div class="github-config">
+    <h3>🔧 GitHub JSON Datenbank</h3>
+    <p style="font-size:14px;color:var(--sa3);margin-bottom:15px">Daten werden als JSON-Datei direkt in einem GitHub Repository gespeichert. Jede Änderung erzeugt automatisch einen Commit.</p>
+    
+    <div class="warning">
+      ⚠️ Personal Access Token wird lokal im Browser gespeichert. Niemals teilen!
+    </div>
+    
+    <div class="config-grid">
+      <div class="config-item">
+        <label>GitHub Username (Owner)</label>
+        <input type="text" id="github_owner" value="Acendrion1984" placeholder="z.B. Acendrion1984">
+      </div>
+      <div class="config-item">
+        <label>Repository Name</label>
+        <input type="text" id="github_repo" value="SelfAudit" placeholder="z.B. SelfAudit">
+      </div>
+      <div class="config-item">
+        <label>Branch</label>
+        <input type="text" id="github_branch" value="main" placeholder="main">
+      </div>
+      <div class="config-item">
+        <label>Hauptdatei (MT_Protokoll.json)</label>
+        <input type="text" id="github_filename" value="MT_Protokoll.json" placeholder="MT_Protokoll.json">
+      </div>
+      <div class="config-item">
+        <label>Personal Access Token (PAT)</label>
+        <input type="password" id="github_token" value="ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND" placeholder="ghp_...">
+      </div>
+      <div class="config-item">
+        <label>Supervisor-Passwort</label>
+        <input type="password" id="supervisor_password" value="MT-SUPER-2026" placeholder="Passwort für Löschen">
+      </div>
+    </div>
+    
+    <div id="github_status" style="margin:15px 0;padding:10px;background:#f9f9f9;border-radius:4px;font-size:14px">
+      <span>⏳ Nicht verbunden</span>
+    </div>
+    
+    <div class="github-actions">
+      <button class="btn pri" onclick="connectGithub()">🔌 Verbinden & Laden</button>
+      <button class="btn sec" onclick="saveGithubConfig()">💾 Einstellungen speichern</button>
+      <button class="btn sec" onclick="testGithubConnection()">🔄 Verbindung testen</button>
+      <button class="btn sec" onclick="createDefaultDropdowns()">📋 Standard-Dropdowns erstellen</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: DROPDOWNS BEARBEITEN -->
+<div id="view-dropdowns" class="view">
+  <div class="dropdown-editor">
+    <h3>📋 Dropdown-Listen bearbeiten</h3>
+    <p style="font-size:14px;color:var(--sa3);margin-bottom:15px">Hier können alle Auswahllisten angepasst werden. Änderungen werden in GitHub gespeichert.</p>
+    
+    <div class="dropdown-tabs">
+      <button class="dropdown-tab active" onclick="showDropdownTab('flux')">Fluxanlagen</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('luxmeter')">Lux-/UV-Meter</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('feldmesser')">Feldmesser</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('uvlampen')">UV-Lampen</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('dorne')">Dorne</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('vk1')">VK1 Seriennummern</button>
+    </div>
+    
+    <!-- Fluxanlagen -->
+    <div id="dropdown-flux" class="dropdown-panel active">
+      <h4>Fluxanlagen (EQ-Nummern)</h4>
+      <div class="dropdown-list" id="flux-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-flux" placeholder="Neue EQ-Nummer (z.B. 12425560)">
+        <button onclick="addDropdownItem('flux')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- Lux-/UV-Meter -->
+    <div id="dropdown-luxmeter" class="dropdown-panel">
+      <h4>Lux-/UV-Meter (EQ-Nummern)</h4>
+      <div class="dropdown-list" id="luxmeter-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-luxmeter" placeholder="Neue EQ-Nummer">
+        <button onclick="addDropdownItem('luxmeter')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- Feldmesser -->
+    <div id="dropdown-feldmesser" class="dropdown-panel">
+      <h4>Feldstärkenmessgerät (EQ-Nummern)</h4>
+      <div class="dropdown-list" id="feldmesser-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-feldmesser" placeholder="Neue EQ-Nummer">
+        <button onclick="addDropdownItem('feldmesser')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- UV-Lampen -->
+    <div id="dropdown-uvlampen" class="dropdown-panel">
+      <h4>UV-Lampen (EQ-Nummern)</h4>
+      <div class="dropdown-list" id="uvlampen-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-uvlampen" placeholder="Neue EQ-Nummer">
+        <button onclick="addDropdownItem('uvlampen')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- Dorne -->
+    <div id="dropdown-dorne" class="dropdown-panel">
+      <h4>Dorne (Bezeichnung)</h4>
+      <div class="dropdown-list" id="dorne-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-dorne" placeholder="z.B. 400x70 mm">
+        <button onclick="addDropdownItem('dorne')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- VK1 -->
+    <div id="dropdown-vk1" class="dropdown-panel">
+      <h4>VK1 Seriennummern</h4>
+      <div class="dropdown-list" id="vk1-list"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new-vk1" placeholder="z.B. KD200811">
+        <button onclick="addDropdownItem('vk1')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <div style="margin-top:20px;display:flex;gap:10px">
+      <button class="btn pri" onclick="saveDropdownsToGithub()">💾 Alle Änderungen in GitHub speichern</button>
+      <button class="btn sec" onclick="loadDropdownsFromGithub()">🔄 Vom GitHub laden</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: STATISTIK -->
+<div id="view-statistik" class="view">
+  <div class="stats-controls">
+    <div class="control-group">
+      <label>Equipment:</label>
+      <select id="stat_equipment" onchange="updateStatistics()">
+        <option value="all">Alle Anlagen</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Auswertung:</label>
+      <select id="stats_select" onchange="changeStatisticType()">
+        <option value="uv">UV-Lampen Entwicklung</option>
+        <option value="konzentration">Prüfmittelkonzentration</option>
+        <option value="restmagnetismus">Restmagnetismus</option>
+        <option value="feldstaerke">Feldstärke (Kreis/Längs)</option>
+        <option value="vk1">VK1 Prüfungen</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Von:</label>
+      <input type="date" id="stat_von" value="2026-01-01">
+    </div>
+    <div class="control-group">
+      <label>Bis:</label>
+      <input type="date" id="stat_bis" value="2026-12-31">
+    </div>
+    <div class="control-group">
+      <button class="btn pri" onclick="updateStatistics()">Aktualisieren</button>
+      <button class="btn sec" onclick="exportStatistics()">📥 Export CSV</button>
+    </div>
+  </div>
+  
+  <!-- Zusammenfassung -->
+  <div class="stats-summary" id="stats_summary"></div>
+  
+  <!-- Chart -->
+  <div class="stats-chart">
+    <canvas id="statsChart" style="width:100%;height:100%"></canvas>
+  </div>
+  
+  <!-- Tabelle -->
+  <div class="stats-table-container">
+    <table class="stats-table" id="stats_table">
+      <thead id="stats_table_head">
+        <tr><th>Datum</th><th>Anlage EQ</th><th>UV Lampe 1 (µW/cm²)</th><th>UV Lampe 1 EQ</th><th>UV Lampe 2 (µW/cm²)</th><th>UV Lampe 2 EQ</th><th>Konzentration (ml)</th></tr>
+      </thead>
+      <tbody id="stats_table_body">
+        <tr><td colspan="7" style="text-align:center;padding:30px">Keine Daten vorhanden</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- VIEW: GESPEICHERTE PROTOKOLLE -->
+<div id="view-gespeichert" class="view">
+  <div class="stats-controls">
+    <div class="control-group">
+      <label>Von:</label>
+      <input type="date" id="proto_von" value="2026-01-01">
+    </div>
+    <div class="control-group">
+      <label>Bis:</label>
+      <input type="date" id="proto_bis" value="2026-12-31">
+    </div>
+    <div class="control-group">
+      <label>Supervisor PW:</label>
+      <input type="password" id="delete_password" placeholder="Passwort für Löschen">
+    </div>
+    <div class="control-group">
+      <button class="btn pri" onclick="loadSavedProtocols()">Filtern</button>
+      <button class="btn sec" onclick="syncWithGithub()">🔄 Sync mit GitHub</button>
+    </div>
+  </div>
+  
+  <div class="stats-table-container">
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Uhrzeit</th>
+          <th>Anlage EQ</th>
+          <th>Auftrag</th>
+          <th>Prüfgegenstand</th>
+          <th>Prüfer</th>
+          <th>Ergebnis</th>
+          <th>Konz.</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="protokolle-table">
+        <tr><td colspan="10" style="text-align:center;padding:30px">Keine Protokolle vorhanden</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- VIEW: PROTOKOLL (HAUPTANSICHT) -->
+<div id="view-protokoll" class="view active">
+
+<!-- 1: GRUNDDATEN -->
+<div class="card">
+  <div class="g2">
+    <div class="br">
+      <div class="f"><div class="lbl">Prüfgegenstand <span style="color:var(--er-b)">*</span></div><div class="sub">testitem</div><div class="fv"><input type="text" id="pruefgegenstand" class="full" placeholder="Bauteil / Part number"></div></div>
+      <div class="f"><div class="lbl">Auftragsnummer <span style="color:var(--er-b)">*</span></div><div class="sub">Ordernumber</div><div class="fv"><input type="text" id="auftragsnummer" class="full" placeholder="Auftragsnummer"></div></div>
+      <div class="f"><div class="lbl">Prüfung gemäß</div><div class="fv"><span class="fs" style="font-size:11px">S 245008-2 / DIN EN10228-1 / DIN ISO 9934 / S 285072 / IN FSW 01044</span></div></div>
+      <div class="f"><div class="lbl">Referenzkörper</div><div class="fv"><span class="fs">Vergleichskörper 1 EN ISO 9934-2</span></div></div>
+    </div>
+    <div>
+      <div class="f"><div class="lbl">Prüfziel</div><div class="fv"><span class="fs" style="font-size:11px">Überprüfen auf Risse / lineare &amp; nichtlineare Indikationen</span></div></div>
+      <div class="f"><div class="lbl">Prüfbereich / Bearbeitungszustand</div><div class="fv"><span class="fs">alle bearbeiteten Flächen — Fertigteil</span></div></div>
+      <div class="f">
+        <div class="lbl">Qualifizierung Personal</div><div class="sub">Qualification of personnel</div>
+        <div class="fv" style="gap:10px;flex-wrap:wrap">
+          <span class="lbl" style="text-transform:none">Name:</span><input type="text" id="pruefer_name_input" class="w110" placeholder="Name">
+          <div class="pruefer-levels" style="display:flex;gap:10px">
+            <div class="level-item"><input type="checkbox" id="level1"><label for="level1">Level 1</label></div>
+            <div class="level-item"><input type="checkbox" id="level2"><label for="level2">Level 2</label></div>
+            <div class="level-item"><input type="checkbox" id="level3"><label for="level3">Level 3</label></div>
+            <div class="level-item"><input type="checkbox" id="pw"><label for="pw">PW</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2: PRÜFSYSTEM -->
+<div class="card">
+  <div class="sec">Angaben zum Prüfsystem — Information about the testing system</div>
+  <div class="g2">
+    <div class="br">
+      <div class="ir">
+        <div class="irl"><div class="lbl">Fluxanlage</div><div class="sub">Magnaflux / Karl Deutsch</div></div>
+        <div class="irr"><span class="unit">EQ:</span>
+          <select class="eq-dd" id="eq_flux" onchange="saveEQ('eq_flux');updateLampenAuswahl()"></select>
+        </div>
+      </div>
+      <div class="ir alt"><div class="irl"><div class="lbl">Fluxmedium</div><div class="sub">nass / fluoreszierend — Tiede 622.1</div></div><div class="irr"><span class="unit">Ch.:</span><input type="text" id="flux_charge" class="w90" placeholder="Charge-Nr."></div></div>
+      <div class="ir"><div class="irl"><div class="lbl">Trägermedium</div><div class="sub">Exxsol D100</div></div><div class="irr"><span class="unit">Ch.:</span><input type="text" id="traeger_charge" class="w90" placeholder="Charge-Nr."></div></div>
+    </div>
+    <div class="skizg">
+      <div class="skizc" style="border-right:1.5px solid #e0e0e0">
+        <div class="skizt">Innenring</div>
+        <img src="innenring.png" alt="Innenring" style="max-width:100%;max-height:120px;object-fit:contain;border-radius:4px" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;width:100px;height:80px;border:2px dashed #ccc;border-radius:6px;align-items:center;justify-content:center;font-size:11px;color:#aaa;text-align:center">Bild fehlt<br>innenring.png</div>
+      </div>
+      <div class="skizc">
+        <div class="skizt">Außenring</div>
+        <img src="aussenring.png" alt="Außenring" style="max-width:100%;max-height:120px;object-fit:contain;border-radius:4px" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;width:100px;height:80px;border:2px dashed #ccc;border-radius:6px;align-items:center;justify-content:center;font-size:11px;color:#aaa;text-align:center">Bild fehlt<br>aussenring.png</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3: MAGNETISIERUNG + DORNE -->
+<div class="card">
+  <div class="sec">Magnetisierungsparameter &amp; Dorne</div>
+  <div class="dornesec">
+    <div class="lbl">Magnetisierungswerkzeug — Mandrel / Yoke selection</div>
+    <div class="sub" style="margin-top:3px">Aus der Anlagenausstattung wählen (EQ: <span id="dorn_eq_ref">12425560</span>)</div>
+    <div class="dorne-mode" style="margin-top:10px">
+      <button class="dorne-toggle active" id="dm_dorn" onclick="setDornMode('dorn')">Dorn — beide Richtungen</button>
+      <button class="dorne-toggle" id="dm_getrennt" onclick="setDornMode('getrennt')">Getrennt — Joch / Spule</button>
+    </div>
+
+    <!-- Modus A: ein Dorn für Kreis + Längs -->
+    <div id="dorn_single" class="dorneg" style="grid-template-columns:1fr;max-width:360px">
+      <div class="dorneitem">
+        <label for="dorn_both">Dorn — Kreis- &amp; Längsmagnetisierung</label>
+        <select id="dorn_both" class="full" onchange="saveEQ('dorn_both')"></select>
+      </div>
+    </div>
+
+    <!-- Modus B: getrennte Auswahl -->
+    <div id="dorn_getrennt" class="dorneg" style="display:none">
+      <div class="dorneitem">
+        <label for="dorn_kreis">Kreismagnetisierung</label>
+        <select id="dorn_kreis" class="full" onchange="jochExklusiv('kreis')">
+          <option value="">— wählen —</option>
+          <option value="joch">Joch</option>
+          <option value="handjoch">Handjoch</option>
+          <option value="spule">Spule</option>
+        </select>
+      </div>
+      <div class="dorneitem">
+        <label for="dorn_laengs">Längsmagnetisierung</label>
+        <select id="dorn_laengs" class="full" onchange="jochExklusiv('laengs')">
+          <option value="">— wählen —</option>
+          <option value="joch">Joch</option>
+          <option value="handjoch">Handjoch</option>
+          <option value="spule">Spule</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="magg">
+    <div class="magc">
+      <div class="maghdr">Kreismagnetisierung — Circumferential</div>
+      <div class="magr"><div class="magl">Stufe<span class="mags">Step</span></div><input type="number" class="num" id="kreis_stufe" min="0" max="20" step="0.1"></div>
+      <div class="magr"><div class="magl">Anzeige<span class="mags">Display</span></div><input type="number" class="num" id="kreis_anzeige" min="0" max="50" step="0.1"><span class="unit">kA</span></div>
+      <div class="magr"><div class="magl">Feldstärke<span class="mags">OK: 32–59 / Grenz: 60–72</span></div><input type="text" id="kreis_feld" class="tol" placeholder="—" oninput="chkFeld(this)"><span class="unit">A/cm</span><span class="badge nu" id="b_kreis_feld">—</span></div>
+    </div>
+    <div class="magc">
+      <div class="maghdr">Längsmagnetisierung — Longitudinal</div>
+      <div class="magr"><div class="magl">Stufe<span class="mags">Step</span></div><input type="number" class="num" id="laengs_stufe" min="0" max="20" step="0.1"></div>
+      <div class="magr"><div class="magl">Anzeige<span class="mags">Display</span></div><input type="number" class="num" id="laengs_anzeige" min="0" max="50" step="0.1"><span class="unit">kA/W</span></div>
+      <div class="magr"><div class="magl">Feldstärke<span class="mags">OK: 32–59 / Grenz: 60–72</span></div><input type="text" id="laengs_feld" class="tol" placeholder="—" oninput="chkFeld(this)"><span class="unit">A/cm</span><span class="badge nu" id="b_laengs_feld">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4: PRÜFBEDINGUNGEN -->
+<div class="card">
+  <div class="sec">Prüfbedingungen — Testing conditions</div>
+  <div class="leg">
+    <span class="legt">Toleranz-Status:</span>
+    <div class="legi"><div class="legd ok"></div>OK (in Toleranz)</div>
+    <div class="legi"><div class="legd wn"></div>Grenzbereich</div>
+    <div class="legi"><div class="legd er"></div>NOK (außerhalb)</div>
+  </div>
+
+  <div class="ir">
+    <div class="irl"><div class="lbl">Lux-/UV-Meter</div><div class="sub">Gossen Mavrolux (UV-A/LUX)</div></div>
+    <div class="irr"><span class="unit">EQ:</span>
+      <select class="eq-dd" id="eq_luxmeter" onchange="saveEQ('eq_luxmeter')"></select>
+    </div>
+  </div>
+  <div class="ir alt">
+    <div class="irl"><div class="lbl">Feldstärkenmessgerät</div><div class="sub">Maurer M-Test</div></div>
+    <div class="irr"><span class="unit">EQ:</span>
+      <select class="eq-dd" id="eq_feldmesser" onchange="saveEQ('eq_feldmesser')"></select>
+    </div>
+  </div>
+  
+  <!-- Dynamischer Lampenbereich -->
+  <div id="lampen_container"></div>
+  
+  <div class="ir">
+    <div class="irl"><div class="lbl">Restweißlicht im Raum</div><div class="sub">max. 20 lx (Warnung ab 15 lx)</div></div>
+    <div class="irr"><input type="text" id="weiss_raum" class="tol" placeholder="—" oninput="chkMax(this,15,20)"><span class="unit">lx</span><span class="badge nu" id="b_weiss_raum">—</span></div>
+  </div>
+  <div class="ir alt">
+    <div class="irl"><div class="lbl">Prüfmittelkonzentration</div><div class="sub">ASTM Glas — Toleranz: 0,1 – 0,4 ml</div></div>
+    <div class="irr"><input type="text" id="konzentration" class="tol" placeholder="—" oninput="chkRange(this,0.1,0.4)"><span class="unit">ml</span><span class="badge nu" id="b_konzentration">—</span></div>
+  </div>
+  
+  <!-- Prüfmittelansatz-Datum -->
+  <div class="ir">
+    <div class="irl"><div class="lbl">Prüfmittelansatz vom</div><div class="sub">Datum der Ansetzung</div></div>
+    <div class="irr"><input type="date" id="ansatz_datum" class="w110" value="2026-01-01"></div>
+  </div>
+
+  <div class="cbr"><div class="cbl"><div class="de">Funktionstest UV Lampe</div><div class="en">Function test UV lamp — LEDs mit DIN A4 Blatt prüfen</div></div><input type="checkbox" class="cbox-inp" id="cb_funktionstest"></div>
+  <div class="cbr alt">
+    <div class="cbl">
+      <div class="de">VK1 (MTU 3) feine Anzeigen nach Protokoll</div>
+      <div class="en" style="display:flex;align-items:center;gap:6px;margin-top:5px;font-style:normal">
+        <span style="font-weight:700;color:var(--sa3)">S/N:</span>
+        <select id="vk1_sn" onchange="saveEQ('vk1_sn')" style="min-width:130px;font-style:normal"></select>
+        <span style="font-weight:700;color:var(--sa3);margin-left:5px">EQ:</span>
+        <select id="vk1_eq" class="eq-dd" style="min-width:100px" onchange="saveEQ('vk1_eq')">
+          <option value="">EQ wählen</option>
+        </select>
+      </div>
+    </div>
+    <input type="checkbox" class="cbox-inp" id="cb_vk1">
+  </div>
+  <div class="cbr"><div class="cbl"><div class="de">Prüfmittelprobe entmagnetisiert</div><div class="en">Test equipment sample demagnetized — nach der Sedimentationszeit</div></div><input type="checkbox" class="cbox-inp" id="cb_entmag"></div>
+  <div class="cbr alt"><div class="cbl"><div class="de">Prüfmittelprobe — Verschmutzung (UV-Licht, max. 20 lx)</div><div class="en">Test equipment sample checked for contamination (UV light)</div></div><input type="checkbox" class="cbox-inp" id="cb_uv_v"></div>
+  <div class="cbr"><div class="cbl"><div class="de">Prüfmittel mit Rückstellmuster &amp; Farbkarten vergleichen</div><div class="en">Compare test equipment with reference samples &amp; color charts — min. 500 lx</div></div><input type="checkbox" class="cbox-inp" id="cb_rueck"></div>
+  <div class="cbr alt"><div class="cbl"><div class="de">Prüfmittelprobe — Verschmutzung (Weißlicht, min. 500 lx)</div><div class="en">Test equipment sample checked for contamination (daylight)</div></div><input type="checkbox" class="cbox-inp" id="cb_weiss_v"></div>
+  <div class="cbr"><div class="cbl"><div class="de">Feldhomogenität prüfen</div><div class="en">Check field homogeneity — CX 230 Shim (Magnaflux)</div></div><input type="checkbox" class="cbox-inp" id="cb_feldhom"></div>
+  
+  <!-- RESTMAGNETISMUS HIER AM ENDE -->
+  <div class="ir alt" style="border-top:1px solid #ddd;margin-top:5px">
+    <div class="irl"><div class="lbl">Restmagnetismus</div><div class="sub">max. 5 A/cm² (Warnung ab 4 A/cm²)</div></div>
+    <div class="irr"><input type="text" id="restmag" class="tol" placeholder="—" oninput="chkMax(this,4.0,5.0)"><span class="unit">A/cm</span><span class="badge nu" id="b_restmag">—</span></div>
+  </div>
+</div>
+
+<!-- 5: ERGEBNIS -->
+<div class="card">
+  <div class="sec">Prüfergebnis — Test result</div>
+  <div class="ergg">
+    <div class="ergo" id="eo-keine" onclick="selErg('keine')"><div class="ergc" id="ec-keine"></div><div class="ergl">Keine unzulässigen Anzeigen</div><div class="ergs">no inadmissible indications</div></div>
+    <div class="ergo" id="eo-linear" onclick="selErg('linear')"><div class="ergc" id="ec-linear"></div><div class="ergl">Unzulässige lineare Anzeigen</div><div class="ergs">inadmissible linear indications</div></div>
+    <div class="ergo" id="eo-nichtlinear" onclick="selErg('nichtlinear')"><div class="ergc" id="ec-nichtlinear"></div><div class="ergl">Unzulässige nicht-lineare Anzeigen</div><div class="ergs">inadmissible non-linear indications</div></div>
+  </div>
+</div>
+
+<!-- 6: PERSONAL / FREIGABE -->
+<div class="card">
+  <div class="sec">Personal / Freigabe — Sign-off</div>
+  <div class="persg">
+    <div>
+      <div class="f">
+        <div class="lbl">Prüfer — Card-ID <span style="color:var(--er-b)">*</span></div>
+        <div class="sub">Werkskarte scannen oder eingeben</div>
+        <div class="fv card-field-wrap"><input type="password" id="pruefer_card" class="full" placeholder="Card-ID eingeben …" oninput="resolveCard('pruefer')" autocomplete="off" style="font-family:monospace;letter-spacing:3px"></div>
+        <div id="pruefer_resolved" class="card-resolved" style="display:none"></div>
+        <input type="hidden" id="pruefer_name">
+      </div>
+    </div>
+    <div>
+      <div class="f">
+        <div class="lbl">Datum / Uhrzeit <span style="color:var(--er-b)">*</span></div>
+        <div class="fv"><input type="datetime-local" id="datum" class="full"></div>
+      </div>
+    </div>
+    <div>
+      <div class="f">
+        <div class="lbl">Prüfaufsicht — Card-ID <span style="color:var(--er-b)">*</span></div>
+        <div class="sub">MT 2 – DIN ISO 9712</div>
+        <div class="fv card-field-wrap"><input type="password" id="supervisor_card" class="full" placeholder="Card-ID eingeben …" oninput="resolveCard('supervisor')" autocomplete="off" style="font-family:monospace;letter-spacing:3px"></div>
+        <div id="supervisor_resolved" class="card-resolved" style="display:none"></div>
+        <input type="hidden" id="supervisor">
+      </div>
+    </div>
+  </div>
+  <div style="padding:7px 14px;font-size:11px;color:#777;border-top:1px solid #f0f0f0;background:#fafafa;border-left:3px solid var(--sg)">
+    Alle Prüfer arbeiten unter identischen Prüfbedingungen — All inspectors work under identical test conditions
+  </div>
+</div>
+
+<div class="meta">
+  <span>erstellt: Häusner Daniel &nbsp;|&nbsp; freigegeben: Sommerfeld Stefan</span>
+  <span>FBL_INFSW01044_01_Prüfprotokoll MT — Version AC — 08.12.2025</span>
+</div>
+
+<div class="acts">
+  <button class="btn sec" onclick="resetForm()">↺ Zurücksetzen</button>
+  <button class="btn pri" onclick="submitForm()">Protokoll abschließen →</button>
+  <button class="btn sec" onclick="window.print()">🖨 Drucken</button>
+</div>
+</div>
+
+<!-- MODAL: Mitarbeiterverwaltung -->
+<div id="cardModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Mitarbeiter verwalten</h2>
+      <span class="modal-close" onclick="closeCardModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Card-ID (versteckt)</label>
+        <input type="password" id="new_card_id" placeholder="Card-ID eingeben">
+      </div>
+      <div class="form-group">
+        <label>Klarname</label>
+        <input type="text" id="new_card_name" placeholder="z.B. Mustermann Max">
+      </div>
+      <button class="btn pri" onclick="addNewCard()" style="width:100%;margin-bottom:20px">Mitarbeiter hinzufügen</button>
+      
+      <div class="employee-list">
+        <h3>Vorhandene Mitarbeiter</h3>
+        <div id="employee-list-container"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sec" onclick="closeCardModal()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="succ" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:2000">
+  <div style="background:var(--wh);border-top:4px solid var(--sg);padding:30px;text-align:center;max-width:400px;border-radius:4px">
+    <div style="font-size:48px;color:var(--sg);margin-bottom:15px">✓</div>
+    <h2 style="margin-bottom:15px">Protokoll gespeichert</h2>
+    <p style="margin-bottom:20px;color:var(--sa3)">Wurde in GitHub abgelegt</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn pri" onclick="window.print()">🖨 Drucken</button>
+      <button class="btn sec" onclick="document.getElementById('succ').style.display='none'">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== GITHUB INTEGRATION ====================
+let githubConfig = {
+  owner: 'Acendrion1984',
+  repo: 'SelfAudit',
+  branch: 'main',
+  filename: 'MT_Protokoll.json',
+  token: 'ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND',
+  supervisorPassword: 'MT-SUPER-2026'
+};
+
+// Dropdown-Daten (werden aus GitHub geladen)
+let dropdownData = {
+  flux: ['12425560', '12425561', '12425562', '12425563', '12425564'],
+  luxmeter: ['12911164', '12911165', '12911166', '12911167'],
+  feldmesser: ['91885044', '91885045', '91885046', '91885047'],
+  uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
+  dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
+  vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815']
+};
+
+// Lade gespeicherte Config
+try {
+  const saved = localStorage.getItem('github_config');
+  if (saved) githubConfig = JSON.parse(saved);
+} catch(e) {}
+
+// ==================== CARD-ID DATENBANK ====================
+let CARD_DB = {"SCH-00001":"Häusner Daniel","SCH-00002":"Sommerfeld Stefan","123":"Mustermann Max"};
+try { const saved = localStorage.getItem('mt_card_db'); if(saved) CARD_DB = JSON.parse(saved); } catch(e) {}
+
+// ==================== STATISTIK DATEN ====================
+let measurements = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
+let statsChart = null;
+let ergVal = null;
+
+// ==================== SUPERVISOR PASSWORT PRÜFEN ====================
+function checkSupervisorPassword() {
+  const inputPw = document.getElementById('delete_password')?.value || '';
+  return inputPw === githubConfig.supervisorPassword;
+}
+
+// ==================== VIEW WECHSELN ====================
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${view}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  if (view === 'statistik') {
+    updateStatistics();
+  }
+  if (view === 'gespeichert') {
+    loadSavedProtocols();
+  }
+  if (view === 'dropdowns') {
+    loadDropdownsToEditor();
+  }
+  if (view === 'github') {
+    document.getElementById('github_owner').value = githubConfig.owner;
+    document.getElementById('github_repo').value = githubConfig.repo;
+    document.getElementById('github_branch').value = githubConfig.branch;
+    document.getElementById('github_filename').value = githubConfig.filename;
+    document.getElementById('github_token').value = githubConfig.token;
+    document.getElementById('supervisor_password').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
+  }
+}
+
+// ==================== DROPDOWN FUNKTIONEN ====================
+
+// Standard-Dropdowns erstellen
+async function createDefaultDropdowns() {
+  if (!confirm('Standard-Dropdowns erstellen? Vorhandene werden überschrieben.')) return;
+  
+  const defaultData = {
+    flux: ['12425560', '12425561', '12425562', '12425563', '12425564'],
+    luxmeter: ['12911164', '12911165', '12911166', '12911167'],
+    feldmesser: ['91885044', '91885045', '91885046', '91885047'],
+    uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
+    dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
+    vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815']
+  };
+  
+  dropdownData = defaultData;
+  await saveDropdownsToGithub(true);
+  updateAllDropdowns();
+  loadDropdownsToEditor();
+  document.getElementById('github_status').innerHTML = '<span style="color:var(--sg)">✅ Standard-Dropdowns erstellt und gespeichert</span>';
+}
+
+// Dropdown-Tab umschalten
+function showDropdownTab(tab) {
+  document.querySelectorAll('.dropdown-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(`dropdown-${tab}`).classList.add('active');
+  loadDropdownsToEditor();
+}
+
+// Dropdown-Liste im Editor anzeigen
+function loadDropdownsToEditor() {
+  // Flux
+  let html = '';
+  dropdownData.flux.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('flux', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('flux', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('flux-list').innerHTML = html;
+  
+  // Luxmeter
+  html = '';
+  dropdownData.luxmeter.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('luxmeter', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('luxmeter', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('luxmeter-list').innerHTML = html;
+  
+  // Feldmesser
+  html = '';
+  dropdownData.feldmesser.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('feldmesser', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('feldmesser', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('feldmesser-list').innerHTML = html;
+  
+  // UV-Lampen
+  html = '';
+  dropdownData.uvlampen.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('uvlampen', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('uvlampen', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('uvlampen-list').innerHTML = html;
+  
+  // Dorne
+  html = '';
+  dropdownData.dorne.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('dorne', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('dorne', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('dorne-list').innerHTML = html;
+  
+  // VK1
+  html = '';
+  dropdownData.vk1.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('vk1', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('vk1', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('vk1-list').innerHTML = html;
+}
+
+// Dropdown-Item aktualisieren
+function updateDropdownItem(category, index, newValue) {
+  dropdownData[category][index] = newValue;
+}
+
+// Dropdown-Item entfernen
+function removeDropdownItem(category, index) {
+  dropdownData[category].splice(index, 1);
+  loadDropdownsToEditor();
+}
+
+// Neues Dropdown-Item hinzufügen
+function addDropdownItem(category) {
+  const input = document.getElementById(`new-${category}`);
+  const value = input.value.trim();
+  if (!value) return;
+  
+  dropdownData[category].push(value);
+  input.value = '';
+  loadDropdownsToEditor();
+}
+
+// Dropdowns in GitHub speichern
+async function saveDropdownsToGithub(silent = false) {
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('Bitte zuerst GitHub konfigurieren!');
+    return false;
+  }
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`;
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    let sha = null;
+    if (getResponse.ok) {
+      const existing = await getResponse.json();
+      sha = existing.sha;
+    }
+    
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(dropdownData, null, 2))));
+    
+    const putResponse = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update Dropdowns ${new Date().toLocaleString()}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
+    });
+    
+    if (putResponse.ok) {
+      if (!silent) {
+        document.getElementById('github_status').innerHTML = '<span style="color:var(--sg)">✅ Dropdowns in GitHub gespeichert</span>';
+      }
+      return true;
+    } else {
+      throw new Error('Fehler beim Speichern');
+    }
+  } catch(e) {
+    if (!silent) {
+      document.getElementById('github_status').innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+    }
+    return false;
+  }
+}
+
+// Dropdowns von GitHub laden
+async function loadDropdownsFromGithub() {
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('Bitte zuerst GitHub konfigurieren!');
+    return;
+  }
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      dropdownData = content;
+      loadDropdownsToEditor();
+      updateAllDropdowns();
+      document.getElementById('github_status').innerHTML = '<span style="color:var(--sg)">✅ Dropdowns von GitHub geladen</span>';
+    } else if (response.status === 404) {
+      await createDefaultDropdowns();
+    } else {
+      throw new Error('Fehler beim Laden');
+    }
+  } catch(e) {
+    document.getElementById('github_status').innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+  }
+}
+
+// Alle Dropdowns im Protokoll aktualisieren
+function updateAllDropdowns() {
+  // Fluxanlagen
+  let html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.flux.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('eq_flux').innerHTML = html;
+  
+  // Luxmeter
+  html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.luxmeter.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('eq_luxmeter').innerHTML = html;
+  
+  // Feldmesser
+  html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.feldmesser.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('eq_feldmesser').innerHTML = html;
+  
+  // Dorne
+  html = '<option value="">— Dorn wählen —</option>';
+  dropdownData.dorne.forEach(d => {
+    html += `<option value="${d}">${d}</option>`;
+  });
+  document.getElementById('dorn_both').innerHTML = html;
+  
+  // VK1 Seriennummern
+  html = '<option value="">— wählen —</option>';
+  dropdownData.vk1.forEach(sn => {
+    html += `<option value="${sn}">${sn}</option>`;
+  });
+  document.getElementById('vk1_sn').innerHTML = html;
+  
+  // VK1 EQ-Nummern
+  html = '<option value="">— EQ wählen —</option>';
+  dropdownData.uvlampen.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('vk1_eq').innerHTML = html;
+  
+  updateEquipmentFilter();
+}
+
+// Equipment Filter für Statistik aktualisieren
+function updateEquipmentFilter() {
+  const select = document.getElementById('stat_equipment');
+  if (!select) return;
+  
+  let html = '<option value="all">Alle Anlagen</option>';
+  dropdownData.flux.forEach(eq => {
+    html += `<option value="${eq}">Anlage ${eq}</option>`;
+  });
+  select.innerHTML = html;
+}
+
+// ==================== GITHUB FUNKTIONEN ====================
+
+// GitHub Config speichern
+function saveGithubConfig() {
+  githubConfig = {
+    owner: document.getElementById('github_owner').value,
+    repo: document.getElementById('github_repo').value,
+    branch: document.getElementById('github_branch').value,
+    filename: document.getElementById('github_filename').value,
+    token: document.getElementById('github_token').value,
+    supervisorPassword: document.getElementById('supervisor_password').value
+  };
+  localStorage.setItem('github_config', JSON.stringify(githubConfig));
+  document.getElementById('github_status').innerHTML = '<span style="color:var(--sg)">✅ Konfiguration gespeichert</span>';
+}
+
+// GitHub Verbindung testen
+async function testGithubConnection() {
+  const statusEl = document.getElementById('github_status');
+  statusEl.innerHTML = '<span>⏳ Verbinde...</span>';
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    if (response.ok) {
+      statusEl.innerHTML = '<span style="color:var(--sg)">✅ Verbindung erfolgreich</span>';
+    } else {
+      statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${response.status}</span>`;
+    }
+  } catch(e) {
+    statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+  }
+}
+
+// Mit GitHub verbinden
+async function connectGithub() {
+  saveGithubConfig();
+  const statusEl = document.getElementById('github_status');
+  statusEl.innerHTML = '<span>⏳ Lade Daten von GitHub...</span>';
+  
+  try {
+    await loadDropdownsFromGithub();
+    
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      
+      if (content.protokolle) localStorage.setItem('mt_protokolle_list', JSON.stringify(content.protokolle));
+      if (content.messungen) localStorage.setItem('mt_measurements', JSON.stringify(content.messungen));
+      if (content.mitarbeiter) {
+        CARD_DB = content.mitarbeiter;
+        localStorage.setItem('mt_card_db', JSON.stringify(CARD_DB));
+        updateEmployeeList();
+      }
+      
+      statusEl.innerHTML = `<span style="color:var(--sg)">✅ Erfolgreich geladen (${content.protokolle?.length || 0} Protokolle)</span>`;
+      measurements = content.messungen || [];
+    } else if (response.status === 404) {
+      statusEl.innerHTML = '<span style="color:#d48f00">⚠️ Keine Hauptdatei gefunden</span>';
+    } else {
+      statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${response.status}</span>`;
+    }
+  } catch(e) {
+    statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+  }
+}
+
+// Einzelnes Protokoll in GitHub speichern
+async function saveProtocolToGithub(protocol, filename) {
+  if (!githubConfig.token || !githubConfig.owner) return false;
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    let sha = null;
+    if (getResponse.ok) {
+      const existing = await getResponse.json();
+      sha = existing.sha;
+    }
+    
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(protocol, null, 2))));
+    
+    const putResponse = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Protokoll ${filename}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
+    });
+    
+    return putResponse.ok;
+  } catch(e) {
+    console.error('Fehler:', e);
+    return false;
+  }
+}
+
+// Protokoll aus GitHub löschen
+async function deleteProtocolFromGithub(filename) {
+  if (!githubConfig.token || !githubConfig.owner) return false;
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    if (!getResponse.ok) return false;
+    
+    const data = await getResponse.json();
+    
+    const deleteResponse = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Lösche Protokoll ${filename}`,
+        sha: data.sha,
+        branch: githubConfig.branch
+      })
+    });
+    
+    return deleteResponse.ok;
+  } catch(e) {
+    console.error('Fehler:', e);
+    return false;
+  }
+}
+
+// Hauptdatei aktualisieren
+async function updateMainGithubFile() {
+  const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  const messungen = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
+  
+  const data = {
+    protokolle: protokolle,
+    messungen: messungen,
+    mitarbeiter: CARD_DB,
+    letztesUpdate: new Date().toISOString()
+  };
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`;
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    let sha = null;
+    if (getResponse.ok) {
+      const existing = await getResponse.json();
+      sha = existing.sha;
+    }
+    
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    
+    const putResponse = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update Hauptdatei ${new Date().toLocaleString()}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
+    });
+    
+    return putResponse.ok;
+  } catch(e) {
+    console.error('Fehler:', e);
+    return false;
+  }
+}
+
+// Sync mit GitHub
+async function syncWithGithub() {
+  await connectGithub();
+  loadSavedProtocols();
+}
+
+// ==================== CARD-ID FUNKTIONEN ====================
+function saveCardDB() { 
+  localStorage.setItem('mt_card_db', JSON.stringify(CARD_DB)); 
+  updateEmployeeList();
+  updateMainGithubFile();
+}
+
+function openCardModal() { 
+  document.getElementById('cardModal').classList.add('show'); 
+  updateEmployeeList(); 
+}
+
+function closeCardModal() { 
+  document.getElementById('cardModal').classList.remove('show'); 
+}
+
+function addNewCard() {
+  const id = document.getElementById('new_card_id').value.trim();
+  const name = document.getElementById('new_card_name').value.trim();
+  if (!id || !name) { alert('Bitte ID und Namen eingeben!'); return; }
+  CARD_DB[id] = name;
+  saveCardDB();
+  document.getElementById('new_card_id').value = '';
+  document.getElementById('new_card_name').value = '';
+}
+
+function removeCard(name) {
+  let idToRemove = null;
+  for (let [id, n] of Object.entries(CARD_DB)) { if (n === name) { idToRemove = id; break; } }
+  if (idToRemove && confirm(`Mitarbeiter ${name} löschen?`)) { delete CARD_DB[idToRemove]; saveCardDB(); }
+}
+
+function updateEmployeeList() {
+  const container = document.getElementById('employee-list-container');
+  if (!container) return;
+  let html = '';
+  Object.values(CARD_DB).sort().forEach(name => {
+    html += `<div class="employee-item"><span class="employee-info">${name}</span><span class="employee-remove" onclick="removeCard('${name}')">✕ Löschen</span></div>`;
+  });
+  container.innerHTML = html || '<p>Keine Mitarbeiter</p>';
+}
+
+// ==================== EQ-PERSISTENZ ====================
+const EQ_IDS = ['eq_flux','eq_luxmeter','eq_feldmesser','dorn_both','dorn_kreis','dorn_laengs','vk1_sn','vk1_eq','eq_uv1','eq_uv2'];
+const LS = 'mt_eq_selections';
+const LS_MODE = 'mt_dorn_mode';
+
+function saveEQ(id) {
+  const s = JSON.parse(localStorage.getItem(LS) || '{}');
+  s[id] = document.getElementById(id)?.value;
+  localStorage.setItem(LS, JSON.stringify(s));
+  if (id === 'eq_flux') {
+    document.getElementById('dorn_eq_ref').textContent = document.getElementById('eq_flux').value;
+  }
+}
+
+function loadStore() { try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e) { return {}; } }
+
+function restoreEQ() {
+  const s = loadStore();
+  EQ_IDS.forEach(id => { if (s[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = s[id]; } });
+  document.getElementById('dorn_eq_ref').textContent = document.getElementById('eq_flux')?.value || '12425560';
+  const mode = localStorage.getItem(LS_MODE) || 'dorn';
+  setDornMode(mode, true);
+}
+
+// ==================== LAMPEN AUSWAHL ====================
+function updateLampenAuswahl() {
+  const eq = document.getElementById('eq_flux').value;
+  const container = document.getElementById('lampen_container');
+  
+  let uvOptions = '<option value="">— EQ wählen —</option>';
+  dropdownData.uvlampen.forEach(val => {
+    uvOptions += `<option value="${val}">${val}</option>`;
+  });
+  
+  let html = '';
+  if (eq === '12425563') {
+    html = `
+      <div class="ir"><div class="irl"><div class="lbl">UV Handlampe 1</div></div><div class="irr"><select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">${uvOptions}</select></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">UV1 Intensität</div></div><div class="irr"><input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv1_uw">—</span></div></div>
+      <div class="ir"><div class="irl"><div class="lbl">UV1 Restweißlicht</div></div><div class="irr"><input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv1_lx">—</span></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">UV Handlampe 2</div></div><div class="irr"><select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">${uvOptions}</select></div></div>
+      <div class="ir"><div class="irl"><div class="lbl">UV2 Intensität</div></div><div class="irr"><input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv2_uw">—</span></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">UV2 Restweißlicht</div></div><div class="irr"><input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv2_lx">—</span></div></div>
+    `;
+  } else {
+    html = `
+      <div class="ir"><div class="irl"><div class="lbl">UV Maschinenlampe</div></div><div class="irr"><select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">${uvOptions}</select></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">Maschine Intensität</div></div><div class="irr"><input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv1_uw">—</span></div></div>
+      <div class="ir"><div class="irl"><div class="lbl">Maschine Restweißlicht</div></div><div class="irr"><input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv1_lx">—</span></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">UV Handlampe</div></div><div class="irr"><select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">${uvOptions}</select></div></div>
+      <div class="ir"><div class="irl"><div class="lbl">Hand Intensität</div></div><div class="irr"><input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv2_uw">—</span></div></div>
+      <div class="ir alt"><div class="irl"><div class="lbl">Hand Restweißlicht</div></div><div class="irr"><input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv2_lx">—</span></div></div>
+    `;
+  }
+  container.innerHTML = html;
+  
+  const s = loadStore();
+  if (s['eq_uv1']) document.getElementById('eq_uv1').value = s['eq_uv1'];
+  if (s['eq_uv2']) document.getElementById('eq_uv2').value = s['eq_uv2'];
+}
+
+// ==================== DORNMODUS ====================
+function setDornMode(mode, silent) {
+  const isDorn = mode === 'dorn';
+  document.getElementById('dorn_single').style.display = isDorn ? '' : 'none';
+  document.getElementById('dorn_getrennt').style.display = isDorn ? 'none' : '';
+  document.getElementById('dm_dorn').classList.toggle('active', isDorn);
+  document.getElementById('dm_getrennt').classList.toggle('active', !isDorn);
+  if (!silent) localStorage.setItem(LS_MODE, mode);
+}
+
+function jochExklusiv(seite) {
+  const me = document.getElementById('dorn_'+seite);
+  const other = document.getElementById(seite==='kreis'?'dorn_laengs':'dorn_kreis');
+  const val = me.value;
+  const isJoch = val==='joch'||val==='handjoch';
+  if (isJoch) {
+    other.value='spule';
+    saveEQ(other.id);
+  }
+  if (isJoch && (other.value==='joch'||other.value==='handjoch')) {
+    other.value='spule';
+    saveEQ(other.id);
+  }
+  saveEQ('dorn_'+seite);
+}
+
+// ==================== TOLERANZ ====================
+function pDE(s) { return parseFloat((s||'').replace(',','.')); }
+function setBadge(inp,bid,st) {
+  inp.classList.remove('ok','wn','er');
+  const b=document.getElementById(bid); b.className='badge';
+  if(st==='ok'){inp.classList.add('ok');b.classList.add('ok');b.textContent='✓ OK';}
+  else if(st==='wn'){inp.classList.add('wn');b.classList.add('wn');b.textContent='⚠ GRENZ';}
+  else if(st==='er'){inp.classList.add('er');b.classList.add('er');b.textContent='✕ NOK';}
+  else{b.classList.add('nu');b.textContent='—';}
+}
+function chkUV(inp){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=1600&&v<=5000?'ok':v>=1500&&v<=5200?'wn':'er');}
+function chkMax(inp,w,h){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v<=w?'ok':v<=h?'wn':'er');}
+function chkRange(inp,lo,hi){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=lo&&v<=hi?'ok':'er');}
+function chkFeld(inp){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=32&&v<=59?'ok':v>=60&&v<=72?'wn':'er');}
+
+// ==================== CARD-ID LOOKUP ====================
+function resolveCard(role) {
+  const cardEl = document.getElementById(role+'_card');
+  const resolvedEl = document.getElementById(role+'_resolved');
+  const hiddenEl = document.getElementById(role==='pruefer'?'pruefer_name':'supervisor');
+  const val = cardEl.value.trim();
+  cardEl.classList.remove('card-ok','card-er');
+  if(!val){
+    resolvedEl.style.display='none';
+    hiddenEl.value='';
+    return;
+  }
+  const name = CARD_DB[val] || CARD_DB[val.toUpperCase()] || CARD_DB[val.toLowerCase()];
+  if(name){
+    resolvedEl.style.display='block';
+    resolvedEl.className='card-resolved ok';
+    resolvedEl.textContent='✓ Signiert: '+name;
+    hiddenEl.value=name;
+    cardEl.classList.add('card-ok');
+  } else {
+    resolvedEl.style.display='block';
+    resolvedEl.className='card-resolved er';
+    resolvedEl.textContent='✕ Unbekannte Card-ID';
+    hiddenEl.value='';
+    cardEl.classList.add('card-er');
+  }
+}
+
+// ==================== ERGEBNIS ====================
+function selErg(v){
+  ['keine','linear','nichtlinear'].forEach(o=>{document.getElementById('eo-'+o).classList.remove('ok','er');document.getElementById('ec-'+o).textContent='';});
+  ergVal=v;document.getElementById('eo-'+v).classList.add(v==='keine'?'ok':'er');document.getElementById('ec-'+v).textContent=v==='keine'?'✓':'✕';
+}
+
+// ==================== PROTOKOLL SPEICHERN ====================
+async function submitForm() {
+  const req = [
+    {id:'pruefgegenstand',l:'Prüfgegenstand'},
+    {id:'auftragsnummer',l:'Auftragsnummer'},
+    {id:'pruefer_name',l:'Prüfer'},
+    {id:'datum',l:'Datum'},
+    {id:'supervisor',l:'Aufsicht'}
+  ];
+  const miss=req.filter(r=>!document.getElementById(r.id).value.trim());
+  if(miss.length){alert('Pflichtfelder fehlen:\n'+miss.map(r=>r.l).join('\n'));return;}
+  if(!ergVal){alert('Bitte Prüfergebnis auswählen.');return;}
+  
+  const protocol = {
+    datum: document.getElementById('datum').value,
+    auftrag: document.getElementById('auftragsnummer').value,
+    pruefgegenstand: document.getElementById('pruefgegenstand').value,
+    pruefer: document.getElementById('pruefer_name').value,
+    supervisor: document.getElementById('supervisor').value,
+    ergebnis: ergVal,
+    anlagenEq: document.getElementById('eq_flux').value,
+    konzentration: document.getElementById('konzentration').value,
+    ansatz_datum: document.getElementById('ansatz_datum').value,
+    restmag: document.getElementById('restmag').value,
+    feld_kreis: document.getElementById('kreis_feld').value,
+    feld_laengs: document.getElementById('laengs_feld').value,
+    weiss_raum: document.getElementById('weiss_raum').value,
+    uv1: document.getElementById('uv1_uw')?.value || '',
+    uv1_eq: document.getElementById('eq_uv1')?.value || '',
+    uv1_lx: document.getElementById('uv1_lx')?.value || '',
+    uv2: document.getElementById('uv2_uw')?.value || '',
+    uv2_eq: document.getElementById('eq_uv2')?.value || '',
+    uv2_lx: document.getElementById('uv2_lx')?.value || '',
+    vk1_sn: document.getElementById('vk1_sn').value,
+    vk1_eq: document.getElementById('vk1_eq').value,
+    vk1_checked: document.getElementById('cb_vk1')?.checked || false,
+    luxmeter_eq: document.getElementById('eq_luxmeter').value,
+    feldmesser_eq: document.getElementById('eq_feldmesser').value,
+    checkliste: {
+      funktionstest: document.getElementById('cb_funktionstest')?.checked || false,
+      entmag: document.getElementById('cb_entmag')?.checked || false,
+      uv_v: document.getElementById('cb_uv_v')?.checked || false,
+      rueck: document.getElementById('cb_rueck')?.checked || false,
+      weiss_v: document.getElementById('cb_weiss_v')?.checked || false,
+      feldhom: document.getElementById('cb_feldhom')?.checked || false
+    },
+    level: {
+      l1: document.getElementById('level1')?.checked || false,
+      l2: document.getElementById('level2')?.checked || false,
+      l3: document.getElementById('level3')?.checked || false,
+      pw: document.getElementById('pw')?.checked || false
+    }
+  };
+  
+  const datumTeile = protocol.datum.split('T');
+  const datum = datumTeile[0].replace(/-/g, '');
+  const uhrzeit = datumTeile[1].replace(/:/g, '').substring(0,6);
+  const auftragClean = protocol.auftrag.replace(/[^a-zA-Z0-9]/g, '_');
+  const filename = `${auftragClean}_${datum}_${uhrzeit}.json`;
+  
+  const saved = await saveProtocolToGithub(protocol, filename);
+  
+  if (saved) {
+    let savedList = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+    savedList.push({ filename, ...protocol });
+    localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
+    
+    measurements.push({
+      datum: protocol.datum.split('T')[0],
+      anlagenEq: protocol.anlagenEq,
+      uv1: parseFloat(protocol.uv1) || 0,
+      uv1_eq: protocol.uv1_eq,
+      uv2: parseFloat(protocol.uv2) || 0,
+      uv2_eq: protocol.uv2_eq,
+      konz: parseFloat(protocol.konzentration) || 0,
+      vk1_sn: protocol.vk1_sn,
+      vk1_eq: protocol.vk1_eq,
+      vk1_checked: protocol.vk1_checked
+    });
+    localStorage.setItem('mt_measurements', JSON.stringify(measurements));
+    
+    await updateMainGithubFile();
+    document.getElementById('succ').style.display = 'flex';
+  } else {
+    alert('Fehler beim Speichern in GitHub!');
+  }
+}
+
+// ==================== GESPEICHERTE PROTOKOLLE ====================
+function loadSavedProtocols() {
+  const saved = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  const von = document.getElementById('proto_von')?.value || '2000-01-01';
+  const bis = document.getElementById('proto_bis')?.value || '2100-01-01';
+  
+  const filtered = saved.filter(p => p.datum.split('T')[0] >= von && p.datum.split('T')[0] <= bis);
+  
+  const tbody = document.getElementById('protokolle-table');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:30px">Keine Protokolle</td></tr>';
+    return;
+  }
+  
+  let html = '';
+  filtered.forEach((p, index) => {
+    const datumTeile = p.datum.split('T');
+    const datum = datumTeile[0];
+    const uhrzeit = datumTeile[1] || '';
+    
+    html += `<tr>
+      <td>${datum}</td>
+      <td>${uhrzeit}</td>
+      <td>${p.anlagenEq || '—'}</td>
+      <td>${p.auftrag}</td>
+      <td>${p.pruefgegenstand}</td>
+      <td>${p.pruefer}</td>
+      <td>${p.ergebnis}</td>
+      <td>${p.konzentration || '-'}</td>
+      <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="printProtocol('${p.filename}')">🖨 Drucken</button></td>
+      <td><button class="btn sec" style="padding:4px 8px;font-size:12px;background:var(--er-b);color:white" onclick="deleteProtocol('${p.filename}', ${index})">✕ Löschen</button></td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+// ==================== PROTOKOLL DRUCKEN ====================
+async function printProtocol(filename) {
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('GitHub nicht konfiguriert!');
+    return;
+  }
+  
+  try {
+    const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      
+      switchView('protokoll');
+      loadProtocolToForm(protocol);
+      setTimeout(() => window.print(), 500);
+    } else {
+      alert('Fehler beim Laden');
+    }
+  } catch(e) {
+    alert('Fehler: ' + e.message);
+  }
+}
+
+// ==================== PROTOKOLL LÖSCHEN ====================
+async function deleteProtocol(filename, index) {
+  const inputPw = document.getElementById('delete_password')?.value || '';
+  if (inputPw !== githubConfig.supervisorPassword) {
+    alert('❌ Falsches Passwort!');
+    return;
+  }
+  
+  if (!confirm(`Protokoll löschen?`)) return;
+  
+  const deleted = await deleteProtocolFromGithub(filename);
+  
+  if (deleted) {
+    let savedList = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+    savedList.splice(index, 1);
+    localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
+    await updateMainGithubFile();
+    loadSavedProtocols();
+    alert('✅ Gelöscht');
+  } else {
+    alert('❌ Fehler');
+  }
+}
+
+// ==================== PROTOKOLL LADEN ====================
+function loadProtocolToForm(protocol) {
+  document.getElementById('pruefgegenstand').value = protocol.pruefgegenstand || '';
+  document.getElementById('auftragsnummer').value = protocol.auftrag || '';
+  
+  if (protocol.pruefer) {
+    const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.pruefer);
+    if (found) {
+      document.getElementById('pruefer_card').value = found[0];
+      resolveCard('pruefer');
+    }
+  }
+  
+  if (protocol.supervisor) {
+    const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.supervisor);
+    if (found) {
+      document.getElementById('supervisor_card').value = found[0];
+      resolveCard('supervisor');
+    }
+  }
+  
+  document.getElementById('datum').value = protocol.datum || '';
+  
+  if (protocol.ergebnis) selErg(protocol.ergebnis);
+  
+  document.getElementById('konzentration').value = protocol.konzentration || '';
+  document.getElementById('ansatz_datum').value = protocol.ansatz_datum || '2026-01-01';
+  document.getElementById('restmag').value = protocol.restmag || '';
+  if (protocol.restmag) chkMax(document.getElementById('restmag'), 4.0, 5.0);
+  
+  document.getElementById('kreis_feld').value = protocol.feld_kreis || '';
+  if (protocol.feld_kreis) chkFeld(document.getElementById('kreis_feld'));
+  
+  document.getElementById('laengs_feld').value = protocol.feld_laengs || '';
+  if (protocol.feld_laengs) chkFeld(document.getElementById('laengs_feld'));
+  
+  document.getElementById('weiss_raum').value = protocol.weiss_raum || '';
+  if (protocol.weiss_raum) chkMax(document.getElementById('weiss_raum'), 15, 20);
+  
+  if (protocol.anlagenEq) {
+    const eqFlux = document.getElementById('eq_flux');
+    if (eqFlux) {
+      eqFlux.value = protocol.anlagenEq;
+      saveEQ('eq_flux');
+      updateLampenAuswahl();
+    }
+  }
+  
+  setTimeout(() => {
+    if (protocol.uv1 && document.getElementById('uv1_uw')) {
+      document.getElementById('uv1_uw').value = protocol.uv1;
+      chkUV(document.getElementById('uv1_uw'));
+    }
+    if (protocol.uv2 && document.getElementById('uv2_uw')) {
+      document.getElementById('uv2_uw').value = protocol.uv2;
+      chkUV(document.getElementById('uv2_uw'));
+    }
+    if (protocol.uv1_lx && document.getElementById('uv1_lx')) {
+      document.getElementById('uv1_lx').value = protocol.uv1_lx;
+      chkMax(document.getElementById('uv1_lx'), 15, 20);
+    }
+    if (protocol.uv2_lx && document.getElementById('uv2_lx')) {
+      document.getElementById('uv2_lx').value = protocol.uv2_lx;
+      chkMax(document.getElementById('uv2_lx'), 15, 20);
+    }
+    
+    if (protocol.uv1_eq && document.getElementById('eq_uv1')) {
+      document.getElementById('eq_uv1').value = protocol.uv1_eq;
+      saveEQ('eq_uv1');
+    }
+    if (protocol.uv2_eq && document.getElementById('eq_uv2')) {
+      document.getElementById('eq_uv2').value = protocol.uv2_eq;
+      saveEQ('eq_uv2');
+    }
+  }, 200);
+  
+  if (protocol.vk1_sn && document.getElementById('vk1_sn')) {
+    document.getElementById('vk1_sn').value = protocol.vk1_sn;
+  }
+  if (protocol.vk1_eq && document.getElementById('vk1_eq')) {
+    document.getElementById('vk1_eq').value = protocol.vk1_eq;
+  }
+  if (document.getElementById('cb_vk1')) {
+    document.getElementById('cb_vk1').checked = protocol.vk1_checked || false;
+  }
+  
+  if (protocol.luxmeter_eq && document.getElementById('eq_luxmeter')) {
+    document.getElementById('eq_luxmeter').value = protocol.luxmeter_eq;
+  }
+  if (protocol.feldmesser_eq && document.getElementById('eq_feldmesser')) {
+    document.getElementById('eq_feldmesser').value = protocol.feldmesser_eq;
+  }
+  
+  const checkboxes = {
+    'cb_funktionstest': protocol.checkliste?.funktionstest,
+    'cb_entmag': protocol.checkliste?.entmag,
+    'cb_uv_v': protocol.checkliste?.uv_v,
+    'cb_rueck': protocol.checkliste?.rueck,
+    'cb_weiss_v': protocol.checkliste?.weiss_v,
+    'cb_feldhom': protocol.checkliste?.feldhom
+  };
+  
+  Object.entries(checkboxes).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.checked = value || false;
+  });
+  
+  if (protocol.level) {
+    document.getElementById('level1').checked = protocol.level.l1 || false;
+    document.getElementById('level2').checked = protocol.level.l2 || false;
+    document.getElementById('level3').checked = protocol.level.l3 || false;
+    document.getElementById('pw').checked = protocol.level.pw || false;
+  }
+}
+
+// ==================== STATISTIK FUNKTIONEN ====================
+function changeStatisticType() { updateStatistics(); }
+
+function updateStatistics() {
+  const typ = document.getElementById('stats_select').value;
+  const von = document.getElementById('stat_von').value;
+  const bis = document.getElementById('stat_bis').value;
+  const filterEq = document.getElementById('stat_equipment').value;
+  
+  let data = [];
+  
+  if (typ === 'uv' || typ === 'konzentration') {
+    data = measurements
+      .filter(m => filterEq === 'all' || m.anlagenEq === filterEq)
+      .map(m => ({ datum: m.datum, anlagenEq: m.anlagenEq, uv1: m.uv1, uv1_eq: m.uv1_eq, uv2: m.uv2, uv2_eq: m.uv2_eq, konz: m.konz }));
+  } else {
+    const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+    data = protokolle
+      .filter(p => filterEq === 'all' || p.anlagenEq === filterEq)
+      .map(p => ({
+        datum: p.datum.split('T')[0],
+        anlagenEq: p.anlagenEq,
+        uv1: p.uv1 ? parseFloat(p.uv1) : null,
+        uv1_eq: p.uv1_eq,
+        uv2: p.uv2 ? parseFloat(p.uv2) : null,
+        uv2_eq: p.uv2_eq,
+        konz: p.konzentration ? parseFloat(p.konzentration) : null,
+        restmag: p.restmag ? parseFloat(p.restmag) : null,
+        feld_kreis: p.feld_kreis ? parseFloat(p.feld_kreis) : null,
+        feld_laengs: p.feld_laengs ? parseFloat(p.feld_laengs) : null,
+        vk1_sn: p.vk1_sn,
+        vk1_eq: p.vk1_eq,
+        vk1_checked: p.vk1_checked
+      }));
+  }
+  
+  data = data.filter(d => d.datum >= von && d.datum <= bis);
+  data.sort((a,b) => a.datum.localeCompare(b.datum));
+  
+  updateSummaryCards(data, typ);
+  updateStatsChart(data, typ);
+  updateStatsTable(data, typ);
+}
+
+function updateSummaryCards(data, typ) {
+  const container = document.getElementById('stats_summary');
+  let html = '';
+  
+  if (typ === 'uv') {
+    const avgUV1 = data.reduce((s, d) => s + (d.uv1 || 0), 0) / (data.length || 1);
+    const avgUV2 = data.reduce((s, d) => s + (d.uv2 || 0), 0) / (data.length || 1);
+    const maxUV1 = Math.max(...data.map(d => d.uv1 || 0));
+    const maxUV2 = Math.max(...data.map(d => d.uv2 || 0));
+    
+    const eqCounts = {};
+    data.forEach(d => {
+      if (d.uv1_eq) eqCounts[d.uv1_eq] = (eqCounts[d.uv1_eq] || 0) + 1;
+      if (d.uv2_eq) eqCounts[d.uv2_eq] = (eqCounts[d.uv2_eq] || 0) + 1;
+    });
+    const topEq = Object.entries(eqCounts).sort((a,b) => b[1] - a[1])[0];
+    
+    html = `
+      <div class="summary-card"><div class="value">${avgUV1.toFixed(0)}</div><div class="label">Ø UV1</div></div>
+      <div class="summary-card"><div class="value">${avgUV2.toFixed(0)}</div><div class="label">Ø UV2</div></div>
+      <div class="summary-card"><div class="value">${maxUV1}</div><div class="label">Max UV1</div></div>
+      <div class="summary-card"><div class="value">${maxUV2}</div><div class="label">Max UV2</div></div>
+      ${topEq ? `<div class="summary-card"><div class="value">${topEq[0]}</div><div class="label">Häufigste Lampe</div></div>` : ''}
+    `;
+  } else if (typ === 'konzentration') {
+    const avg = data.reduce((s, d) => s + (d.konz || 0), 0) / (data.length || 1);
+    const min = Math.min(...data.map(d => d.konz || 999));
+    const max = Math.max(...data.map(d => d.konz || 0));
+    const inToleranz = data.filter(d => d.konz >= 0.1 && d.konz <= 0.4).length;
+    
+    html = `
+      <div class="summary-card"><div class="value">${avg.toFixed(2)}</div><div class="label">Ø Konz.</div></div>
+      <div class="summary-card"><div class="value">${min.toFixed(2)}</div><div class="label">Min</div></div>
+      <div class="summary-card"><div class="value">${max.toFixed(2)}</div><div class="label">Max</div></div>
+      <div class="summary-card"><div class="value">${inToleranz}/${data.length}</div><div class="label">In Toleranz</div></div>
+    `;
+  } else if (typ === 'restmagnetismus') {
+    const avg = data.reduce((s, d) => s + (d.restmag || 0), 0) / (data.length || 1);
+    const nok = data.filter(d => d.restmag > 5).length;
+    
+    html = `
+      <div class="summary-card"><div class="value">${avg.toFixed(1)}</div><div class="label">Ø Restmag</div></div>
+      <div class="summary-card"><div class="value">${nok}</div><div class="label">NOK</div></div>
+    `;
+  } else if (typ === 'vk1') {
+    const vk1Count = data.filter(d => d.vk1_checked).length;
+    const vk1Rate = data.length ? (vk1Count / data.length * 100).toFixed(1) : 0;
+    
+    const vk1Eqs = {};
+    data.forEach(d => {
+      if (d.vk1_checked && d.vk1_eq) vk1Eqs[d.vk1_eq] = (vk1Eqs[d.vk1_eq] || 0) + 1;
+    });
+    const topVk1 = Object.entries(vk1Eqs).sort((a,b) => b[1] - a[1])[0];
+    
+    html = `
+      <div class="summary-card"><div class="value">${vk1Count}</div><div class="label">VK1 Prüfungen</div></div>
+      <div class="summary-card"><div class="value">${vk1Rate}%</div><div class="label">Erfolg</div></div>
+      ${topVk1 ? `<div class="summary-card"><div class="value">${topVk1[0]}</div><div class="label">Häufigstes EQ</div></div>` : ''}
+    `;
+  } else if (typ === 'feldstaerke') {
+    const avgKreis = data.reduce((s, d) => s + (d.feld_kreis || 0), 0) / (data.length || 1);
+    const avgLaengs = data.reduce((s, d) => s + (d.feld_laengs || 0), 0) / (data.length || 1);
+    
+    html = `
+      <div class="summary-card"><div class="value">${avgKreis.toFixed(1)}</div><div class="label">Ø Kreis</div></div>
+      <div class="summary-card"><div class="value">${avgLaengs.toFixed(1)}</div><div class="label">Ø Längs</div></div>
+    `;
+  }
+  
+  container.innerHTML = html;
+}
+
+function updateStatsChart(data, typ) {
+  const ctx = document.getElementById('statsChart').getContext('2d');
+  if (statsChart) statsChart.destroy();
+  
+  const labels = data.map(d => d.datum);
+  let datasets = [];
+  
+  if (typ === 'uv') {
+    datasets = [
+      { label: 'UV1', data: data.map(d => d.uv1), borderColor: '#00893d', tension: 0.1 },
+      { label: 'UV2', data: data.map(d => d.uv2), borderColor: '#006b30', tension: 0.1 }
+    ];
+  } else if (typ === 'konzentration') {
+    datasets = [
+      { label: 'Konz.', data: data.map(d => d.konz), borderColor: '#00893d', tension: 0.1 },
+      { label: '0.4', data: data.map(() => 0.4), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0 },
+      { label: '0.1', data: data.map(() => 0.1), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0 }
+    ];
+  } else if (typ === 'restmagnetismus') {
+    datasets = [
+      { label: 'Restmag', data: data.map(d => d.restmag), borderColor: '#c0392b', tension: 0.1 },
+      { label: 'Grenze 5', data: data.map(() => 5), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0 }
+    ];
+  } else if (typ === 'feldstaerke') {
+    datasets = [
+      { label: 'Kreis', data: data.map(d => d.feld_kreis), borderColor: '#00893d', tension: 0.1 },
+      { label: 'Längs', data: data.map(d => d.feld_laengs), borderColor: '#006b30', tension: 0.1 }
+    ];
+  } else if (typ === 'vk1') {
+    datasets = [
+      { label: 'VK1', data: data.map(d => d.vk1_checked ? 1 : 0), borderColor: '#00893d', tension: 0.1 }
+    ];
+  }
+  
+  statsChart = new Chart(ctx, {
+    type: typ === 'vk1' ? 'bar' : 'line',
+    data: { labels, datasets },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function updateStatsTable(data, typ) {
+  const thead = document.getElementById('stats_table_head');
+  const tbody = document.getElementById('stats_table_body');
+  
+  let headers = ['Datum', 'Anlage EQ'];
+  if (typ === 'uv') headers.push('UV1', 'UV1 EQ', 'UV2', 'UV2 EQ');
+  else if (typ === 'konzentration') headers.push('Konz.', 'Status');
+  else if (typ === 'restmagnetismus') headers.push('Restmag', 'Status');
+  else if (typ === 'feldstaerke') headers.push('Kreis', 'Längs');
+  else if (typ === 'vk1') headers.push('VK1 SN', 'VK1 EQ', 'Status');
+  
+  thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+  
+  let rows = '';
+  data.slice().reverse().forEach(d => {
+    let row = `<td>${d.datum}</td><td>${d.anlagenEq || '—'}</td>`;
+    
+    if (typ === 'uv') {
+      row += `<td>${d.uv1?.toFixed(0) || '-'}</td><td>${d.uv1_eq || '-'}</td><td>${d.uv2?.toFixed(0) || '-'}</td><td>${d.uv2_eq || '-'}</td>`;
+    } else if (typ === 'konzentration') {
+      const status = d.konz >= 0.1 && d.konz <= 0.4 ? '✓' : '✕';
+      row += `<td>${d.konz?.toFixed(2) || '-'}</td><td>${status}</td>`;
+    } else if (typ === 'restmagnetismus') {
+      const status = d.restmag <= 5 ? '✓' : '✕';
+      row += `<td>${d.restmag?.toFixed(1) || '-'}</td><td>${status}</td>`;
+    } else if (typ === 'feldstaerke') {
+      row += `<td>${d.feld_kreis || '-'}</td><td>${d.feld_laengs || '-'}</td>`;
+    } else if (typ === 'vk1') {
+      const status = d.vk1_checked ? '✓' : '-';
+      row += `<td>${d.vk1_sn || '-'}</td><td>${d.vk1_eq || '-'}</td><td>${status}</td>`;
+    }
+    
+    rows += `<tr>${row}</tr>`;
+  });
+  
+  tbody.innerHTML = rows || '<tr><td colspan="10">Keine Daten</td></tr>';
+}
+
+function exportStatistics() {
+  const typ = document.getElementById('stats_select').value;
+  const von = document.getElementById('stat_von').value;
+  const bis = document.getElementById('stat_bis').value;
+  const filterEq = document.getElementById('stat_equipment').value;
+  
+  let data = measurements.filter(m => filterEq === 'all' || m.anlagenEq === filterEq);
+  const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  data = [...data, ...protokolle.filter(p => filterEq === 'all' || p.anlagenEq === filterEq).map(p => ({ 
+    datum: p.datum.split('T')[0], anlagenEq: p.anlagenEq,
+    uv1: p.uv1, uv1_eq: p.uv1_eq, uv2: p.uv2, uv2_eq: p.uv2_eq,
+    konz: p.konzentration, restmag: p.restmag,
+    feld_kreis: p.feld_kreis, feld_laengs: p.feld_laengs,
+    vk1_sn: p.vk1_sn, vk1_eq: p.vk1_eq, vk1_checked: p.vk1_checked
+  }))];
+  data = data.filter(d => d.datum >= von && d.datum <= bis);
+  data.sort((a,b) => a.datum.localeCompare(b.datum));
+  
+  let csv = 'Datum;Anlage EQ';
+  if (typ === 'uv') csv += ';UV1;UV1 EQ;UV2;UV2 EQ\n';
+  else if (typ === 'konzentration') csv += ';Konzentration\n';
+  else if (typ === 'restmagnetismus') csv += ';Restmagnetismus\n';
+  else if (typ === 'feldstaerke') csv += ';Kreis;Längs\n';
+  else if (typ === 'vk1') csv += ';VK1 SN;VK1 EQ;Status\n';
+  
+  data.forEach(d => {
+    if (typ === 'uv') csv += `${d.datum};${d.anlagenEq || ''};${d.uv1 || ''};${d.uv1_eq || ''};${d.uv2 || ''};${d.uv2_eq || ''}\n`;
+    else if (typ === 'konzentration') csv += `${d.datum};${d.anlagenEq || ''};${d.konz || ''}\n`;
+    else if (typ === 'restmagnetismus') csv += `${d.datum};${d.anlagenEq || ''};${d.restmag || ''}\n`;
+    else if (typ === 'feldstaerke') csv += `${d.datum};${d.anlagenEq || ''};${d.feld_kreis || ''};${d.feld_laengs || ''}\n`;
+    else if (typ === 'vk1') csv += `${d.datum};${d.anlagenEq || ''};${d.vk1_sn || ''};${d.vk1_eq || ''};${d.vk1_checked ? 'OK' : '-'}\n`;
+  });
+  
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `statistik_${typ}_${filterEq}_${von}_${bis}.csv`;
+  a.click();
+}
+
+// ==================== RESET ====================
+function resetForm() {
+  if (!confirm('Formular zurücksetzen?')) return;
+  
+  ['pruefgegenstand','auftragsnummer','pruefer_name_input','kreis_feld','laengs_feld',
+   'uv1_uw','uv2_uw','uv1_lx','uv2_lx','weiss_raum','konzentration','restmag',
+   'kreis_stufe','kreis_anzeige','laengs_stufe','laengs_anzeige'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  
+  ['pruefer_card','supervisor_card'].forEach(id => {
+    const el = document.getElementById(id); if (el) { el.value = ''; el.classList.remove('card-ok','card-er'); }
+  });
+  ['pruefer_name','supervisor'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['pruefer_resolved','supervisor_resolved'].forEach(id => {
+    const el = document.getElementById(id); if (el) { el.style.display = 'none'; el.textContent = ''; }
+  });
+  
+  ['cb_funktionstest','cb_vk1','cb_entmag','cb_uv_v','cb_rueck','cb_weiss_v','cb_feldhom',
+   'level1','level2','level3','pw'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.checked = false;
+  });
+  
+  ['uv1_uw','uv2_uw','uv1_lx','uv2_lx','weiss_raum','konzentration','restmag','kreis_feld','laengs_feld'].forEach(id => {
+    const inp = document.getElementById(id); if (inp) inp.classList.remove('ok','wn','er');
+    const b = document.getElementById('b_'+id); if (b) { b.className = 'badge nu'; b.textContent = '—'; }
+  });
+  
+  ['keine','linear','nichtlinear'].forEach(o => {
+    document.getElementById('eo-'+o).classList.remove('ok','er');
+    document.getElementById('ec-'+o).textContent = '';
+  });
+  ergVal = null;
+  
+  const now = new Date();
+  document.getElementById('datum').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+
+// ==================== INITIALISIERUNG ====================
+window.addEventListener('load', async () => {
+  if (githubConfig.token) await loadDropdownsFromGithub();
+  else updateAllDropdowns();
+  
+  restoreEQ();
+  updateLampenAuswahl();
+  
+  const now = new Date();
+  document.getElementById('datum').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+  
+  measurements = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
+  updateEmployeeList();
+  
+  document.getElementById('github_owner').value = githubConfig.owner;
+  document.getElementById('github_repo').value = githubConfig.repo;
+  document.getElementById('github_branch').value = githubConfig.branch;
+  document.getElementById('github_filename').value = githubConfig.filename;
+  document.getElementById('github_token').value = githubConfig.token;
+  document.getElementById('supervisor_password').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
+  
+  updateEquipmentFilter();
+});
+</script>
+</body>
+</html>
