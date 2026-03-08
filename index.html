@@ -475,6 +475,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <button class="dropdown-tab" onclick="showDropdownTab('uvlampen')">UV-Lampen</button>
       <button class="dropdown-tab" onclick="showDropdownTab('dorne')">Dorne</button>
       <button class="dropdown-tab" onclick="showDropdownTab('vk1')">VK1 Seriennummern</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('lampenzuordnung')">💡 Lampen-Zuordnung</button>
     </div>
     
     <!-- Fluxanlagen -->
@@ -534,6 +535,30 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <div class="add-dropdown-item">
         <input type="text" id="new-vk1" placeholder="z.B. KD200811">
         <button onclick="addDropdownItem('vk1')">Hinzufügen</button>
+      </div>
+    </div>
+
+    <!-- Lampen-Zuordnung -->
+    <div id="dropdown-lampenzuordnung" class="dropdown-panel">
+      <h4>💡 Lampen-Zuordnung pro Anlage</h4>
+      <p style="font-size:13px;color:var(--sa3);margin-bottom:10px">Hier können Sie festlegen, welche Lampe standardmäßig für welche Anlage vorausgewählt wird. Die Auswahl kann im Protokoll jederzeit geändert werden.</p>
+      
+      <div class="dropdown-list" id="lampenzuordnung-list" style="max-height:400px"></div>
+      
+      <div style="margin-top:20px">
+        <h4>Neue Zuordnung</h4>
+        <div class="add-dropdown-item" style="flex-wrap:wrap">
+          <select id="new-zordnung-anlage" style="width:180px">
+            <option value="">Anlage wählen</option>
+          </select>
+          <select id="new-zordnung-lampe1" style="width:180px">
+            <option value="">Lampe 1 wählen</option>
+          </select>
+          <select id="new-zordnung-lampe2" style="width:180px">
+            <option value="">Lampe 2 wählen</option>
+          </select>
+          <button onclick="addLampenZuordnung()">Hinzufügen</button>
+        </div>
       </div>
     </div>
     
@@ -782,7 +807,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     </div>
   </div>
   
-  <!-- Dynamischer Lampenbereich -->
+  <!-- Dynamischer Lampenbereich - Jetzt mit einfacher Liste aller Lampen -->
   <div id="lampen_container"></div>
   
   <div class="ir">
@@ -944,7 +969,8 @@ let dropdownData = {
   feldmesser: ['91885044', '91885045', '91885046', '91885047'],
   uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
   dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
-  vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815']
+  vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815'],
+  lampenzuordnung: {}  // z.B. {"12425560": {"lampe1":"12817865", "lampe2":"12817866"}}
 };
 
 // Lade gespeicherte Config
@@ -1006,7 +1032,12 @@ async function createDefaultDropdowns() {
     feldmesser: ['91885044', '91885045', '91885046', '91885047'],
     uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
     dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
-    vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815']
+    vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815'],
+    lampenzuordnung: {
+      "12425560": {"lampe1":"12817865", "lampe2":"12817866"},
+      "12425561": {"lampe1":"12817867", "lampe2":"12817868"},
+      "12425562": {"lampe1":"12817869", "lampe2":"12817870"}
+    }
   };
   
   dropdownData = defaultData;
@@ -1086,6 +1117,59 @@ function loadDropdownsToEditor() {
     </div>`;
   });
   document.getElementById('vk1-list').innerHTML = html;
+
+  // Lampen-Zuordnung
+  html = '';
+  if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
+  
+  Object.entries(dropdownData.lampenzuordnung).forEach(([anlage, zuordnung]) => {
+    html += `<div class="dropdown-item">
+      <span style="min-width:100px;font-weight:700">${anlage}</span>
+      <span style="margin-left:10px">Lampe1: ${zuordnung.lampe1 || '-'}</span>
+      <span style="margin-left:10px">Lampe2: ${zuordnung.lampe2 || '-'}</span>
+      <span class="remove" onclick="removeLampenZuordnung('${anlage}')">✕</span>
+    </div>`;
+  });
+  document.getElementById('lampenzuordnung-list').innerHTML = html || '<p>Keine Zuordnungen definiert</p>';
+  
+  // Dropdowns für neue Zuordnung füllen
+  updateZuordnungDropdowns();
+}
+
+function updateZuordnungDropdowns() {
+  let anlageOptions = '<option value="">Anlage wählen</option>';
+  dropdownData.flux.forEach(eq => {
+    anlageOptions += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('new-zordnung-anlage').innerHTML = anlageOptions;
+  
+  let lampenOptions = '<option value="">Lampe wählen</option>';
+  dropdownData.uvlampen.forEach(eq => {
+    lampenOptions += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('new-zordnung-lampe1').innerHTML = lampenOptions;
+  document.getElementById('new-zordnung-lampe2').innerHTML = lampenOptions;
+}
+
+function addLampenZuordnung() {
+  const anlage = document.getElementById('new-zordnung-anlage').value;
+  const lampe1 = document.getElementById('new-zordnung-lampe1').value;
+  const lampe2 = document.getElementById('new-zordnung-lampe2').value;
+  
+  if (!anlage) {
+    alert('Bitte Anlage auswählen!');
+    return;
+  }
+  
+  if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
+  dropdownData.lampenzuordnung[anlage] = { lampe1, lampe2 };
+  
+  loadDropdownsToEditor();
+}
+
+function removeLampenZuordnung(anlage) {
+  delete dropdownData.lampenzuordnung[anlage];
+  loadDropdownsToEditor();
 }
 
 // Dropdown-Item aktualisieren
@@ -1179,6 +1263,7 @@ async function loadDropdownsFromGithub() {
       const data = await response.json();
       const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
       dropdownData = content;
+      if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
       loadDropdownsToEditor();
       updateAllDropdowns();
       document.getElementById('github_status').innerHTML = '<span style="color:var(--sg)">✅ Dropdowns von GitHub geladen</span>';
@@ -1215,6 +1300,10 @@ function updateAllDropdowns() {
   });
   document.getElementById('eq_feldmesser').innerHTML = html;
   
+  // UV-Lampen für beide Dropdowns
+  const uvOptions = '<option value="">— Lampe wählen —</option>' + 
+    dropdownData.uvlampen.map(eq => `<option value="${eq}">${eq}</option>`).join('');
+  
   // Dorne
   html = '<option value="">— Dorn wählen —</option>';
   dropdownData.dorne.forEach(d => {
@@ -1237,6 +1326,7 @@ function updateAllDropdowns() {
   document.getElementById('vk1_eq').innerHTML = html;
   
   updateEquipmentFilter();
+  updateZuordnungDropdowns();
 }
 
 // Equipment Filter für Statistik aktualisieren
@@ -1523,39 +1613,87 @@ function restoreEQ() {
 
 // ==================== LAMPEN AUSWAHL ====================
 function updateLampenAuswahl() {
-  const eq = document.getElementById('eq_flux').value;
+  const anlage = document.getElementById('eq_flux').value;
   const container = document.getElementById('lampen_container');
   
-  let uvOptions = '<option value="">— EQ wählen —</option>';
-  dropdownData.uvlampen.forEach(val => {
-    uvOptions += `<option value="${val}">${val}</option>`;
-  });
+  // Liste aller verfügbaren Lampen aus den Dropdowns
+  const uvOptions = '<option value="">— Lampe wählen —</option>' + 
+    dropdownData.uvlampen.map(eq => `<option value="${eq}">${eq}</option>`).join('');
   
-  let html = '';
-  if (eq === '12425563') {
-    html = `
-      <div class="ir"><div class="irl"><div class="lbl">UV Handlampe 1</div></div><div class="irr"><select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">${uvOptions}</select></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">UV1 Intensität</div></div><div class="irr"><input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv1_uw">—</span></div></div>
-      <div class="ir"><div class="irl"><div class="lbl">UV1 Restweißlicht</div></div><div class="irr"><input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv1_lx">—</span></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">UV Handlampe 2</div></div><div class="irr"><select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">${uvOptions}</select></div></div>
-      <div class="ir"><div class="irl"><div class="lbl">UV2 Intensität</div></div><div class="irr"><input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv2_uw">—</span></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">UV2 Restweißlicht</div></div><div class="irr"><input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv2_lx">—</span></div></div>
-    `;
-  } else {
-    html = `
-      <div class="ir"><div class="irl"><div class="lbl">UV Maschinenlampe</div></div><div class="irr"><select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">${uvOptions}</select></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">Maschine Intensität</div></div><div class="irr"><input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv1_uw">—</span></div></div>
-      <div class="ir"><div class="irl"><div class="lbl">Maschine Restweißlicht</div></div><div class="irr"><input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv1_lx">—</span></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">UV Handlampe</div></div><div class="irr"><select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">${uvOptions}</select></div></div>
-      <div class="ir"><div class="irl"><div class="lbl">Hand Intensität</div></div><div class="irr"><input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)"><span class="badge nu" id="b_uv2_uw">—</span></div></div>
-      <div class="ir alt"><div class="irl"><div class="lbl">Hand Restweißlicht</div></div><div class="irr"><input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)"><span class="badge nu" id="b_uv2_lx">—</span></div></div>
-    `;
+  // Standard-Lampen aus der Zuordnung holen (falls vorhanden)
+  let defaultLampe1 = '';
+  let defaultLampe2 = '';
+  if (anlage && dropdownData.lampenzuordnung && dropdownData.lampenzuordnung[anlage]) {
+    defaultLampe1 = dropdownData.lampenzuordnung[anlage].lampe1 || '';
+    defaultLampe2 = dropdownData.lampenzuordnung[anlage].lampe2 || '';
   }
+  
+  // HTML für zwei völlig identische Dropdowns mit allen Lampen
+  let html = `
+    <div class="ir">
+      <div class="irl"><div class="lbl">UV Lampe 1</div><div class="sub">Alle verfügbaren Lampen</div></div>
+      <div class="irr">
+        <select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">
+          ${uvOptions}
+        </select>
+      </div>
+    </div>
+    <div class="ir alt">
+      <div class="irl"><div class="lbl">UV1 Intensität</div></div>
+      <div class="irr">
+        <input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)">
+        <span class="badge nu" id="b_uv1_uw">—</span>
+      </div>
+    </div>
+    <div class="ir">
+      <div class="irl"><div class="lbl">UV1 Restweißlicht</div></div>
+      <div class="irr">
+        <input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)">
+        <span class="badge nu" id="b_uv1_lx">—</span>
+      </div>
+    </div>
+    
+    <div class="ir alt">
+      <div class="irl"><div class="lbl">UV Lampe 2</div><div class="sub">Alle verfügbaren Lampen</div></div>
+      <div class="irr">
+        <select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">
+          ${uvOptions}
+        </select>
+      </div>
+    </div>
+    <div class="ir">
+      <div class="irl"><div class="lbl">UV2 Intensität</div></div>
+      <div class="irr">
+        <input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)">
+        <span class="badge nu" id="b_uv2_uw">—</span>
+      </div>
+    </div>
+    <div class="ir alt">
+      <div class="irl"><div class="lbl">UV2 Restweißlicht</div></div>
+      <div class="irr">
+        <input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)">
+        <span class="badge nu" id="b_uv2_lx">—</span>
+      </div>
+    </div>
+  `;
+  
   container.innerHTML = html;
   
+  // Gespeicherte Werte wiederherstellen
   const s = loadStore();
-  if (s['eq_uv1']) document.getElementById('eq_uv1').value = s['eq_uv1'];
-  if (s['eq_uv2']) document.getElementById('eq_uv2').value = s['eq_uv2'];
+  if (s['eq_uv1']) {
+    document.getElementById('eq_uv1').value = s['eq_uv1'];
+  } else if (defaultLampe1) {
+    document.getElementById('eq_uv1').value = defaultLampe1;
+    saveEQ('eq_uv1');
+  }
+  
+  if (s['eq_uv2']) {
+    document.getElementById('eq_uv2').value = s['eq_uv2'];
+  } else if (defaultLampe2) {
+    document.getElementById('eq_uv2').value = defaultLampe2;
+    saveEQ('eq_uv2');
+  }
 }
 
 // ==================== DORNMODUS ====================
@@ -1978,6 +2116,7 @@ function updateSummaryCards(data, typ) {
     const maxUV1 = Math.max(...data.map(d => d.uv1 || 0));
     const maxUV2 = Math.max(...data.map(d => d.uv2 || 0));
     
+    // Häufigste Lampe ermitteln (egal ob UV1 oder UV2)
     const eqCounts = {};
     data.forEach(d => {
       if (d.uv1_eq) eqCounts[d.uv1_eq] = (eqCounts[d.uv1_eq] || 0) + 1;
@@ -2086,10 +2225,10 @@ function updateStatsTable(data, typ) {
   const tbody = document.getElementById('stats_table_body');
   
   let headers = ['Datum', 'Anlage EQ'];
-  if (typ === 'uv') headers.push('UV1', 'UV1 EQ', 'UV2', 'UV2 EQ');
-  else if (typ === 'konzentration') headers.push('Konz.', 'Status');
-  else if (typ === 'restmagnetismus') headers.push('Restmag', 'Status');
-  else if (typ === 'feldstaerke') headers.push('Kreis', 'Längs');
+  if (typ === 'uv') headers.push('UV1 (µW)', 'UV1 EQ', 'UV2 (µW)', 'UV2 EQ');
+  else if (typ === 'konzentration') headers.push('Konz. (ml)', 'Status');
+  else if (typ === 'restmagnetismus') headers.push('Restmag (A/cm)', 'Status');
+  else if (typ === 'feldstaerke') headers.push('Kreis (A/cm)', 'Längs (A/cm)');
   else if (typ === 'vk1') headers.push('VK1 SN', 'VK1 EQ', 'Status');
   
   thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
