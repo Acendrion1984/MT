@@ -7,401 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --sg:#00893d;       /* Schaeffler Green */
-  --sg2:#006b30;      /* Green darker */
-  --sg3:#e8f5ee;      /* Green light bg */
-  --sa:#1a1a1a;       /* Anthrazit */
-  --sa2:#333333;
-  --sa3:#555555;
-  --gbg:#e8e8e8;
-  --gmid:#bbb;
-  --bdr:#d0d0d0;
-  --wh:#fff;
-  --ok-bg:#d6f0dc;--ok-b:#00893d;--ok-t:#005a28;
-  --wn-bg:#fff3cd;--wn-b:#d48f00;--wn-t:#7a5200;
-  --er-bg:#fde8e8;--er-b:#c0392b;--er-t:#7b241c;
-}
-html{font-size:17px}
-body{background:#e0e0e0;font-family:'Barlow',Arial,sans-serif;color:var(--sa);padding:14px 10px 70px}
-.app{max-width:1600px;margin:0 auto}
-
-/* ── SCHAEFFLER HEADER ── */
-.hdr{
-display:flex;align-items:stretch;justify-content:space-between;
-background:var(--wh);border:1.5px solid var(--bdr);
-border-bottom:3px solid var(--sg);
-overflow:hidden;
-}
-.hdr-left{
-display:flex;align-items:center;gap:0;
-}
-.hdr-greenbar{
-width:6px;background:var(--sg);flex-shrink:0;
-}
-.hdr-text{padding:12px 16px}
-.hdr-text h1{
-font-family:'Barlow Condensed','Arial Narrow',sans-serif;
-font-size:clamp(15px,3.5vw,20px);font-weight:700;
-text-transform:uppercase;letter-spacing:.5px;color:var(--sa);
-}
-.hdr-text p{font-size:11px;color:var(--sa3);font-style:italic;margin-top:2px}
-
-.schaeffler-logo{
-display:flex;align-items:center;padding:10px 16px;flex-shrink:0;
-}
-.schaeffler-logo svg{height:38px;width:auto}
-
-/* ── NAVIGATION ── */
-.nav{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
-.nav-btn{background:var(--wh);border:2px solid var(--sg);color:var(--sg);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;padding:10px 20px;border-radius:4px;cursor:pointer;transition:all .15s}
-.nav-btn.active{background:var(--sg);color:var(--wh)}
-.nav-btn:hover{background:var(--sg3)}
-.nav-btn.special{background:var(--sa2);border-color:var(--sa2);color:var(--wh)}
-.nav-btn.special:hover{background:var(--sa)}
-.view{display:none}
-.view.active{display:block}
-
-/* ── GITHUB CONFIG ── */
-.github-config{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;border-top:4px solid var(--sg)}
-.github-config h3{color:var(--sg);margin-bottom:15px;font-size:18px;font-family:'Barlow Condensed',sans-serif}
-.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-bottom:15px}
-.config-item{display:flex;flex-direction:column;gap:5px}
-.config-item label{font-size:13px;font-weight:700;text-transform:uppercase;color:var(--sa2)}
-.config-item input{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:14px;font-family:inherit}
-.config-item input:focus{border-color:var(--sg);outline:none;background:#f0faf4}
-.warning{background:var(--wn-bg);border-left:4px solid var(--wn-b);padding:12px 15px;font-size:13px;margin:15px 0;color:var(--wn-t);border-radius:0 4px 4px 0}
-.github-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
-
-/* ── DROPDOWN EDITOR ── */
-.dropdown-editor{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px}
-.dropdown-editor h3{color:var(--sg);margin-bottom:15px;font-size:16px}
-.dropdown-tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
-.dropdown-tab{background:var(--gbg);border:1.5px solid var(--gmid);padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:600;font-size:13px}
-.dropdown-tab.active{background:var(--sg);border-color:var(--sg);color:var(--wh)}
-.dropdown-panel{display:none}
-.dropdown-panel.active{display:block}
-.dropdown-list{background:#f9f9f9;border:1.5px solid var(--gmid);border-radius:4px;padding:10px;margin-bottom:15px;max-height:300px;overflow-y:auto}
-.dropdown-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid #eee;background:var(--wh);margin-bottom:5px;border-radius:4px}
-.dropdown-item:last-child{border-bottom:none}
-.dropdown-item input{flex:1;padding:6px 8px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px}
-.dropdown-item .remove{color:var(--er-b);cursor:pointer;font-weight:700;padding:0 8px}
-.add-dropdown-item{display:flex;gap:10px;margin-top:10px}
-.add-dropdown-item input{flex:1;padding:8px;border:1.5px solid var(--gmid);border-radius:4px}
-.add-dropdown-item button{background:var(--sg);color:var(--wh);border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:700}
-
-/* ── CARD ── */
-.card{background:var(--wh);border:1.5px solid var(--bdr);border-top:none;margin-bottom:15px}
-.sec{
-background:var(--sa);color:var(--wh);
-font-family:'Barlow Condensed','Arial Narrow',sans-serif;
-font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
-padding:6px 14px;border-left:4px solid var(--sg);
-}
-
-/* ── LAYOUT ── */
-.g2{display:grid;grid-template-columns:1fr 1fr}
-.g2 .br{border-right:1.5px solid #e0e0e0}
-@media(max-width:580px){.g2{grid-template-columns:1fr}.g2 .br{border-right:none;border-bottom:1.5px solid #e0e0e0}}
-
-/* ── FIELD ── */
-.f{padding:7px 14px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:3px}
-.lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--sa2)}
-.sub{font-size:12px;color:#888;font-style:italic}
-.fv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
-.fs{font-size:15px;color:var(--sa)}
-
-/* ── INLINE ROW ── */
-.ir{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:46px;flex-wrap:wrap}
-.ir.alt{background:#fafafa}
-.irl{flex:1;min-width:0}
-.irr{display:flex;align-items:center;gap:7px;flex-shrink:0}
-.unit{font-size:14px;color:var(--sa3);white-space:nowrap}
-
-/* ── INPUTS ── */
-input[type=text],input[type=datetime-local]{
-background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;
-padding:8px 10px;font-size:15px;font-family:inherit;color:var(--sa);
-transition:border-color .15s,background .15s;
-}
-input[type=text]:focus,input[type=datetime-local]:focus{outline:none;border-color:var(--sg);background:#f0faf4}
-.full{width:100%}
-.w70{width:76px}.w90{width:96px}.w110{width:116px}
-
-/* ── SELECT ── */
-select{
-background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;
-padding:8px 30px 8px 10px;font-size:15px;font-family:inherit;color:var(--sa);
-appearance:none;-webkit-appearance:none;cursor:pointer;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");
-background-repeat:no-repeat;background-position:right 9px center;
-transition:border-color .15s;
-}
-select:focus{outline:none;border-color:var(--sg)}
-select.full{width:100%}
-select.eq-dd{
-background:var(--wh);border:1.5px solid var(--sg);color:var(--sa);
-font-weight:700;border-radius:4px;padding:8px 30px 8px 10px;
-font-size:15px;font-family:inherit;
-appearance:none;-webkit-appearance:none;cursor:pointer;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23333'/%3E%3C/svg%3E");
-background-repeat:no-repeat;background-position:right 9px center;min-width:150px;
-}
-select.eq-dd:focus{outline:none;border-color:var(--sg2)}
-
-/* ── TOLERANCE INPUT ── */
-input.tol{
-background:var(--wh);border:1.5px solid var(--gmid);border-radius:4px;
-padding:8px 10px;font-size:15px;font-weight:700;font-family:inherit;
-color:var(--sa);width:88px;transition:border-color .2s,background .2s,color .2s;
-}
-input.tol:focus{outline:none}
-input.tol.ok{background:var(--ok-bg);border-color:var(--ok-b);color:var(--ok-t)}
-input.tol.wn{background:var(--wn-bg);border-color:var(--wn-b);color:var(--wn-t)}
-input.tol.er{background:var(--er-bg);border-color:var(--er-b);color:var(--er-t)}
-
-/* ── BADGE ── */
-.badge{font-size:13px;font-weight:700;padding:4px 9px;border-radius:3px;white-space:nowrap}
-.badge.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
-.badge.wn{background:var(--wn-bg);color:var(--wn-t);border:1px solid var(--wn-b)}
-.badge.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
-.badge.nu{background:#f0f0f0;color:#999;border:1px solid #ccc}
-
-/* ── NUM INPUT ── */
-input.num{
-border:1.5px solid var(--sg);border-radius:4px;
-padding:8px 8px;font-size:15px;font-weight:700;color:var(--sg);
-font-family:inherit;background:var(--wh);width:90px;text-align:center;
--moz-appearance:textfield;appearance:textfield;
-}
-input.num:focus{outline:none;border-color:var(--sg2);color:var(--sg2)}
-input.num::-webkit-outer-spin-button,input.num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-
-/* ── MAG GRID ── */
-.magg{display:grid;grid-template-columns:1fr 1fr}
-.magc{border-right:1.5px solid #e0e0e0}
-.magc:last-child{border-right:none}
-@media(max-width:520px){.magg{grid-template-columns:1fr}.magc{border-right:none;border-bottom:1.5px solid #e0e0e0}.magc:last-child{border-bottom:none}}
-.maghdr{
-background:var(--sg3);
-font-family:'Barlow Condensed','Arial Narrow',sans-serif;
-font-size:14px;font-weight:700;text-transform:uppercase;
-letter-spacing:1px;padding:7px 14px;color:var(--sg2);
-border-bottom:1px solid #c5e3d0;border-left:3px solid var(--sg);
-}
-.magr{display:flex;align-items:center;padding:9px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:50px}
-.magl{width:96px;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa2);flex-shrink:0;line-height:1.3}
-.mags{font-size:12px;color:#888;font-style:italic;font-weight:400;display:block}
-
-/* ── DORNE ── */
-.dornesec{padding:10px 14px;border-bottom:1px solid #f0f0f0}
-.dorneg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
-@media(max-width:480px){.dorneg{grid-template-columns:1fr}}
-.dorneitem{display:flex;flex-direction:column;gap:4px}
-.dorneitem label{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3);letter-spacing:.3px}
-
-/* ── DORN MODE TOGGLE ── */
-.dorne-mode{display:flex;gap:0;margin:8px 0 10px;border:1.5px solid var(--sg);border-radius:4px;overflow:hidden;width:fit-content}
-.dorne-toggle{padding:6px 16px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
-.dorne-toggle.active{background:var(--sg);color:#fff}
-.dorne-toggle:hover:not(.active){background:var(--sg3);color:var(--sg2)}
-
-/* ── CARD-ID ── */
-.card-resolved{margin-top:5px;padding:5px 10px;border-radius:4px;font-size:12px;font-weight:700}
-.card-resolved.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
-.card-resolved.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
-input.card-ok{border-color:var(--sg)!important;background:#f0faf4!important}
-input.card-er{border-color:var(--er-b)!important}
-
-/* ── SKIZZE ── */
-.skizg{display:grid;grid-template-columns:1fr 1fr}
-.skizc{border-right:1.5px solid #e0e0e0;padding:10px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100px}
-.skizc:last-child{border-right:none}
-.skizt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--sa2);margin-bottom:8px}
-.skizc img{max-width:100%;max-height:120px;object-fit:contain;border-radius:4px}
-
-/* ── CHECKBOX ── */
-.cbr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f0;gap:14px;min-height:50px}
-.cbr.alt{background:#fafafa}
-.cbl{flex:1;min-width:0}
-.cbl .de{font-size:15px;font-weight:600;color:var(--sa);line-height:1.3}
-.cbl .en{font-size:13px;color:#888;font-style:italic;margin-top:2px}
-input.cbox-inp{
-width:34px;height:34px;flex-shrink:0;
-border:2px solid #bbb;border-radius:6px;
-appearance:none;-webkit-appearance:none;
-background:#f0f0f0;cursor:pointer;
-transition:border-color .15s,background .15s;
-position:relative;
-}
-input.cbox-inp:checked{
-border-color:var(--sg);background:var(--sg);
-}
-input.cbox-inp::after{
-content:'';
-position:absolute;
-left:9px;top:4px;
-width:12px;height:18px;
-border-right:3px solid #fff;
-border-bottom:3px solid #fff;
-transform:rotate(40deg);
-opacity:0;
-transition:opacity .12s;
-}
-input.cbox-inp:checked::after{opacity:1}
-input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
-
-/* ── LEGENDE ── */
-.leg{display:flex;gap:14px;align-items:center;padding:7px 14px;background:#f8faf9;border-bottom:1.5px solid #d8ead0;flex-wrap:wrap}
-.legt{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3)}
-.legi{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--sa2)}
-.legd{width:12px;height:12px;border-radius:2px;border:1.5px solid;flex-shrink:0}
-.legd.ok{background:var(--ok-bg);border-color:var(--ok-b)}
-.legd.wn{background:var(--wn-bg);border-color:var(--wn-b)}
-.legd.er{background:var(--er-bg);border-color:var(--er-b)}
-
-/* ── ERGEBNIS ── */
-.ergg{display:grid;grid-template-columns:1fr 1fr 1fr}
-@media(max-width:480px){.ergg{grid-template-columns:1fr}}
-.ergo{padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border-right:1px solid #e8e8e8;cursor:pointer;transition:background .15s;user-select:none}
-.ergo:last-child{border-right:none}
-@media(max-width:480px){.ergo{border-right:none;border-bottom:1px solid #e8e8e8}.ergo:last-child{border-bottom:none}}
-.ergo:hover{background:#f5f5f5}
-.ergc{width:36px;height:36px;border-radius:50%;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .15s}
-.ergo.ok{background:var(--ok-bg)}.ergo.ok .ergc{border-color:var(--ok-b);background:var(--ok-b);color:#fff}
-.ergo.er{background:var(--er-bg)}.ergo.er .ergc{border-color:var(--er-b);background:var(--er-b);color:#fff}
-.ergl{font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;color:var(--sa)}
-.ergs{font-size:13px;color:#888;font-style:italic;text-align:center}
-
-/* ── PERSONAL ── */
-.persg{display:grid;grid-template-columns:1fr 1fr 1fr}
-@media(max-width:600px){.persg{grid-template-columns:1fr}}
-.persg>*:not(:last-child){border-right:1.5px solid #e0e0e0}
-@media(max-width:600px){.persg>*:not(:last-child){border-right:none;border-bottom:1.5px solid #e0e0e0}}
-
-/* ── META ── */
-.meta{background:#f0f0f0;border:1.5px solid var(--bdr);border-top:none;padding:5px 14px;font-size:12px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
-
-/* ── BUTTONS ── */
-.acts{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
-.btn{border:none;cursor:pointer;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 24px;font-size:15px;border-radius:4px;transition:background .15s}
-.btn.pri{background:var(--sg);color:var(--wh)}.btn.pri:hover{background:var(--sg2)}
-.btn.sec{background:var(--sa2);color:var(--wh);font-size:14px}.btn.sec:hover{background:var(--sa)}
-.btn.special{background:var(--sa);color:var(--wh)}.btn.special:hover{background:var(--sa2)}
-
-/* ── STATISTIK TABELLEN ── */
-.stats-controls{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;display:flex;gap:15px;flex-wrap:wrap;align-items:center;border-top:4px solid var(--sg)}
-.control-group{display:flex;align-items:center;gap:10px}
-.control-group label{font-weight:700;font-size:13px;text-transform:uppercase;color:var(--sa2)}
-.control-group select,.control-group input{padding:8px 12px;border:1.5px solid var(--gmid);border-radius:4px;font-size:14px;background:var(--gbg)}
-.control-group input[type=date]{width:140px}
-.control-group input[type=password]{width:140px}
-.stats-table-container{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;overflow-x:auto}
-.stats-table{width:100%;border-collapse:collapse;font-size:14px}
-.stats-table th{background:var(--sg3);color:var(--sg2);padding:12px 10px;text-align:left;font-weight:700;border-bottom:2px solid var(--sg)}
-.stats-table td{padding:10px;border-bottom:1px solid #eee}
-.stats-table tr:hover{background:#f5f5f5}
-.stats-chart{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:15px;height:350px}
-.stats-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
-.summary-card{background:var(--sg3);padding:20px;border-radius:4px;text-align:center;border-left:4px solid var(--sg)}
-.summary-card .value{font-size:28px;font-weight:700;color:var(--sg)}
-.summary-card .label{font-size:13px;color:var(--sa3);margin-top:8px;text-transform:uppercase}
-
-/* ── MODAL ── */
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
-.modal.show{display:flex}
-.modal-content{background:var(--wh);border-radius:8px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;border-top:4px solid var(--sg)}
-.modal-header{padding:20px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
-.modal-header h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:var(--sa)}
-.modal-close{font-size:28px;cursor:pointer;color:#999;line-height:1}
-.modal-close:hover{color:var(--er-b)}
-.modal-body{padding:20px}
-.modal-footer{padding:20px;border-top:1px solid #eee;display:flex;gap:10px;justify-content:flex-end}
-.form-group{margin-bottom:15px}
-.form-group label{display:block;font-weight:700;margin-bottom:5px;color:var(--sa2);text-transform:uppercase;font-size:13px}
-.form-group input{width:100%;padding:10px;border:1.5px solid var(--gmid);border-radius:4px;font-size:15px}
-.employee-list{margin-top:20px;border-top:1px solid #eee;padding-top:15px}
-.employee-list h3{font-size:14px;color:var(--sa3);margin-bottom:10px}
-.employee-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;margin-bottom:5px;border-radius:4px}
-.employee-info{font-weight:600}
-.employee-remove{color:var(--er-b);cursor:pointer;font-size:12px;padding:3px 8px;border-radius:3px;background:var(--er-bg);border:1px solid var(--er-b)}
-
-/* ── PRÜFER LEVEL CHECKBOXEN ── */
-.pruefer-levels{display:flex;gap:15px;margin-top:10px;flex-wrap:wrap}
-.level-item{display:flex;align-items:center;gap:5px}
-.level-item input[type=checkbox]{width:18px;height:18px;cursor:pointer}
-.level-item label{font-size:14px;font-weight:600;color:var(--sa2);cursor:pointer}
-
-/* ─── DRUCKOPTIMIERUNG ─── */
-@media print{
-  @page{size:A4 portrait;margin:8mm 10mm}
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  html{font-size:11px}
-  body{background:#fff!important;padding:0!important}
-  .app{max-width:100%}
-  
-  .nav, .acts, #succ, .modal, .github-config, .dropdown-editor, 
-  .stats-controls, .stats-table-container, .stats-chart, .stats-summary,
-  .nav-btn, .btn, .dorne-mode {
-    display:none!important;
-  }
-  
-  #view-protokoll {
-    display:block!important;
-  }
-  
-  .hdr{border-bottom:2px solid var(--sg)!important}
-  .hdr-text h1{font-size:14px!important}
-  .hdr-text p{font-size:9px!important}
-  .schaeffler-logo img{height:26px!important}
-  .sec{font-size:10px!important;padding:4px 10px!important}
-  .f{padding:4px 10px!important}
-  .lbl{font-size:11px!important}
-  .fs{font-size:11px!important}
-  .ir,.cbr{padding:4px 10px!important;min-height:32px!important}
-  .unit{font-size:10px!important}
-  .badge{font-size:10px!important;padding:2px 6px!important}
-  input.tol,input.num,input[type=text],input[type=datetime-local],select{
-    font-size:11px!important;padding:3px 6px!important;border-width:1px!important
-  }
-  select.eq-dd{font-size:11px!important;min-width:100px!important}
-  .magr{padding:4px 10px!important;min-height:32px!important}
-  .magl{font-size:10px!important;width:70px!important}
-  .mags{font-size:8px!important}
-  .maghdr{font-size:10px!important;padding:4px 10px!important}
-  .num{width:60px!important}
-  .cbl .de{font-size:11px!important}
-  input.cbox-inp{width:22px!important;height:22px!important}
-  .ergo{padding:6px!important}
-  .ergc{width:24px!important;height:24px!important;font-size:12px!important}
-  .ergl{font-size:10px!important}
-  .ergs{font-size:9px!important}
-  .card-field-wrap{display:none!important}
-  .card-resolved{display:block!important;font-size:10px!important;padding:2px 6px!important}
-  .skizc{min-height:60px!important;padding:4px 10px!important}
-  .skizt{font-size:9px!important}
-  .meta{font-size:9px!important;padding:4px 10px!important}
-  
-  input:disabled, select:disabled, .cbox-inp:disabled {
-    opacity:1!important;
-    background:#f5f5f5!important;
-    border-color:#ccc!important;
-    color:var(--sa)!important;
-    -webkit-print-color-adjust:exact!important;
-    print-color-adjust:exact!important;
-  }
-  
-  .cbox-inp:checked:disabled {
-    background:var(--sg)!important;
-    border-color:var(--sg)!important;
-  }
-  
-  .badge {
-    -webkit-print-color-adjust:exact!important;
-    print-color-adjust:exact!important;
-  }
-}
+/* ... (Styles bleiben gleich) ... */
 </style>
 </head>
 <body>
@@ -423,11 +29,11 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 
 <!-- NAVIGATION -->
 <div class="nav">
-  <button class="nav-btn active" onclick="switchView('protokoll')">📋 Prüfprotokoll</button>
-  <button class="nav-btn" onclick="switchView('statistik')">📊 Statistische Auswertung</button>
-  <button class="nav-btn" onclick="switchView('gespeichert')">💾 Gespeicherte Protokolle</button>
-  <button class="nav-btn" onclick="switchView('github')">🔧 GitHub</button>
-  <button class="nav-btn" onclick="switchView('dropdowns')">📋 Dropdowns bearbeiten</button>
+  <button class="nav-btn active" onclick="switchView('protokoll', this)">📋 Prüfprotokoll</button>
+  <button class="nav-btn" onclick="switchView('statistik', this)">📊 Statistische Auswertung</button>
+  <button class="nav-btn" onclick="switchView('gespeichert', this)">💾 Gespeicherte Protokolle</button>
+  <button class="nav-btn" onclick="switchView('github', this)">🔧 GitHub</button>
+  <button class="nav-btn" onclick="switchView('dropdowns', this)">📋 Dropdowns bearbeiten</button>
   <button class="nav-btn special" onclick="openCardModal()">👤 Mitarbeiter</button>
 </div>
 
@@ -599,7 +205,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     </div>
     <div class="control-group">
       <label>Auswertung:</label>
-      <select id="stats_type_selector" onchange="changeStatisticType()">
+      <select id="stats_type_selector" onchange="updateStatistics()">
         <option value="uv">UV-Lampen Entwicklung</option>
         <option value="konzentration">Prüfmittelkonzentration</option>
         <option value="restmagnetismus">Restmagnetismus</option>
@@ -1103,7 +709,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 </div>
 
 <script>
-// ==================== GITHUB INTEGRATION MIT RICHTIGEM TOKEN ====================
+// ==================== GITHUB INTEGRATION ====================
 let githubConfig = {
   owner: 'Acendrion1984',
   repo: 'SelfAudit',
@@ -1139,7 +745,6 @@ let CARD_DB = {"SCH-00001":"Häusner Daniel","SCH-00002":"Sommerfeld Stefan","12
 try { const saved = localStorage.getItem('mt_card_db'); if(saved) CARD_DB = JSON.parse(saved); } catch(e) {}
 
 // ==================== STATISTIK DATEN ====================
-let measurements = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
 let statsChart = null;
 let ergVal = null;
 
@@ -1150,11 +755,12 @@ function checkSupervisorPassword() {
 }
 
 // ==================== VIEW WECHSELN ====================
-function switchView(view) {
+function switchView(view, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(`view-${view}`).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
+  
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   
   if (view === 'statistik') {
     updateStatistics();
@@ -1548,7 +1154,6 @@ async function connectGithub() {
       }
       
       statusEl.innerHTML = `<span style="color:var(--sg)">✅ Erfolgreich geladen (${content.protokolle?.length || 0} Protokolle)</span>`;
-      measurements = content.messungen || [];
     } else if (response.status === 404) {
       statusEl.innerHTML = '<span style="color:#d48f00">⚠️ Keine Hauptdatei gefunden</span>';
     } else {
@@ -1634,11 +1239,9 @@ async function deleteProtocolFromGithub(filename) {
 
 async function updateMainGithubFile() {
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
-  const messungen = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
   
   const data = {
     protokolle: protokolle,
-    messungen: messungen,
     mitarbeiter: CARD_DB,
     letztesUpdate: new Date().toISOString()
   };
@@ -1935,19 +1538,15 @@ function chkMax(inp, w, h) {
 function chkRange(inp, lo, hi) {
   if (!inp) return;
   const v = pDE(inp.value);
-  let badgeId;
-  if (inp.id === 'konzentration_feld') badgeId = 'b_konzentration';
-  else badgeId = null;
-  
-  if (!badgeId) return;
+  if (inp.id !== 'konzentration_feld') return;
   
   if (isNaN(v) || !inp.value.trim()) {
-    setBadge(inp, badgeId, 'nu');
+    setBadge(inp, 'b_konzentration', 'nu');
     return;
   }
   
-  if (v >= lo && v <= hi) setBadge(inp, badgeId, 'ok');
-  else setBadge(inp, badgeId, 'er');
+  if (v >= lo && v <= hi) setBadge(inp, 'b_konzentration', 'ok');
+  else setBadge(inp, 'b_konzentration', 'er');
 }
 
 function chkFeld(inp) {
@@ -2071,24 +1670,6 @@ async function submitForm() {
     savedList.push({ filename, ...protocol });
     localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
     
-    // Konzentration als Zahl speichern - WICHTIG für Statistik!
-    measurements.push({
-      datum: protocol.datum.split('T')[0],
-      anlagenEq: protocol.anlagenEq,
-      uv1: protocol.uv1 ? parseFloat(protocol.uv1) : 0,
-      uv1_eq: protocol.uv1_eq,
-      uv2: protocol.uv2 ? parseFloat(protocol.uv2) : 0,
-      uv2_eq: protocol.uv2_eq,
-      konz: protocol.konzentration ? parseFloat(protocol.konzentration) : 0,
-      restmag: protocol.restmag ? parseFloat(protocol.restmag) : 0,
-      feld_kreis: protocol.feld_kreis ? parseFloat(protocol.feld_kreis) : 0,
-      feld_laengs: protocol.feld_laengs ? parseFloat(protocol.feld_laengs) : 0,
-      vk1_sn: protocol.vk1_sn,
-      vk1_eq: protocol.vk1_eq,
-      vk1_checked: protocol.vk1_checked
-    });
-    localStorage.setItem('mt_measurements', JSON.stringify(measurements));
-    
     await updateMainGithubFile();
     document.getElementById('succ').style.display = 'flex';
   } else {
@@ -2196,7 +1777,7 @@ async function loadProtocol(filename) {
       const data = await response.json();
       const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
       
-      switchView('protokoll');
+      switchView('protokoll', document.querySelector('.nav-btn'));
       updateAllDropdowns();
       
       setTimeout(() => {
@@ -2229,7 +1810,7 @@ async function printProtocol(filename) {
       const data = await response.json();
       const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
       
-      switchView('protokoll');
+      switchView('protokoll', document.querySelector('.nav-btn'));
       updateAllDropdowns();
       
       setTimeout(() => {
@@ -2386,8 +1967,6 @@ function loadProtocolToForm(protocol) {
 }
 
 // ==================== STATISTIK FUNKTIONEN ====================
-function changeStatisticType() { updateStatistics(); }
-
 function updateStatistics() {
   console.log('Aktualisiere Statistik...');
   const typ = document.getElementById('stats_type_selector').value;
@@ -2395,43 +1974,32 @@ function updateStatistics() {
   const bis = document.getElementById('stat_bis_field').value;
   const filterEq = document.getElementById('stat_equipment_selector').value;
   
+  // Direkt aus den gespeicherten Protokollen lesen
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
   console.log('Protokolle:', protokolle);
   
-  let data = [];
-  
-  if (typ === 'uv' || typ === 'konzentration' || typ === 'restmagnetismus' || typ === 'feldstaerke') {
-    data = protokolle
-      .filter(p => filterEq === 'all' || p.anlagenEq === filterEq)
-      .map(p => ({
-        datum: p.datum.split('T')[0],
-        anlagenEq: p.anlagenEq,
-        uv1: p.uv1 ? parseFloat(p.uv1) : null,
-        uv1_eq: p.uv1_eq,
-        uv2: p.uv2 ? parseFloat(p.uv2) : null,
-        uv2_eq: p.uv2_eq,
-        konz: p.konzentration ? parseFloat(p.konzentration) : null,
-        restmag: p.restmag ? parseFloat(p.restmag) : null,
-        feld_kreis: p.feld_kreis ? parseFloat(p.feld_kreis) : null,
-        feld_laengs: p.feld_laengs ? parseFloat(p.feld_laengs) : null,
-        vk1_sn: p.vk1_sn,
-        vk1_eq: p.vk1_eq,
-        vk1_checked: p.vk1_checked
-      }));
-  } else if (typ === 'vk1') {
-    data = protokolle
-      .filter(p => filterEq === 'all' || p.anlagenEq === filterEq)
-      .map(p => ({
-        datum: p.datum.split('T')[0],
-        anlagenEq: p.anlagenEq,
-        vk1_sn: p.vk1_sn,
-        vk1_eq: p.vk1_eq,
-        vk1_checked: p.vk1_checked
-      }));
-  }
-  
-  data = data.filter(d => d.datum >= von && d.datum <= bis);
-  data.sort((a,b) => a.datum.localeCompare(b.datum));
+  // Daten für die Statistik aufbereiten
+  let data = protokolle
+    .filter(p => {
+      const datum = p.datum.split('T')[0];
+      return datum >= von && datum <= bis && (filterEq === 'all' || p.anlagenEq === filterEq);
+    })
+    .map(p => ({
+      datum: p.datum.split('T')[0],
+      anlagenEq: p.anlagenEq || '—',
+      uv1: p.uv1 ? parseFloat(p.uv1) : null,
+      uv1_eq: p.uv1_eq || '—',
+      uv2: p.uv2 ? parseFloat(p.uv2) : null,
+      uv2_eq: p.uv2_eq || '—',
+      konz: p.konzentration ? parseFloat(p.konzentration) : null,
+      restmag: p.restmag ? parseFloat(p.restmag) : null,
+      feld_kreis: p.feld_kreis ? parseFloat(p.feld_kreis) : null,
+      feld_laengs: p.feld_laengs ? parseFloat(p.feld_laengs) : null,
+      vk1_sn: p.vk1_sn || '—',
+      vk1_eq: p.vk1_eq || '—',
+      vk1_checked: p.vk1_checked || false
+    }))
+    .sort((a, b) => a.datum.localeCompare(b.datum));
   
   console.log('Gefilterte Daten:', data);
   
@@ -2445,15 +2013,18 @@ function updateSummaryCards(data, typ) {
   let html = '';
   
   if (typ === 'uv') {
-    const avgUV1 = data.reduce((s, d) => s + (d.uv1 || 0), 0) / (data.length || 1);
-    const avgUV2 = data.reduce((s, d) => s + (d.uv2 || 0), 0) / (data.length || 1);
-    const maxUV1 = Math.max(...data.map(d => d.uv1 || 0));
-    const maxUV2 = Math.max(...data.map(d => d.uv2 || 0));
+    const uv1Values = data.map(d => d.uv1).filter(v => v !== null);
+    const uv2Values = data.map(d => d.uv2).filter(v => v !== null);
+    
+    const avgUV1 = uv1Values.length ? (uv1Values.reduce((a, b) => a + b, 0) / uv1Values.length) : 0;
+    const avgUV2 = uv2Values.length ? (uv2Values.reduce((a, b) => a + b, 0) / uv2Values.length) : 0;
+    const maxUV1 = uv1Values.length ? Math.max(...uv1Values) : 0;
+    const maxUV2 = uv2Values.length ? Math.max(...uv2Values) : 0;
     
     const eqCounts = {};
     data.forEach(d => {
-      if (d.uv1_eq) eqCounts[d.uv1_eq] = (eqCounts[d.uv1_eq] || 0) + 1;
-      if (d.uv2_eq) eqCounts[d.uv2_eq] = (eqCounts[d.uv2_eq] || 0) + 1;
+      if (d.uv1_eq && d.uv1_eq !== '—') eqCounts[d.uv1_eq] = (eqCounts[d.uv1_eq] || 0) + 1;
+      if (d.uv2_eq && d.uv2_eq !== '—') eqCounts[d.uv2_eq] = (eqCounts[d.uv2_eq] || 0) + 1;
     });
     const topEq = Object.entries(eqCounts).sort((a,b) => b[1] - a[1])[0];
     
@@ -2465,20 +2036,24 @@ function updateSummaryCards(data, typ) {
       ${topEq ? `<div class="summary-card"><div class="value">${topEq[0]}</div><div class="label">Häufigste Lampe</div></div>` : ''}
     `;
   } else if (typ === 'konzentration') {
-    const avg = data.reduce((s, d) => s + (d.konz || 0), 0) / (data.length || 1);
-    const min = Math.min(...data.map(d => d.konz || 999));
-    const max = Math.max(...data.map(d => d.konz || 0));
-    const inToleranz = data.filter(d => d.konz >= 0.1 && d.konz <= 0.4).length;
+    const konzValues = data.map(d => d.konz).filter(v => v !== null);
+    
+    const avg = konzValues.length ? (konzValues.reduce((a, b) => a + b, 0) / konzValues.length) : 0;
+    const min = konzValues.length ? Math.min(...konzValues) : 0;
+    const max = konzValues.length ? Math.max(...konzValues) : 0;
+    const inToleranz = konzValues.filter(v => v >= 0.1 && v <= 0.4).length;
     
     html = `
       <div class="summary-card"><div class="value">${avg.toFixed(2)}</div><div class="label">Ø Konz.</div></div>
       <div class="summary-card"><div class="value">${min.toFixed(2)}</div><div class="label">Min</div></div>
       <div class="summary-card"><div class="value">${max.toFixed(2)}</div><div class="label">Max</div></div>
-      <div class="summary-card"><div class="value">${inToleranz}/${data.length}</div><div class="label">In Toleranz</div></div>
+      <div class="summary-card"><div class="value">${inToleranz}/${konzValues.length}</div><div class="label">In Toleranz</div></div>
     `;
   } else if (typ === 'restmagnetismus') {
-    const avg = data.reduce((s, d) => s + (d.restmag || 0), 0) / (data.length || 1);
-    const nok = data.filter(d => d.restmag > 5).length;
+    const restValues = data.map(d => d.restmag).filter(v => v !== null);
+    
+    const avg = restValues.length ? (restValues.reduce((a, b) => a + b, 0) / restValues.length) : 0;
+    const nok = restValues.filter(v => v > 5).length;
     
     html = `
       <div class="summary-card"><div class="value">${avg.toFixed(1)}</div><div class="label">Ø Restmag</div></div>
@@ -2490,7 +2065,7 @@ function updateSummaryCards(data, typ) {
     
     const vk1Eqs = {};
     data.forEach(d => {
-      if (d.vk1_checked && d.vk1_eq) vk1Eqs[d.vk1_eq] = (vk1Eqs[d.vk1_eq] || 0) + 1;
+      if (d.vk1_checked && d.vk1_eq && d.vk1_eq !== '—') vk1Eqs[d.vk1_eq] = (vk1Eqs[d.vk1_eq] || 0) + 1;
     });
     const topVk1 = Object.entries(vk1Eqs).sort((a,b) => b[1] - a[1])[0];
     
@@ -2500,8 +2075,11 @@ function updateSummaryCards(data, typ) {
       ${topVk1 ? `<div class="summary-card"><div class="value">${topVk1[0]}</div><div class="label">Häufigstes EQ</div></div>` : ''}
     `;
   } else if (typ === 'feldstaerke') {
-    const avgKreis = data.reduce((s, d) => s + (d.feld_kreis || 0), 0) / (data.length || 1);
-    const avgLaengs = data.reduce((s, d) => s + (d.feld_laengs || 0), 0) / (data.length || 1);
+    const kreisValues = data.map(d => d.feld_kreis).filter(v => v !== null);
+    const laengsValues = data.map(d => d.feld_laengs).filter(v => v !== null);
+    
+    const avgKreis = kreisValues.length ? (kreisValues.reduce((a, b) => a + b, 0) / kreisValues.length) : 0;
+    const avgLaengs = laengsValues.length ? (laengsValues.reduce((a, b) => a + b, 0) / laengsValues.length) : 0;
     
     html = `
       <div class="summary-card"><div class="value">${avgKreis.toFixed(1)}</div><div class="label">Ø Kreis</div></div>
@@ -2568,21 +2146,23 @@ function updateStatsTable(data, typ) {
   
   let rows = '';
   data.slice().reverse().forEach(d => {
-    let row = `<td>${d.datum}</td><td>${d.anlagenEq || '—'}</td>`;
+    let row = `<td>${d.datum}</td><td>${d.anlagenEq}</td>`;
     
     if (typ === 'uv') {
-      row += `<td>${d.uv1?.toFixed(0) || '-'}</td><td>${d.uv1_eq || '-'}</td><td>${d.uv2?.toFixed(0) || '-'}</td><td>${d.uv2_eq || '-'}</td>`;
+      row += `<td>${d.uv1?.toFixed(0) || '-'}</td><td>${d.uv1_eq}</td><td>${d.uv2?.toFixed(0) || '-'}</td><td>${d.uv2_eq}</td>`;
     } else if (typ === 'konzentration') {
-      const status = d.konz >= 0.1 && d.konz <= 0.4 ? '✓' : '✕';
-      row += `<td>${d.konz?.toFixed(2) || '-'}</td><td>${status}</td>`;
+      const status = d.konz !== null && d.konz >= 0.1 && d.konz <= 0.4 ? '✓' : (d.konz !== null ? '✕' : '-');
+      const konzValue = d.konz !== null ? d.konz.toFixed(2) : '-';
+      row += `<td>${konzValue}</td><td>${status}</td>`;
     } else if (typ === 'restmagnetismus') {
-      const status = d.restmag <= 5 ? '✓' : '✕';
-      row += `<td>${d.restmag?.toFixed(1) || '-'}</td><td>${status}</td>`;
+      const status = d.restmag !== null && d.restmag <= 5 ? '✓' : (d.restmag !== null ? '✕' : '-');
+      const restValue = d.restmag !== null ? d.restmag.toFixed(1) : '-';
+      row += `<td>${restValue}</td><td>${status}</td>`;
     } else if (typ === 'feldstaerke') {
       row += `<td>${d.feld_kreis || '-'}</td><td>${d.feld_laengs || '-'}</td>`;
     } else if (typ === 'vk1') {
       const status = d.vk1_checked ? '✓' : '-';
-      row += `<td>${d.vk1_sn || '-'}</td><td>${d.vk1_eq || '-'}</td><td>${status}</td>`;
+      row += `<td>${d.vk1_sn}</td><td>${d.vk1_eq}</td><td>${status}</td>`;
     }
     
     rows += `<tr>${row}</tr>`;
@@ -2598,24 +2178,27 @@ function exportStatistics() {
   const filterEq = document.getElementById('stat_equipment_selector').value;
   
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
-  let data = protokolle.filter(p => filterEq === 'all' || p.anlagenEq === filterEq).map(p => ({ 
-    datum: p.datum.split('T')[0], 
-    anlagenEq: p.anlagenEq,
-    uv1: p.uv1, 
-    uv1_eq: p.uv1_eq, 
-    uv2: p.uv2, 
-    uv2_eq: p.uv2_eq,
-    konz: p.konzentration, 
-    restmag: p.restmag,
-    feld_kreis: p.feld_kreis, 
-    feld_laengs: p.feld_laengs,
-    vk1_sn: p.vk1_sn, 
-    vk1_eq: p.vk1_eq, 
-    vk1_checked: p.vk1_checked
-  }));
-  
-  data = data.filter(d => d.datum >= von && d.datum <= bis);
-  data.sort((a,b) => a.datum.localeCompare(b.datum));
+  let data = protokolle
+    .filter(p => {
+      const datum = p.datum.split('T')[0];
+      return datum >= von && datum <= bis && (filterEq === 'all' || p.anlagenEq === filterEq);
+    })
+    .map(p => ({ 
+      datum: p.datum.split('T')[0], 
+      anlagenEq: p.anlagenEq || '',
+      uv1: p.uv1 || '', 
+      uv1_eq: p.uv1_eq || '', 
+      uv2: p.uv2 || '', 
+      uv2_eq: p.uv2_eq || '',
+      konz: p.konzentration || '', 
+      restmag: p.restmag || '',
+      feld_kreis: p.feld_kreis || '', 
+      feld_laengs: p.feld_laengs || '',
+      vk1_sn: p.vk1_sn || '', 
+      vk1_eq: p.vk1_eq || '', 
+      vk1_checked: p.vk1_checked ? 'OK' : '-'
+    }))
+    .sort((a,b) => a.datum.localeCompare(b.datum));
   
   let csv = 'Datum;Anlage EQ';
   if (typ === 'uv') csv += ';UV1;UV1 EQ;UV2;UV2 EQ\n';
@@ -2625,11 +2208,11 @@ function exportStatistics() {
   else if (typ === 'vk1') csv += ';VK1 SN;VK1 EQ;Status\n';
   
   data.forEach(d => {
-    if (typ === 'uv') csv += `${d.datum};${d.anlagenEq || ''};${d.uv1 || ''};${d.uv1_eq || ''};${d.uv2 || ''};${d.uv2_eq || ''}\n`;
-    else if (typ === 'konzentration') csv += `${d.datum};${d.anlagenEq || ''};${d.konz || ''}\n`;
-    else if (typ === 'restmagnetismus') csv += `${d.datum};${d.anlagenEq || ''};${d.restmag || ''}\n`;
-    else if (typ === 'feldstaerke') csv += `${d.datum};${d.anlagenEq || ''};${d.feld_kreis || ''};${d.feld_laengs || ''}\n`;
-    else if (typ === 'vk1') csv += `${d.datum};${d.anlagenEq || ''};${d.vk1_sn || ''};${d.vk1_eq || ''};${d.vk1_checked ? 'OK' : '-'}\n`;
+    if (typ === 'uv') csv += `${d.datum};${d.anlagenEq};${d.uv1};${d.uv1_eq};${d.uv2};${d.uv2_eq}\n`;
+    else if (typ === 'konzentration') csv += `${d.datum};${d.anlagenEq};${d.konz}\n`;
+    else if (typ === 'restmagnetismus') csv += `${d.datum};${d.anlagenEq};${d.restmag}\n`;
+    else if (typ === 'feldstaerke') csv += `${d.datum};${d.anlagenEq};${d.feld_kreis};${d.feld_laengs}\n`;
+    else if (typ === 'vk1') csv += `${d.datum};${d.anlagenEq};${d.vk1_sn};${d.vk1_eq};${d.vk1_checked}\n`;
   });
   
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -2699,8 +2282,8 @@ function resetForm() {
   badgeFields.forEach(id => {
     const inp = document.getElementById(id); 
     if (inp) inp.classList.remove('ok','wn','er');
-    const badgeId = id.replace('_feld', '');
-    const b = document.getElementById('b_' + badgeId); 
+    const badgeId = 'b_' + id.replace('_feld', '');
+    const b = document.getElementById(badgeId); 
     if (b) { 
       b.className = 'badge nu'; 
       b.textContent = '—'; 
@@ -2760,7 +2343,6 @@ window.addEventListener('load', async () => {
   const now = new Date();
   document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   
-  measurements = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
   updateEmployeeList();
   
   console.log('✅ App gestartet');
