@@ -333,105 +333,34 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 .level-item input[type=checkbox]{width:18px;height:18px;cursor:pointer}
 .level-item label{font-size:14px;font-weight:600;color:var(--sa2);cursor:pointer}
 
-/* ── STÜCKZAHLEN / RINGNUMMERN ── */
-.tracking-container{
-display:flex;
-align-items:center;
-gap:15px;
-padding:8px 14px;
-border-bottom:1px solid #f0f0f0;
-flex-wrap:wrap;
-background:#fafafa;
-}
-.tracking-mode{
-display:flex;
-gap:0;
-border:1.5px solid var(--sg);
-border-radius:4px;
-overflow:hidden;
-width:fit-content;
-}
-.tracking-toggle{
-padding:6px 16px;
-font-size:12px;
-font-family:'Barlow Condensed','Arial Narrow',sans-serif;
-font-weight:700;
-text-transform:uppercase;
-letter-spacing:.8px;
-cursor:pointer;
-border:none;
-background:#fff;
-color:var(--sa3);
-transition:background .15s,color .15s;
-}
-.tracking-toggle.active{
-background:var(--sg);
-color:#fff;
-}
-.stueckzahl-input{
-width:80px;
-padding:6px;
-border:1.5px solid var(--gmid);
-border-radius:4px;
-font-size:14px;
-}
-.ringnummern-compact{
-display:flex;
-align-items:center;
-gap:8px;
-flex-wrap:wrap;
-}
-.ringnummern-list-compact{
-display:flex;
-flex-wrap:wrap;
-gap:5px;
-max-width:400px;
-}
-.ringnummer-badge{
-background:var(--sg3);
-color:var(--sg2);
-padding:3px 8px;
-border-radius:4px;
-font-size:12px;
-font-weight:600;
-display:inline-flex;
-align-items:center;
-gap:5px;
-border:1px solid var(--sg);
-}
-.ringnummer-badge .remove{
-cursor:pointer;
-font-weight:700;
-color:var(--er-b);
-padding:0 3px;
-}
-.ringnummer-add-compact{
-display:flex;
-gap:5px;
-}
-.ringnummer-add-compact input{
-width:120px;
-padding:6px;
-border:1.5px solid var(--gmid);
-border-radius:4px;
-font-size:13px;
-}
-.ringnummer-add-compact button{
-background:var(--sg);
-color:#fff;
-border:none;
-padding:6px 12px;
-border-radius:4px;
-cursor:pointer;
-font-size:12px;
-font-weight:700;
-}
+/* ── STÜCKZAHLEN / RINGNUMMERN (KOMPAKT) ── */
+.tracking-mode{display:flex;gap:0;border:1.5px solid var(--sg);border-radius:4px;overflow:hidden;width:fit-content;margin:5px 0}
+.tracking-toggle{padding:4px 12px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
+.tracking-toggle.active{background:var(--sg);color:#fff}
 
-/* ─── DRUCKOPTIMIERUNG ─── */
+.stueckzahl-compact{display:flex;align-items:center;gap:8px;padding:4px 0}
+.stueckzahl-compact label{font-size:13px;font-weight:600;color:var(--sa2);text-transform:uppercase}
+.stueckzahl-compact input{width:70px;padding:4px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px}
+
+.ringnummern-preview{font-size:12px;color:var(--sa3);padding:4px 0}
+.ringnummern-badge{display:inline-block;background:var(--sg3);color:var(--sg2);padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;margin-left:8px}
+
+/* ── PROTOKOLLKOPF MIT NUMMER ── */
+.protokoll-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f0f0f0;border-bottom:1px solid #d0d0d0}
+.protokoll-nummer{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--sg)}
+.protokoll-nummer span{color:var(--sa2);font-weight:400;font-size:13px;margin-right:10px}
+
+/* ─── DRUCKOPTIMIERUNG NEU ─── */
 @media print{
   @page{
     size:A4;
-    margin:1.5cm 1.5cm;
+    margin:1.2cm 1cm;
+    @bottom-right{
+      content: "Seite " counter(page) " von " counter(pages);
+      font-size:9px;
+      font-family:'Barlow',sans-serif;
+      color:#666;
+    }
   }
   
   *{
@@ -440,193 +369,149 @@ font-weight:700;
     box-sizing:border-box;
   }
   
-  html{
-    font-size:11px;
-  }
+  html{font-size:10.5px}
+  body{background:#fff!important;padding:0!important;margin:0}
+  .app{max-width:100%;padding:0}
   
-  body{
-    background:#fff!important;
-    padding:0!important;
-    margin:0!important;
-  }
-  
-  .app{
-    max-width:100%;
-    page-break-inside:avoid;
-  }
-  
-  /* Navigation und Buttons ausblenden */
   .nav, .acts, #succ, .modal, .github-config, .dropdown-editor, 
   .stats-controls, .stats-table-container, .stats-chart, .stats-summary,
-  .nav-btn, .btn, .dorne-mode, .tracking-mode .tracking-toggle:not(.active){
+  .nav-btn, .btn, .dorne-mode, .tracking-mode, .ringnummer-add {
     display:none!important;
   }
   
-  /* Nur Protokoll anzeigen */
-  #view-protokoll{
+  #view-protokoll {
     display:block!important;
   }
   
-  /* Seitenumbrüche */
+  .hdr{border-bottom:1.5px solid var(--sg)!important;margin-bottom:10px}
+  .hdr-text h1{font-size:14px!important}
+  .hdr-text p{font-size:8px!important}
+  .schaeffler-logo img{height:20px!important}
+  
   .card{
-    page-break-inside:avoid;
-    break-inside:avoid;
-    margin-bottom:10px!important;
     border:1px solid #ccc!important;
-  }
-  
-  /* Kompakte Darstellung */
-  .hdr{
-    border-bottom:2px solid var(--sg)!important;
-    margin-bottom:5px!important;
-  }
-  
-  .hdr-text h1{
-    font-size:14px!important;
-  }
-  
-  .hdr-text p{
-    font-size:9px!important;
-  }
-  
-  .schaeffler-logo img{
-    height:22px!important;
+    margin-bottom:8px!important;
+    break-inside:avoid;
   }
   
   .sec{
     font-size:10px!important;
-    padding:4px 10px!important;
+    padding:3px 8px!important;
     background:var(--sa)!important;
-    color:white!important;
+    color:#fff!important;
+    -webkit-print-color-adjust:exact!important;
   }
   
-  /* Kompakte Zeilen */
-  .f, .ir, .cbr{
-    padding:3px 10px!important;
-    min-height:28px!important;
-  }
+  .f{padding:3px 8px!important}
+  .ir{padding:3px 8px!important;min-height:28px!important}
+  .cbr{padding:3px 8px!important;min-height:28px!important}
   
-  .lbl{
-    font-size:10px!important;
-  }
+  .lbl{font-size:9px!important}
+  .sub{font-size:8px!important;color:#666!important}
+  .fs{font-size:9px!important}
+  .unit{font-size:8px!important}
   
-  .sub{
+  input, select, .tol, .num{
     font-size:9px!important;
+    padding:2px 4px!important;
+    border:1px solid #aaa!important;
+    background:#f9f9f9!important;
+    color:var(--sa)!important;
+    -webkit-appearance:none;
+    appearance:none;
   }
   
-  .fs, .unit{
-    font-size:10px!important;
+  input:disabled, select:disabled, .cbox-inp:disabled{
+    opacity:1!important;
+    background:#f5f5f5!important;
+    border:1px solid #ccc!important;
+    color:var(--sa)!important;
   }
   
-  /* Inputs als Text anzeigen */
-  input, select{
-    border:none!important;
-    background:transparent!important;
-    padding:2px 5px!important;
-    font-size:10px!important;
-    font-weight:normal!important;
-    color:#000!important;
-    -webkit-appearance:none!important;
-    appearance:none!important;
+  .cbox-inp{
+    width:14px!important;
+    height:14px!important;
+    border:1px solid #333!important;
+    background:#fff!important;
   }
   
-  input[type=checkbox]{
-    display:none!important;
+  .cbox-inp:checked{
+    background:var(--sg)!important;
+    border-color:var(--sg)!important;
   }
   
-  /* Checkboxen als Text-Symbole */
-  .cbl .de:before{
-    content: "☐ ";
-    font-size:12px;
-    margin-right:3px;
+  .cbox-inp:checked::after{
+    left:3px!important;
+    top:1px!important;
+    width:6px!important;
+    height:10px!important;
+    border-width:2px!important;
   }
   
-  .cbr input[type=checkbox]:checked + .cbl .de:before{
-    content: "☑ ";
-  }
-  
-  /* Badges als Text */
   .badge{
-    background:transparent!important;
-    border:none!important;
-    padding:0!important;
-    font-size:10px!important;
-    font-weight:bold!important;
+    font-size:8px!important;
+    padding:1px 4px!important;
+    border:1px solid!important;
   }
   
-  .badge.ok{
-    color:var(--ok-t)!important;
+  .ringnummern-list{
+    max-height:none!important;
+    overflow:visible!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:3px!important;
+    padding:3px!important;
   }
   
-  .badge.wn{
-    color:var(--wn-t)!important;
-  }
-  
-  .badge.er{
-    color:var(--er-t)!important;
-  }
-  
-  /* Ringnummern kompakt */
-  .ringnummer-badge{
+  .ringnummer-item{
+    display:inline-block!important;
+    padding:2px 6px!important;
     background:#f0f0f0!important;
     border:1px solid #ccc!important;
-    padding:2px 5px!important;
+    border-radius:3px!important;
+    font-size:8px!important;
+    margin:0!important;
+    width:auto!important;
+  }
+  
+  .ringnummer-item input{
+    display:none!important;
+  }
+  
+  .ringnummer-item .remove{
+    display:none!important;
+  }
+  
+  .stueckzahl-compact{
     font-size:9px!important;
   }
   
-  .ringnummer-badge .remove{
-    display:none!important;
+  .protokoll-header{
+    padding:5px 8px!important;
+    background:#f0f0f0!important;
   }
   
-  .ringnummer-add-compact{
-    display:none!important;
+  .protokoll-nummer{
+    font-size:11px!important;
   }
   
-  /* Zweispaltiges Layout für Seite 1 */
-  .g2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:5px;
+  .card:nth-child(1){break-inside:avoid}
+  .card:nth-child(2){break-inside:avoid}
+  .card:nth-child(3){break-inside:avoid}
+  .card:nth-child(4){break-inside:avoid}
+  .card:nth-child(5){break-inside:avoid-page}
+  .card:nth-child(6){break-inside:avoid}
+  .card:nth-child(7){break-inside:avoid}
+  
+  .card .ir, .card .cbr{
+    page-break-inside:avoid;
   }
   
-  /* Metadaten */
   .meta{
     font-size:8px!important;
-    padding:2px 10px!important;
-    border-top:1px solid #ccc!important;
+    padding:3px 8px!important;
     margin-top:5px!important;
   }
-  
-  /* Protokollnummer */
-  .protocol-number{
-    font-size:10px!important;
-    font-weight:bold!important;
-    color:var(--sg)!important;
-    text-align:right;
-    padding:0 10px 5px;
-  }
-  
-  /* Sicherstellen dass alles auf 2 Seiten passt */
-  .card:last-child{
-    page-break-after:avoid;
-  }
-  
-  /* Zweite Seite */
-  #view-protokoll .card:nth-child(5){
-    page-break-before:always;
-  }
-}
-
-/* ── PROTOKOLLNUMMER ── */
-.protocol-number{
-font-size:12px;
-color:var(--sg);
-font-weight:700;
-text-align:right;
-padding:5px 14px;
-background:#f9f9f9;
-border-bottom:1px solid var(--gmid);
-font-family:monospace;
 }
 </style>
 </head>
@@ -645,6 +530,15 @@ font-family:monospace;
   <div class="schaeffler-logo">
     <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Schaeffler_logo.svg" alt="Schaeffler" style="height:38px;width:auto">
   </div>
+</div>
+
+<!-- PROTOKOLLKOPF MIT AUTOMATISCHER NUMMER -->
+<div class="protokoll-header">
+  <div class="protokoll-nummer">
+    <span>Protokoll-Nr. / Report No.:</span>
+    <span id="protokoll_nummer_anzeige">MT-2026-00001</span>
+  </div>
+  <div style="font-size:12px;color:var(--sa3)">erstellt am / created: <span id="erstell_datum_anzeige"></span></div>
 </div>
 
 <!-- NAVIGATION -->
@@ -719,6 +613,8 @@ font-family:monospace;
       <button class="dropdown-tab" onclick="showDropdownTab('feldmesser')">Feldmesser</button>
       <button class="dropdown-tab" onclick="showDropdownTab('uvlampen')">UV-Lampen</button>
       <button class="dropdown-tab" onclick="showDropdownTab('dorne')">Dorne</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('vk1')">VK1 Seriennummern</button>
+      <button class="dropdown-tab" onclick="showDropdownTab('lampenzuordnung')">💡 Lampen-Zuordnung</button>
     </div>
     
     <!-- Fluxanlagen -->
@@ -768,6 +664,40 @@ font-family:monospace;
       <div class="add-dropdown-item">
         <input type="text" id="new_dorne_input" placeholder="z.B. 400x70 mm">
         <button onclick="addDropdownItem('dorne')">Hinzufügen</button>
+      </div>
+    </div>
+    
+    <!-- VK1 -->
+    <div id="dropdown-vk1-panel" class="dropdown-panel">
+      <h4>VK1 Seriennummern</h4>
+      <div class="dropdown-list" id="vk1_list_container"></div>
+      <div class="add-dropdown-item">
+        <input type="text" id="new_vk1_input" placeholder="z.B. KD200811">
+        <button onclick="addDropdownItem('vk1')">Hinzufügen</button>
+      </div>
+    </div>
+
+    <!-- Lampen-Zuordnung -->
+    <div id="dropdown-lampenzuordnung-panel" class="dropdown-panel">
+      <h4>💡 Lampen-Zuordnung pro Anlage</h4>
+      <p style="font-size:13px;color:var(--sa3);margin-bottom:10px">Hier können Sie festlegen, welche Lampe standardmäßig für welche Anlage vorausgewählt wird.</p>
+      
+      <div class="dropdown-list" id="lampenzuordnung_list_container" style="max-height:400px"></div>
+      
+      <div style="margin-top:20px">
+        <h4>Neue Zuordnung</h4>
+        <div class="add-dropdown-item" style="flex-wrap:wrap">
+          <select id="new_zuordnung_anlage" style="width:180px">
+            <option value="">Anlage wählen</option>
+          </select>
+          <select id="new_zuordnung_lampe1" style="width:180px">
+            <option value="">Lampe 1 wählen</option>
+          </select>
+          <select id="new_zuordnung_lampe2" style="width:180px">
+            <option value="">Lampe 2 wählen</option>
+          </select>
+          <button onclick="addLampenZuordnung()">Hinzufügen</button>
+        </div>
       </div>
     </div>
     
@@ -858,6 +788,7 @@ font-family:monospace;
         <tr>
           <th>Protokoll-Nr.</th>
           <th>Datum</th>
+          <th>Anlage EQ</th>
           <th>Auftrag</th>
           <th>Prüfgegenstand</th>
           <th>Prüfer</th>
@@ -869,7 +800,7 @@ font-family:monospace;
         </tr>
       </thead>
       <tbody id="protokolle_table_body">
-        <tr><td colspan="10" style="text-align:center;padding:30px">Keine Protokolle vorhanden</td></tr>
+        <tr><td colspan="11" style="text-align:center;padding:30px">Keine Protokolle vorhanden</td></tr>
       </tbody>
     </table>
   </div>
@@ -877,9 +808,6 @@ font-family:monospace;
 
 <!-- VIEW: PROTOKOLL (HAUPTANSICHT) -->
 <div id="view-protokoll" class="view active">
-
-<!-- Protokollnummer (automatisch generiert) -->
-<div class="protocol-number" id="protocol_number_display">Protokoll-Nr.: MT-2026-00001</div>
 
 <!-- 1: GRUNDDATEN -->
 <div class="card">
@@ -897,20 +825,34 @@ font-family:monospace;
       </div>
       <div class="f">
         <div class="lbl">Prüfung gemäß</div>
-        <div class="sub">according to</div>
-        <div class="fv"><span class="fs" style="font-size:11px">S 245008-2 / DIN EN10228-1 / DIN ISO 9934</span></div>
+        <div class="sub">in accordance with</div>
+        <div class="fv"><span class="fs" style="font-size:11px">S 245008-2 / DIN EN10228-1 / DIN ISO 9934-1</span></div>
       </div>
     </div>
     <div>
       <div class="f">
         <div class="lbl">Prüfziel</div>
         <div class="sub">test objective</div>
-        <div class="fv"><span class="fs" style="font-size:11px">Risse / cracks</span></div>
+        <div class="fv"><span class="fs">Oberflächenrisse / surface cracks</span></div>
       </div>
       <div class="f">
-        <div class="lbl">Oberfläche</div>
-        <div class="sub">surface condition</div>
-        <div class="fv"><span class="fs">bearbeitet / machined</span></div>
+        <div class="lbl">Prüfbereich</div>
+        <div class="sub">test area</div>
+        <div class="fv"><span class="fs">alle bearbeiteten Flächen / all machined surfaces</span></div>
+      </div>
+      <div class="f">
+        <div class="lbl">Qualifizierung Personal</div>
+        <div class="sub">personnel qualification</div>
+        <div class="fv" style="gap:10px;flex-wrap:wrap">
+          <span class="lbl" style="text-transform:none">Name:</span>
+          <input type="text" id="pruefer_name_manuell" class="w110" placeholder="Name">
+          <div class="pruefer-levels" style="display:flex;gap:10px">
+            <div class="level-item"><input type="checkbox" id="level1_check"><label for="level1_check">L1</label></div>
+            <div class="level-item"><input type="checkbox" id="level2_check"><label for="level2_check">L2</label></div>
+            <div class="level-item"><input type="checkbox" id="level3_check"><label for="level3_check">L3</label></div>
+            <div class="level-item"><input type="checkbox" id="pw_check"><label for="pw_check">PW</label></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -918,25 +860,23 @@ font-family:monospace;
 
 <!-- 2: PRÜFSYSTEM -->
 <div class="card">
-  <div class="sec">Prüfsystem / Test system</div>
+  <div class="sec">Prüfsystem — Test system</div>
   <div class="g2">
     <div class="br">
       <div class="ir">
-        <div class="irl"><div class="lbl">Fluxanlage</div><div class="sub">testing unit</div></div>
+        <div class="irl"><div class="lbl">Fluxanlage</div><div class="sub">magnetizing unit</div></div>
         <div class="irr">
           <span class="unit">EQ:</span>
           <select class="eq-dd" id="eq_flux_auswahl" onchange="saveEQ('eq_flux_auswahl');updateLampenAuswahl()"></select>
         </div>
       </div>
       <div class="ir alt">
-        <div class="irl"><div class="lbl">Fluxmedium</div><div class="sub">test medium</div></div>
+        <div class="irl"><div class="lbl">Fluxmedium</div><div class="sub">testing medium</div></div>
         <div class="irr">
           <span class="unit">Ch.:</span>
           <input type="text" id="flux_charge_feld" class="w90" placeholder="Charge">
         </div>
       </div>
-    </div>
-    <div>
       <div class="ir">
         <div class="irl"><div class="lbl">Trägermedium</div><div class="sub">carrier fluid</div></div>
         <div class="irr">
@@ -945,55 +885,79 @@ font-family:monospace;
         </div>
       </div>
     </div>
+    <div>
+      <div class="ir">
+        <div class="irl"><div class="lbl">Referenzkörper</div><div class="sub">reference block</div></div>
+        <div class="irr"><span class="fs">EN ISO 9934-2</span></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- 3: MAGNETISIERUNG -->
 <div class="card">
-  <div class="sec">Magnetisierung / Magnetization</div>
-  <div class="magg">
-    <div class="magc">
-      <div class="maghdr">Kreis / Circumferential</div>
-      <div class="magr">
-        <div class="magl">Stufe / step</div>
-        <input type="number" class="num" id="kreis_stufe_feld" min="0" max="20" step="0.1">
-      </div>
-      <div class="magr alt">
-        <div class="magl">Anzeige / display</div>
-        <input type="number" class="num" id="kreis_anzeige_feld" min="0" max="50" step="0.1">
-        <span class="unit">kA</span>
-      </div>
-      <div class="magr">
-        <div class="magl">Feldstärke / field strength</div>
-        <input type="text" id="kreis_feld_feld" class="tol" placeholder="—" oninput="chkFeld(this)">
-        <span class="unit">A/cm</span>
-        <span class="badge nu" id="b_kreis_feld">—</span>
+  <div class="sec">Magnetisierung — Magnetization</div>
+  <div class="dornesec">
+    <div class="lbl">Magnetisierungswerkzeug</div>
+    <div class="sub">magnetizing tool</div>
+    <div class="dorne-mode" style="margin-top:5px">
+      <button class="dorne-toggle active" id="dm_dorn_button" onclick="setDornMode('dorn')">Dorn / mandrel</button>
+      <button class="dorne-toggle" id="dm_getrennt_button" onclick="setDornMode('getrennt')">Joch/Spule / yoke/coil</button>
+    </div>
+
+    <div id="dorn_single_container" class="dorneg" style="grid-template-columns:1fr;max-width:360px;margin-top:5px">
+      <div class="dorneitem">
+        <label for="dorn_both_auswahl">Dorn / mandrel</label>
+        <select id="dorn_both_auswahl" class="full" onchange="saveEQ('dorn_both_auswahl')"></select>
       </div>
     </div>
+
+    <div id="dorn_getrennt_container" class="dorneg" style="display:none;margin-top:5px">
+      <div class="dorneitem">
+        <label for="dorn_kreis_auswahl">Kreis / circumferential</label>
+        <select id="dorn_kreis_auswahl" class="full" onchange="jochExklusiv('kreis')">
+          <option value="">— wählen —</option>
+          <option value="joch">Joch / yoke</option>
+          <option value="handjoch">Handjoch / hand yoke</option>
+          <option value="spule">Spule / coil</option>
+        </select>
+      </div>
+      <div class="dorneitem">
+        <label for="dorn_laengs_auswahl">Längs / longitudinal</label>
+        <select id="dorn_laengs_auswahl" class="full" onchange="jochExklusiv('laengs')">
+          <option value="">— wählen —</option>
+          <option value="joch">Joch / yoke</option>
+          <option value="handjoch">Handjoch / hand yoke</option>
+          <option value="spule">Spule / coil</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="magg">
     <div class="magc">
-      <div class="maghdr">Längs / Longitudinal</div>
-      <div class="magr">
-        <div class="magl">Stufe / step</div>
-        <input type="number" class="num" id="laengs_stufe_feld" min="0" max="20" step="0.1">
-      </div>
-      <div class="magr alt">
-        <div class="magl">Anzeige / display</div>
-        <input type="number" class="num" id="laengs_anzeige_feld" min="0" max="50" step="0.1">
-        <span class="unit">kA</span>
-      </div>
-      <div class="magr">
-        <div class="magl">Feldstärke / field strength</div>
-        <input type="text" id="laengs_feld_feld" class="tol" placeholder="—" oninput="chkFeld(this)">
-        <span class="unit">A/cm</span>
-        <span class="badge nu" id="b_laengs_feld">—</span>
-      </div>
+      <div class="maghdr">Kreis — circumferential</div>
+      <div class="magr"><div class="magl">Stufe / step</div><input type="number" class="num" id="kreis_stufe_feld" min="0" max="20" step="0.1"></div>
+      <div class="magr"><div class="magl">Anzeige / display</div><input type="number" class="num" id="kreis_anzeige_feld" min="0" max="50" step="0.1"><span class="unit">kA</span></div>
+      <div class="magr"><div class="magl">Feldstärke</div><input type="text" id="kreis_feld_feld" class="tol" placeholder="—" oninput="chkFeld(this)"><span class="unit">A/cm</span><span class="badge nu" id="b_kreis_feld">—</span></div>
+    </div>
+    <div class="magc">
+      <div class="maghdr">Längs — longitudinal</div>
+      <div class="magr"><div class="magl">Stufe / step</div><input type="number" class="num" id="laengs_stufe_feld" min="0" max="20" step="0.1"></div>
+      <div class="magr"><div class="magl">Anzeige / display</div><input type="number" class="num" id="laengs_anzeige_feld" min="0" max="50" step="0.1"><span class="unit">kA/W</span></div>
+      <div class="magr"><div class="magl">Feldstärke</div><input type="text" id="laengs_feld_feld" class="tol" placeholder="—" oninput="chkFeld(this)"><span class="unit">A/cm</span><span class="badge nu" id="b_laengs_feld">—</span></div>
     </div>
   </div>
 </div>
 
 <!-- 4: PRÜFBEDINGUNGEN -->
 <div class="card">
-  <div class="sec">Prüfbedingungen / Test conditions</div>
+  <div class="sec">Prüfbedingungen — Test conditions</div>
+  <div class="leg">
+    <span class="legt">Status:</span>
+    <div class="legi"><div class="legd ok"></div>OK</div>
+    <div class="legi"><div class="legd wn"></div>Grenz / limit</div>
+    <div class="legi"><div class="legd er"></div>NOK</div>
+  </div>
 
   <div class="ir">
     <div class="irl"><div class="lbl">Lux-/UV-Meter</div><div class="sub">light meter</div></div>
@@ -1010,11 +974,10 @@ font-family:monospace;
     </div>
   </div>
   
-  <!-- Lampen -->
   <div id="lampen_container"></div>
   
   <div class="ir">
-    <div class="irl"><div class="lbl">Weißlicht / white light</div><div class="sub">max. 20 lx</div></div>
+    <div class="irl"><div class="lbl">Restweißlicht</div><div class="sub">ambient light</div></div>
     <div class="irr">
       <input type="text" id="weiss_raum_feld" class="tol" placeholder="—" oninput="chkMax(this,15,20)">
       <span class="unit">lx</span>
@@ -1022,7 +985,7 @@ font-family:monospace;
     </div>
   </div>
   <div class="ir alt">
-    <div class="irl"><div class="lbl">Konzentration</div><div class="sub">concentration (0.1-0.4ml)</div></div>
+    <div class="irl"><div class="lbl">Prüfmittelkonzentration</div><div class="sub">bath concentration</div></div>
     <div class="irr">
       <input type="text" id="konzentration_feld" class="tol" placeholder="—" oninput="chkRange(this,0.1,0.4)">
       <span class="unit">ml</span>
@@ -1031,15 +994,12 @@ font-family:monospace;
   </div>
   
   <div class="ir">
-    <div class="irl"><div class="lbl">Ansatzdatum</div><div class="sub">preparation date</div></div>
+    <div class="irl"><div class="lbl">Ansatzdatum</div><div class="sub">batch date</div></div>
     <div class="irr"><input type="date" id="ansatz_datum_feld" class="w110" value="2026-01-01"></div>
   </div>
 
   <div class="cbr">
-    <div class="cbl">
-      <div class="de">Funktionstest UV</div>
-      <div class="en">function test UV</div>
-    </div>
+    <div class="cbl"><div class="de">Funktionstest UV</div><div class="en">UV function test</div></div>
     <input type="checkbox" class="cbox-inp" id="cb_funktionstest_feld">
   </div>
   
@@ -1051,7 +1011,32 @@ font-family:monospace;
     <input type="checkbox" class="cbox-inp" id="cb_vk1_feld">
   </div>
   
-  <div class="ir">
+  <div class="cbr">
+    <div class="cbl"><div class="de">Entmagnetisiert</div><div class="en">demagnetized</div></div>
+    <input type="checkbox" class="cbox-inp" id="cb_entmag_feld">
+  </div>
+  
+  <div class="cbr alt">
+    <div class="cbl"><div class="de">Verschmutzung UV</div><div class="en">contamination UV</div></div>
+    <input type="checkbox" class="cbox-inp" id="cb_uv_v_feld">
+  </div>
+  
+  <div class="cbr">
+    <div class="cbl"><div class="de">Farbkarten</div><div class="en">color charts</div></div>
+    <input type="checkbox" class="cbox-inp" id="cb_rueck_feld">
+  </div>
+  
+  <div class="cbr alt">
+    <div class="cbl"><div class="de">Verschmutzung Weißlicht</div><div class="en">contamination white light</div></div>
+    <input type="checkbox" class="cbox-inp" id="cb_weiss_v_feld">
+  </div>
+  
+  <div class="cbr">
+    <div class="cbl"><div class="de">Feldhomogenität</div><div class="en">field homogeneity</div></div>
+    <input type="checkbox" class="cbox-inp" id="cb_feldhom_feld">
+  </div>
+  
+  <div class="ir alt">
     <div class="irl"><div class="lbl">Restmagnetismus</div><div class="sub">residual magnetism</div></div>
     <div class="irr">
       <input type="text" id="restmag_feld" class="tol" placeholder="—" oninput="chkMax(this,4.0,5.0)">
@@ -1063,7 +1048,7 @@ font-family:monospace;
 
 <!-- 5: ERGEBNIS -->
 <div class="card">
-  <div class="sec">Ergebnis / Result</div>
+  <div class="sec">Prüfergebnis — Test result</div>
   <div class="ergg">
     <div class="ergo" id="eo-keine" onclick="selErg('keine')">
       <div class="ergc" id="ec-keine"></div>
@@ -1072,43 +1057,42 @@ font-family:monospace;
     </div>
     <div class="ergo" id="eo-linear" onclick="selErg('linear')">
       <div class="ergc" id="ec-linear"></div>
-      <div class="ergl">n.i.O. linear</div>
-      <div class="ergs">reject linear</div>
+      <div class="ergl">lineare Anzeigen</div>
+      <div class="ergs">linear indications</div>
     </div>
     <div class="ergo" id="eo-nichtlinear" onclick="selErg('nichtlinear')">
       <div class="ergc" id="ec-nichtlinear"></div>
-      <div class="ergl">n.i.O. nichtlinear</div>
-      <div class="ergs">reject non-linear</div>
+      <div class="ergl">nicht-lineare Anz.</div>
+      <div class="ergs">non-linear ind.</div>
     </div>
   </div>
 </div>
 
 <!-- 6: PERSONAL / FREIGABE -->
 <div class="card">
-  <div class="sec">Personal / Sign-off</div>
+  <div class="sec">Personal / Freigabe — Sign-off</div>
   <div class="persg">
     <div>
       <div class="f">
-        <div class="lbl">Prüfer / inspector</div>
-        <div class="fv card-field-wrap">
-          <input type="password" id="pruefer_card_feld" class="full" placeholder="Card-ID" oninput="resolveCard('pruefer')">
-        </div>
+        <div class="lbl">Prüfer — Card-ID <span style="color:var(--er-b)">*</span></div>
+        <div class="sub">inspector</div>
+        <div class="fv"><input type="password" id="pruefer_card_feld" class="full" placeholder="Card-ID" oninput="resolveCard('pruefer')"></div>
         <div id="pruefer_resolved_anzeige" class="card-resolved" style="display:none"></div>
         <input type="hidden" id="pruefer_name_versteckt">
       </div>
     </div>
     <div>
       <div class="f">
-        <div class="lbl">Datum / date</div>
+        <div class="lbl">Datum / Uhrzeit <span style="color:var(--er-b)">*</span></div>
+        <div class="sub">date / time</div>
         <div class="fv"><input type="datetime-local" id="datum_feld" class="full"></div>
       </div>
     </div>
     <div>
       <div class="f">
-        <div class="lbl">Aufsicht / supervisor</div>
-        <div class="fv card-field-wrap">
-          <input type="password" id="supervisor_card_feld" class="full" placeholder="Card-ID" oninput="resolveCard('supervisor')">
-        </div>
+        <div class="lbl">Prüfaufsicht <span style="color:var(--er-b)">*</span></div>
+        <div class="sub">supervisor</div>
+        <div class="fv"><input type="password" id="supervisor_card_feld" class="full" placeholder="Card-ID" oninput="resolveCard('supervisor')"></div>
         <div id="supervisor_resolved_anzeige" class="card-resolved" style="display:none"></div>
         <input type="hidden" id="supervisor_name_versteckt">
       </div>
@@ -1116,39 +1100,48 @@ font-family:monospace;
   </div>
 </div>
 
-<!-- 7: MENGE / TRACKING (AM ENDE) -->
+<!-- 7: STÜCKZAHLEN / RINGNUMMERN (AM ENDE, KOMPAKT) -->
 <div class="card">
-  <div class="sec">Prüfmenge / Quantity</div>
+  <div class="sec">Prüfmenge / Rückverfolgung — Quantity / Traceability</div>
   
-  <div class="tracking-container">
+  <!-- Kompakte Auswahl -->
+  <div style="display:flex;align-items:center;gap:15px;padding:8px 14px;flex-wrap:wrap">
     <div class="tracking-mode">
-      <button class="tracking-toggle active" id="mode_stueckzahl" onclick="setTrackingMode('stueckzahl')">Stückzahl / pieces</button>
-      <button class="tracking-toggle" id="mode_ringnummern" onclick="setTrackingMode('ringnummern')">Ringnummern / ring numbers</button>
+      <button class="tracking-toggle active" id="mode_stueckzahl" onclick="setTrackingMode('stueckzahl')">Stückzahl / quantity</button>
+      <button class="tracking-toggle" id="mode_ringnummern" onclick="setTrackingMode('ringnummern')">Einzelverfolgung / single tracking</button>
     </div>
     
-    <div id="stueckzahl_container">
-      <input type="number" id="stueckzahl_input" class="stueckzahl-input" min="1" value="1">
-      <span style="font-size:14px;color:var(--sa3)">Stk / pcs</span>
+    <!-- Stückzahl (kompakt) -->
+    <div id="stueckzahl_container" class="stueckzahl-compact">
+      <label for="stueckzahl_input">Anzahl / quantity:</label>
+      <input type="number" id="stueckzahl_input" class="stueckzahl-input" min="1" value="1" onchange="updateStueckzahl()">
     </div>
     
-    <div id="ringnummern_container" style="display:none;" class="ringnummern-compact">
-      <div class="ringnummern-list-compact" id="ringnummern_list"></div>
-      <div class="ringnummer-add-compact">
-        <input type="text" id="new_ringnummer_input" placeholder="Neue Nr.">
-        <button onclick="addRingnummer()">+</button>
-      </div>
+    <!-- Ringnummern Vorschau (kompakt) -->
+    <div id="ringnummern_preview" style="display:none;flex:1;min-width:200px">
+      <span class="ringnummern-badge" id="ringnummern_count_badge">0 Nummern</span>
+      <span style="font-size:12px;color:var(--sa3);margin-left:8px" id="ringnummern_kurzliste"></span>
     </div>
+  </div>
+  
+  <!-- Ringnummern Editor (nur wenn aktiv) -->
+  <div id="ringnummern_editor" style="display:none;padding:10px 14px;border-top:1px solid #eee">
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <input type="text" id="new_ringnummer_input" placeholder="Neue Ringnummer... / new ring number..." style="flex:1;padding:6px;border:1.5px solid var(--gmid);border-radius:4px">
+      <button class="btn sec" style="padding:6px 12px" onclick="addRingnummer()">Hinzufügen / add</button>
+    </div>
+    <div class="ringnummern-list" id="ringnummern_list" style="max-height:150px;overflow-y:auto;background:#f9f9f9;border:1px solid #eee;border-radius:4px;padding:5px"></div>
   </div>
 </div>
 
 <div class="meta">
-  <span>erstellt: Häusner Daniel &nbsp;|&nbsp; freigegeben: Sommerfeld Stefan</span>
-  <span>FBL_INFSW01044_01</span>
+  <span>Protokoll-Nr. <span id="meta_protokoll_nummer">MT-2026-00001</span></span>
+  <span>FBL_INFSW01044_01 / Version 1.2</span>
 </div>
 
 <div class="acts">
   <button class="btn sec" onclick="resetForm()">↺ Zurücksetzen</button>
-  <button class="btn pri" onclick="submitForm()">Speichern →</button>
+  <button class="btn pri" onclick="submitForm()">Protokoll speichern →</button>
   <button class="btn sec" onclick="window.print()">🖨 Drucken</button>
 </div>
 </div>
@@ -1162,17 +1155,17 @@ font-family:monospace;
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label>Card-ID</label>
-        <input type="password" id="new_card_id_feld" placeholder="Card-ID">
+        <label>Card-ID (versteckt)</label>
+        <input type="password" id="new_card_id_feld" placeholder="Card-ID eingeben">
       </div>
       <div class="form-group">
-        <label>Name</label>
-        <input type="text" id="new_card_name_feld" placeholder="Name">
+        <label>Klarname</label>
+        <input type="text" id="new_card_name_feld" placeholder="z.B. Mustermann Max">
       </div>
-      <button class="btn pri" onclick="addNewCard()" style="width:100%;margin-bottom:20px">Hinzufügen</button>
+      <button class="btn pri" onclick="addNewCard()" style="width:100%;margin-bottom:20px">Mitarbeiter hinzufügen</button>
       
       <div class="employee-list">
-        <h3>Mitarbeiter</h3>
+        <h3>Vorhandene Mitarbeiter</h3>
         <div id="employee_list_container"></div>
       </div>
     </div>
@@ -1187,7 +1180,7 @@ font-family:monospace;
   <div style="background:var(--wh);border-top:4px solid var(--sg);padding:30px;text-align:center;max-width:400px;border-radius:4px">
     <div style="font-size:48px;color:var(--sg);margin-bottom:15px">✓</div>
     <h2 style="margin-bottom:15px">Protokoll gespeichert</h2>
-    <p style="margin-bottom:20px;color:var(--sa3)">Protokoll-Nr: <span id="saved_protocol_number"></span></p>
+    <p style="margin-bottom:20px;color:var(--sa3)">Protokoll-Nr: <span id="succ_protokoll_nummer"></span></p>
     <div style="display:flex;gap:10px;justify-content:center">
       <button class="btn pri" onclick="window.print()">🖨 Drucken</button>
       <button class="btn sec" onclick="document.getElementById('succ').style.display='none'">Schließen</button>
@@ -1212,48 +1205,61 @@ let dropdownData = {
   luxmeter: ['12911164', '12911165', '12911166', '12911167'],
   feldmesser: ['91885044', '91885045', '91885046', '91885047'],
   uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
-  dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80']
+  dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
+  vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815'],
+  lampenzuordnung: {
+    "12425560": {"lampe1":"12817865", "lampe2":"12817866"},
+    "12425561": {"lampe1":"12817867", "lampe2":"12817868"},
+    "12425562": {"lampe1":"12817869", "lampe2":"12817870"}
+  }
 };
 
 // Ringnummern Array
 let ringnummernListe = [];
 let currentTrackingMode = 'stueckzahl';
-let protocolCounter = 1;
+let protokollZaehler = 1;
 
 // Lade gespeicherte Config
 try {
   const saved = localStorage.getItem('github_config');
   if (saved) githubConfig = JSON.parse(saved);
   
-  const savedCounter = localStorage.getItem('mt_protocol_counter');
-  if (savedCounter) protocolCounter = parseInt(savedCounter);
+  const savedZaehler = localStorage.getItem('mt_protokoll_zaehler');
+  if (savedZaehler) protokollZaehler = parseInt(savedZaehler);
 } catch(e) {}
 
 // ==================== CARD-ID DATENBANK ====================
-let CARD_DB = {"SCH-00001":"Häusner Daniel","SCH-00002":"Sommerfeld Stefan"};
+let CARD_DB = {"SCH-00001":"Häusner Daniel","SCH-00002":"Sommerfeld Stefan","123":"Mustermann Max"};
 try { const saved = localStorage.getItem('mt_card_db'); if(saved) CARD_DB = JSON.parse(saved); } catch(e) {}
 
 // ==================== STATISTIK DATEN ====================
 let statsChart = null;
 let ergVal = null;
 
-// ==================== PROTOKOLLNUMMER GENERIEREN ====================
-function generateProtocolNumber() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const counter = String(protocolCounter).padStart(5, '0');
-  return `MT-${year}-${counter}`;
+// ==================== SUPERVISOR PASSWORT PRÜFEN ====================
+function checkSupervisorPassword() {
+  const inputPw = document.getElementById('delete_password_field')?.value || '';
+  return inputPw === githubConfig.supervisorPassword;
 }
 
-function updateProtocolNumber() {
-  const number = generateProtocolNumber();
-  document.getElementById('protocol_number_display').textContent = `Protokoll-Nr.: ${number}`;
-  return number;
+// ==================== PROTOKOLLNUMMER ====================
+function generateProtocolNumber() {
+  const now = new Date();
+  const jahr = now.getFullYear();
+  const nummer = String(protokollZaehler).padStart(5, '0');
+  return `MT-${jahr}-${nummer}`;
+}
+
+function updateProtocolNumberDisplay() {
+  const nummer = generateProtocolNumber();
+  document.getElementById('protokoll_nummer_anzeige').textContent = nummer;
+  document.getElementById('meta_protokoll_nummer').textContent = nummer;
 }
 
 function incrementProtocolCounter() {
-  protocolCounter++;
-  localStorage.setItem('mt_protocol_counter', protocolCounter.toString());
+  protokollZaehler++;
+  localStorage.setItem('mt_protokoll_zaehler', protokollZaehler);
+  updateProtocolNumberDisplay();
 }
 
 // ==================== VIEW WECHSELN ====================
@@ -1279,81 +1285,39 @@ function switchView(view, btn) {
     document.getElementById('github_branch_field').value = githubConfig.branch;
     document.getElementById('github_filename_field').value = githubConfig.filename;
     document.getElementById('github_token_field').value = githubConfig.token;
-    document.getElementById('supervisor_password_field').value = githubConfig.supervisorPassword;
+    document.getElementById('supervisor_password_field').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
   }
   
   if (view === 'protokoll') {
     enableAllFields(true);
-    updateProtocolNumber();
+    updateProtocolNumberDisplay();
   }
-}
-
-// ==================== TRACKING FUNKTIONEN ====================
-function setTrackingMode(mode) {
-  currentTrackingMode = mode;
-  
-  document.getElementById('mode_stueckzahl').classList.toggle('active', mode === 'stueckzahl');
-  document.getElementById('mode_ringnummern').classList.toggle('active', mode === 'ringnummern');
-  
-  document.getElementById('stueckzahl_container').style.display = mode === 'stueckzahl' ? 'block' : 'none';
-  document.getElementById('ringnummern_container').style.display = mode === 'ringnummern' ? 'flex' : 'none';
-  
-  if (mode === 'ringnummern') {
-    updateRingnummernListe();
-  }
-}
-
-function addRingnummer() {
-  const input = document.getElementById('new_ringnummer_input');
-  const nummer = input.value.trim();
-  
-  if (!nummer) {
-    alert('Bitte Ringnummer eingeben!');
-    return;
-  }
-  
-  ringnummernListe.push(nummer);
-  input.value = '';
-  updateRingnummernListe();
-}
-
-function removeRingnummer(index) {
-  ringnummernListe.splice(index, 1);
-  updateRingnummernListe();
-}
-
-function updateRingnummernListe() {
-  const container = document.getElementById('ringnummern_list');
-  
-  let html = '';
-  ringnummernListe.forEach((nummer, idx) => {
-    html += `
-      <span class="ringnummer-badge">
-        ${nummer}
-        <span class="remove" onclick="removeRingnummer(${idx})">✕</span>
-      </span>
-    `;
-  });
-  
-  container.innerHTML = html || '<span style="color:#888;font-size:12px;">Keine</span>';
 }
 
 // ==================== DROPDOWN FUNKTIONEN ====================
+
 async function createDefaultDropdowns() {
-  if (!confirm('Standard-Dropdowns erstellen?')) return;
+  if (!confirm('Standard-Dropdowns erstellen? Vorhandene werden überschrieben.')) return;
   
   const defaultData = {
     flux: ['12425560', '12425561', '12425562', '12425563', '12425564'],
     luxmeter: ['12911164', '12911165', '12911166', '12911167'],
     feldmesser: ['91885044', '91885045', '91885046', '91885047'],
     uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
-    dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80']
+    dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
+    vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815'],
+    lampenzuordnung: {
+      "12425560": {"lampe1":"12817865", "lampe2":"12817866"},
+      "12425561": {"lampe1":"12817867", "lampe2":"12817868"},
+      "12425562": {"lampe1":"12817869", "lampe2":"12817870"}
+    }
   };
   
   dropdownData = defaultData;
   await saveDropdownsToGithub(true);
   updateAllDropdowns();
   loadDropdownsToEditor();
+  document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Standard-Dropdowns erstellt und gespeichert</span>';
 }
 
 function showDropdownTab(tab) {
@@ -1367,33 +1331,108 @@ function showDropdownTab(tab) {
 function loadDropdownsToEditor() {
   let html = '';
   dropdownData.flux.forEach((item, idx) => {
-    html += `<div class="dropdown-item"><input value="${item}" onchange="updateDropdownItem('flux',${idx},this.value)"><span class="remove" onclick="removeDropdownItem('flux',${idx})">✕</span></div>`;
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('flux', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('flux', ${idx})">✕</span>
+    </div>`;
   });
   document.getElementById('flux_list_container').innerHTML = html;
   
   html = '';
   dropdownData.luxmeter.forEach((item, idx) => {
-    html += `<div class="dropdown-item"><input value="${item}" onchange="updateDropdownItem('luxmeter',${idx},this.value)"><span class="remove" onclick="removeDropdownItem('luxmeter',${idx})">✕</span></div>`;
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('luxmeter', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('luxmeter', ${idx})">✕</span>
+    </div>`;
   });
   document.getElementById('luxmeter_list_container').innerHTML = html;
   
   html = '';
   dropdownData.feldmesser.forEach((item, idx) => {
-    html += `<div class="dropdown-item"><input value="${item}" onchange="updateDropdownItem('feldmesser',${idx},this.value)"><span class="remove" onclick="removeDropdownItem('feldmesser',${idx})">✕</span></div>`;
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('feldmesser', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('feldmesser', ${idx})">✕</span>
+    </div>`;
   });
   document.getElementById('feldmesser_list_container').innerHTML = html;
   
   html = '';
   dropdownData.uvlampen.forEach((item, idx) => {
-    html += `<div class="dropdown-item"><input value="${item}" onchange="updateDropdownItem('uvlampen',${idx},this.value)"><span class="remove" onclick="removeDropdownItem('uvlampen',${idx})">✕</span></div>`;
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('uvlampen', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('uvlampen', ${idx})">✕</span>
+    </div>`;
   });
   document.getElementById('uvlampen_list_container').innerHTML = html;
   
   html = '';
   dropdownData.dorne.forEach((item, idx) => {
-    html += `<div class="dropdown-item"><input value="${item}" onchange="updateDropdownItem('dorne',${idx},this.value)"><span class="remove" onclick="removeDropdownItem('dorne',${idx})">✕</span></div>`;
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('dorne', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('dorne', ${idx})">✕</span>
+    </div>`;
   });
   document.getElementById('dorne_list_container').innerHTML = html;
+  
+  html = '';
+  dropdownData.vk1.forEach((item, idx) => {
+    html += `<div class="dropdown-item">
+      <input type="text" value="${item}" onchange="updateDropdownItem('vk1', ${idx}, this.value)">
+      <span class="remove" onclick="removeDropdownItem('vk1', ${idx})">✕</span>
+    </div>`;
+  });
+  document.getElementById('vk1_list_container').innerHTML = html;
+
+  html = '';
+  if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
+  
+  Object.entries(dropdownData.lampenzuordnung).forEach(([anlage, zuordnung]) => {
+    html += `<div class="dropdown-item">
+      <span style="min-width:100px;font-weight:700">${anlage}</span>
+      <span style="margin-left:10px">Lampe1: ${zuordnung.lampe1 || '-'}</span>
+      <span style="margin-left:10px">Lampe2: ${zuordnung.lampe2 || '-'}</span>
+      <span class="remove" onclick="removeLampenZuordnung('${anlage}')">✕</span>
+    </div>`;
+  });
+  document.getElementById('lampenzuordnung_list_container').innerHTML = html || '<p>Keine Zuordnungen definiert</p>';
+  
+  updateZuordnungDropdowns();
+}
+
+function updateZuordnungDropdowns() {
+  let anlageOptions = '<option value="">Anlage wählen</option>';
+  dropdownData.flux.forEach(eq => {
+    anlageOptions += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('new_zuordnung_anlage').innerHTML = anlageOptions;
+  
+  let lampenOptions = '<option value="">Lampe wählen</option>';
+  dropdownData.uvlampen.forEach(eq => {
+    lampenOptions += `<option value="${eq}">${eq}</option>`;
+  });
+  document.getElementById('new_zuordnung_lampe1').innerHTML = lampenOptions;
+  document.getElementById('new_zuordnung_lampe2').innerHTML = lampenOptions;
+}
+
+function addLampenZuordnung() {
+  const anlage = document.getElementById('new_zuordnung_anlage').value;
+  const lampe1 = document.getElementById('new_zuordnung_lampe1').value;
+  const lampe2 = document.getElementById('new_zuordnung_lampe2').value;
+  
+  if (!anlage) {
+    alert('Bitte Anlage auswählen!');
+    return;
+  }
+  
+  if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
+  dropdownData.lampenzuordnung[anlage] = { lampe1, lampe2 };
+  
+  loadDropdownsToEditor();
+}
+
+function removeLampenZuordnung(anlage) {
+  delete dropdownData.lampenzuordnung[anlage];
+  loadDropdownsToEditor();
 }
 
 function updateDropdownItem(category, index, newValue) {
@@ -1416,11 +1455,17 @@ function addDropdownItem(category) {
 }
 
 async function saveDropdownsToGithub(silent = false) {
-  if (!githubConfig.token) return false;
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('Bitte zuerst GitHub konfigurieren!');
+    return false;
+  }
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`;
-    const getResponse = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     let sha = null;
     if (getResponse.ok) {
@@ -1430,51 +1475,113 @@ async function saveDropdownsToGithub(silent = false) {
     
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(dropdownData, null, 2))));
     
-    await fetch(url, {
+    const putResponse = await fetch(url, {
       method: 'PUT',
-      headers: { 'Authorization': `token ${githubConfig.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Update Dropdowns`, content: content, branch: githubConfig.branch, sha: sha })
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update Dropdowns ${new Date().toLocaleString()}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
     });
     
-    return true;
+    if (putResponse.ok) {
+      if (!silent) {
+        document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Dropdowns in GitHub gespeichert</span>';
+      }
+      return true;
+    } else {
+      throw new Error('Fehler beim Speichern');
+    }
   } catch(e) {
+    if (!silent) {
+      document.getElementById('github_status_message').innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+    }
     return false;
   }
 }
 
 async function loadDropdownsFromGithub() {
-  if (!githubConfig.token) return;
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('Bitte zuerst GitHub konfigurieren!');
+    return;
+  }
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`;
-    const response = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     if (response.ok) {
       const data = await response.json();
-      dropdownData = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      const content = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      dropdownData = content;
+      if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
       loadDropdownsToEditor();
       updateAllDropdowns();
+      document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Dropdowns von GitHub geladen</span>';
+    } else if (response.status === 404) {
+      await createDefaultDropdowns();
+    } else {
+      throw new Error('Fehler beim Laden');
     }
-  } catch(e) {}
+  } catch(e) {
+    document.getElementById('github_status_message').innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
+  }
 }
 
 function updateAllDropdowns() {
-  let html = '<option value="">— wählen —</option>';
-  dropdownData.flux.forEach(eq => html += `<option value="${eq}">${eq}</option>`);
+  console.log('Aktualisiere alle Dropdowns');
+  
+  let html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.flux.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
   let eqFlux = document.getElementById('eq_flux_auswahl');
   if (eqFlux) eqFlux.innerHTML = html;
   
-  html = '<option value="">— wählen —</option>';
-  dropdownData.luxmeter.forEach(eq => html += `<option value="${eq}">${eq}</option>`);
+  html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.luxmeter.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
   let eqLux = document.getElementById('eq_luxmeter_auswahl');
   if (eqLux) eqLux.innerHTML = html;
   
-  html = '<option value="">— wählen —</option>';
-  dropdownData.feldmesser.forEach(eq => html += `<option value="${eq}">${eq}</option>`);
+  html = '<option value="">— Bitte wählen —</option>';
+  dropdownData.feldmesser.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
   let eqFeld = document.getElementById('eq_feldmesser_auswahl');
   if (eqFeld) eqFeld.innerHTML = html;
   
+  html = '<option value="">— Dorn wählen —</option>';
+  dropdownData.dorne.forEach(d => {
+    html += `<option value="${d}">${d}</option>`;
+  });
+  let dornBoth = document.getElementById('dorn_both_auswahl');
+  if (dornBoth) dornBoth.innerHTML = html;
+  
+  html = '<option value="">— wählen —</option>';
+  dropdownData.vk1.forEach(sn => {
+    html += `<option value="${sn}">${sn}</option>`;
+  });
+  let vk1Sn = document.getElementById('vk1_sn_auswahl');
+  if (vk1Sn) vk1Sn.innerHTML = html;
+  
+  html = '<option value="">— EQ wählen —</option>';
+  dropdownData.uvlampen.forEach(eq => {
+    html += `<option value="${eq}">${eq}</option>`;
+  });
+  let vk1Eq = document.getElementById('vk1_eq_auswahl');
+  if (vk1Eq) vk1Eq.innerHTML = html;
+  
   updateEquipmentFilter();
+  updateZuordnungDropdowns();
   updateLampenAuswahl();
 }
 
@@ -1483,11 +1590,14 @@ function updateEquipmentFilter() {
   if (!select) return;
   
   let html = '<option value="all">Alle Anlagen</option>';
-  dropdownData.flux.forEach(eq => html += `<option value="${eq}">Anlage ${eq}</option>`);
+  dropdownData.flux.forEach(eq => {
+    html += `<option value="${eq}">Anlage ${eq}</option>`;
+  });
   select.innerHTML = html;
 }
 
 // ==================== GITHUB FUNKTIONEN ====================
+
 function saveGithubConfig() {
   githubConfig = {
     owner: document.getElementById('github_owner_field').value,
@@ -1498,6 +1608,7 @@ function saveGithubConfig() {
     supervisorPassword: document.getElementById('supervisor_password_field').value
   };
   localStorage.setItem('github_config', JSON.stringify(githubConfig));
+  document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Konfiguration gespeichert</span>';
 }
 
 async function testGithubConnection() {
@@ -1506,7 +1617,9 @@ async function testGithubConnection() {
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}`;
-    const response = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     if (response.ok) {
       statusEl.innerHTML = '<span style="color:var(--sg)">✅ Verbindung erfolgreich</span>';
@@ -1524,14 +1637,18 @@ async function testGithubConnection() {
 async function connectGithub() {
   saveGithubConfig();
   const statusEl = document.getElementById('github_status_message');
-  statusEl.innerHTML = '<span>⏳ Lade Daten...</span>';
+  statusEl.innerHTML = '<span>⏳ Lade Daten von GitHub...</span>';
   
   try {
-    await testGithubConnection();
+    const connected = await testGithubConnection();
+    if (!connected) return;
+    
     await loadDropdownsFromGithub();
     
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`;
-    const response = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     if (response.ok) {
       const data = await response.json();
@@ -1544,19 +1661,26 @@ async function connectGithub() {
         updateEmployeeList();
       }
       
-      statusEl.innerHTML = `<span style="color:var(--sg)">✅ Geladen (${content.protokolle?.length || 0})</span>`;
+      statusEl.innerHTML = `<span style="color:var(--sg)">✅ Erfolgreich geladen (${content.protokolle?.length || 0} Protokolle)</span>`;
+    } else if (response.status === 404) {
+      statusEl.innerHTML = '<span style="color:#d48f00">⚠️ Keine Hauptdatei gefunden</span>';
+    } else {
+      statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${response.status}</span>`;
     }
   } catch(e) {
-    statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler</span>`;
+    statusEl.innerHTML = `<span style="color:var(--er-b)">❌ Fehler: ${e.message}</span>`;
   }
 }
 
 async function saveProtocolToGithub(protocol, filename) {
-  if (!githubConfig.token) return false;
+  if (!githubConfig.token || !githubConfig.owner) return false;
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const getResponse = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     let sha = null;
     if (getResponse.ok) {
@@ -1568,34 +1692,55 @@ async function saveProtocolToGithub(protocol, filename) {
     
     const putResponse = await fetch(url, {
       method: 'PUT',
-      headers: { 'Authorization': `token ${githubConfig.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Protokoll ${filename}`, content: content, branch: githubConfig.branch, sha: sha })
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Protokoll ${filename}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
     });
     
     return putResponse.ok;
   } catch(e) {
+    console.error('Fehler:', e);
     return false;
   }
 }
 
 async function deleteProtocolFromGithub(filename) {
-  if (!githubConfig.token) return false;
+  if (!githubConfig.token || !githubConfig.owner) return false;
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const getResponse = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
+    
     if (!getResponse.ok) return false;
     
     const data = await getResponse.json();
     
     const deleteResponse = await fetch(url, {
       method: 'DELETE',
-      headers: { 'Authorization': `token ${githubConfig.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Lösche Protokoll`, sha: data.sha, branch: githubConfig.branch })
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Lösche Protokoll ${filename}`,
+        sha: data.sha,
+        branch: githubConfig.branch
+      })
     });
     
     return deleteResponse.ok;
   } catch(e) {
+    console.error('Fehler:', e);
     return false;
   }
 }
@@ -1603,11 +1748,18 @@ async function deleteProtocolFromGithub(filename) {
 async function updateMainGithubFile() {
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
   
-  const data = { protokolle: protokolle, mitarbeiter: CARD_DB, letztesUpdate: new Date().toISOString() };
+  const data = {
+    protokolle: protokolle,
+    mitarbeiter: CARD_DB,
+    letztesUpdate: new Date().toISOString()
+  };
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`;
-    const getResponse = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    
+    const getResponse = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     let sha = null;
     if (getResponse.ok) {
@@ -1617,14 +1769,23 @@ async function updateMainGithubFile() {
     
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     
-    await fetch(url, {
+    const putResponse = await fetch(url, {
       method: 'PUT',
-      headers: { 'Authorization': `token ${githubConfig.token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Update Hauptdatei`, content: content, branch: githubConfig.branch, sha: sha })
+      headers: {
+        'Authorization': `token ${githubConfig.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update Hauptdatei ${new Date().toLocaleString()}`,
+        content: content,
+        branch: githubConfig.branch,
+        sha: sha
+      })
     });
     
-    return true;
+    return putResponse.ok;
   } catch(e) {
+    console.error('Fehler:', e);
     return false;
   }
 }
@@ -1638,6 +1799,7 @@ async function syncWithGithub() {
 function saveCardDB() { 
   localStorage.setItem('mt_card_db', JSON.stringify(CARD_DB)); 
   updateEmployeeList();
+  updateMainGithubFile();
 }
 
 function openCardModal() { 
@@ -1670,20 +1832,25 @@ function updateEmployeeList() {
   if (!container) return;
   let html = '';
   Object.values(CARD_DB).sort().forEach(name => {
-    html += `<div class="employee-item"><span class="employee-info">${name}</span><span class="employee-remove" onclick="removeCard('${name}')">✕</span></div>`;
+    html += `<div class="employee-item"><span class="employee-info">${name}</span><span class="employee-remove" onclick="removeCard('${name}')">✕ Löschen</span></div>`;
   });
-  container.innerHTML = html || '<p>Keine</p>';
+  container.innerHTML = html || '<p>Keine Mitarbeiter</p>';
 }
 
 // ==================== EQ-PERSISTENZ ====================
-const EQ_IDS = ['eq_flux_auswahl', 'eq_luxmeter_auswahl', 'eq_feldmesser_auswahl', 'eq_uv1_auswahl', 'eq_uv2_auswahl'];
+const EQ_IDS = ['eq_flux_auswahl', 'eq_luxmeter_auswahl', 'eq_feldmesser_auswahl', 'dorn_both_auswahl', 'dorn_kreis_auswahl', 'dorn_laengs_auswahl', 'vk1_sn_auswahl', 'vk1_eq_auswahl', 'eq_uv1_auswahl', 'eq_uv2_auswahl'];
 const LS = 'mt_eq_selections';
+const LS_MODE = 'mt_dorn_mode';
 
 function saveEQ(id) {
   if (document.getElementById(id)?.disabled) return;
+  
   const s = JSON.parse(localStorage.getItem(LS) || '{}');
   s[id] = document.getElementById(id)?.value;
   localStorage.setItem(LS, JSON.stringify(s));
+  if (id === 'eq_flux_auswahl') {
+    document.getElementById('dorn_eq_anzeige').textContent = document.getElementById('eq_flux_auswahl').value;
+  }
 }
 
 function loadStore() { try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e) { return {}; } }
@@ -1691,15 +1858,26 @@ function loadStore() { try { return JSON.parse(localStorage.getItem(LS)) || {}; 
 function restoreEQ() {
   const s = loadStore();
   EQ_IDS.forEach(id => { if (s[id] !== undefined) { const el = document.getElementById(id); if (el && !el.disabled) el.value = s[id]; } });
+  document.getElementById('dorn_eq_anzeige').textContent = document.getElementById('eq_flux_auswahl')?.value || '12425560';
+  const mode = localStorage.getItem(LS_MODE) || 'dorn';
+  setDornMode(mode, true);
 }
 
 // ==================== LAMPEN AUSWAHL ====================
 function updateLampenAuswahl() {
+  const anlage = document.getElementById('eq_flux_auswahl').value;
   const container = document.getElementById('lampen_container');
   const isReadOnly = document.getElementById('eq_flux_auswahl')?.disabled || false;
   
-  const uvOptions = '<option value="">— wählen —</option>' + 
+  const uvOptions = '<option value="">— Lampe wählen —</option>' + 
     dropdownData.uvlampen.map(eq => `<option value="${eq}">${eq}</option>`).join('');
+  
+  let defaultLampe1 = '';
+  let defaultLampe2 = '';
+  if (anlage && dropdownData.lampenzuordnung && dropdownData.lampenzuordnung[anlage]) {
+    defaultLampe1 = dropdownData.lampenzuordnung[anlage].lampe1 || '';
+    defaultLampe2 = dropdownData.lampenzuordnung[anlage].lampe2 || '';
+  }
   
   let html = `
     <div class="ir">
@@ -1718,6 +1896,14 @@ function updateLampenAuswahl() {
       </div>
     </div>
     <div class="ir">
+      <div class="irl"><div class="lbl">UV1 Restweißlicht</div><div class="sub">ambient light</div></div>
+      <div class="irr">
+        <input type="text" id="uv1_lx_feld" class="tol" placeholder="—" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
+        <span class="badge nu" id="b_uv1_lx">—</span>
+      </div>
+    </div>
+    
+    <div class="ir alt">
       <div class="irl"><div class="lbl">UV Lampe 2</div><div class="sub">UV lamp 2</div></div>
       <div class="irr">
         <select class="eq-dd" id="eq_uv2_auswahl" onchange="saveEQ('eq_uv2_auswahl')" ${isReadOnly ? 'disabled' : ''}>
@@ -1725,11 +1911,18 @@ function updateLampenAuswahl() {
         </select>
       </div>
     </div>
-    <div class="ir alt">
+    <div class="ir">
       <div class="irl"><div class="lbl">UV2 Intensität</div><div class="sub">intensity</div></div>
       <div class="irr">
         <input type="text" id="uv2_uw_feld" class="tol" placeholder="—" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv2_uw">—</span>
+      </div>
+    </div>
+    <div class="ir alt">
+      <div class="irl"><div class="lbl">UV2 Restweißlicht</div><div class="sub">ambient light</div></div>
+      <div class="irr">
+        <input type="text" id="uv2_lx_feld" class="tol" placeholder="—" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
+        <span class="badge nu" id="b_uv2_lx">—</span>
       </div>
     </div>
   `;
@@ -1739,8 +1932,45 @@ function updateLampenAuswahl() {
   if (isReadOnly) return;
   
   const s = loadStore();
-  if (s['eq_uv1_auswahl']) document.getElementById('eq_uv1_auswahl').value = s['eq_uv1_auswahl'];
-  if (s['eq_uv2_auswahl']) document.getElementById('eq_uv2_auswahl').value = s['eq_uv2_auswahl'];
+  if (s['eq_uv1_auswahl']) {
+    document.getElementById('eq_uv1_auswahl').value = s['eq_uv1_auswahl'];
+  } else if (defaultLampe1) {
+    document.getElementById('eq_uv1_auswahl').value = defaultLampe1;
+    saveEQ('eq_uv1_auswahl');
+  }
+  
+  if (s['eq_uv2_auswahl']) {
+    document.getElementById('eq_uv2_auswahl').value = s['eq_uv2_auswahl'];
+  } else if (defaultLampe2) {
+    document.getElementById('eq_uv2_auswahl').value = defaultLampe2;
+    saveEQ('eq_uv2_auswahl');
+  }
+}
+
+// ==================== DORNMODUS ====================
+function setDornMode(mode, silent) {
+  const isDorn = mode === 'dorn';
+  document.getElementById('dorn_single_container').style.display = isDorn ? '' : 'none';
+  document.getElementById('dorn_getrennt_container').style.display = isDorn ? 'none' : '';
+  document.getElementById('dm_dorn_button').classList.toggle('active', isDorn);
+  document.getElementById('dm_getrennt_button').classList.toggle('active', !isDorn);
+  if (!silent) localStorage.setItem(LS_MODE, mode);
+}
+
+function jochExklusiv(seite) {
+  const me = document.getElementById(seite === 'kreis' ? 'dorn_kreis_auswahl' : 'dorn_laengs_auswahl');
+  const other = document.getElementById(seite === 'kreis' ? 'dorn_laengs_auswahl' : 'dorn_kreis_auswahl');
+  const val = me.value;
+  const isJoch = val === 'joch' || val === 'handjoch';
+  if (isJoch) {
+    other.value = 'spule';
+    saveEQ(other.id);
+  }
+  if (isJoch && (other.value === 'joch' || other.value === 'handjoch')) {
+    other.value = 'spule';
+    saveEQ(other.id);
+  }
+  saveEQ(seite === 'kreis' ? 'dorn_kreis_auswahl' : 'dorn_laengs_auswahl');
 }
 
 // ==================== TOLERANZ ====================
@@ -1748,7 +1978,7 @@ function pDE(s) { return parseFloat((s||'').replace(',','.')); }
 
 function setBadge(inp, bid, st) {
   if (!inp) return;
-  inp.classList.remove('ok','wn','er');
+  inp.classList.remove('ok', 'wn', 'er');
   const b = document.getElementById(bid);
   if (!b) return;
   
@@ -1756,15 +1986,15 @@ function setBadge(inp, bid, st) {
   if (st === 'ok') {
     inp.classList.add('ok');
     b.classList.add('ok');
-    b.textContent = '✓ OK';
+    b.textContent = '✓';
   } else if (st === 'wn') {
     inp.classList.add('wn');
     b.classList.add('wn');
-    b.textContent = '⚠ GRENZ';
+    b.textContent = '⚠';
   } else if (st === 'er') {
     inp.classList.add('er');
     b.classList.add('er');
-    b.textContent = '✕ NOK';
+    b.textContent = '✕';
   } else {
     b.classList.add('nu');
     b.textContent = '—';
@@ -1774,7 +2004,12 @@ function setBadge(inp, bid, st) {
 function chkUV(inp) {
   if (!inp) return;
   const v = pDE(inp.value);
-  const badgeId = inp.id === 'uv1_uw_feld' ? 'b_uv1_uw' : 'b_uv2_uw';
+  let badgeId;
+  if (inp.id === 'uv1_uw_feld') badgeId = 'b_uv1_uw';
+  else if (inp.id === 'uv2_uw_feld') badgeId = 'b_uv2_uw';
+  else badgeId = null;
+  
+  if (!badgeId) return;
   
   if (isNaN(v) || !inp.value.trim()) {
     setBadge(inp, badgeId, 'nu');
@@ -1792,7 +2027,11 @@ function chkMax(inp, w, h) {
   let badgeId;
   if (inp.id === 'weiss_raum_feld') badgeId = 'b_weiss_raum';
   else if (inp.id === 'restmag_feld') badgeId = 'b_restmag';
-  else return;
+  else if (inp.id === 'uv1_lx_feld') badgeId = 'b_uv1_lx';
+  else if (inp.id === 'uv2_lx_feld') badgeId = 'b_uv2_lx';
+  else badgeId = null;
+  
+  if (!badgeId) return;
   
   if (isNaN(v) || !inp.value.trim()) {
     setBadge(inp, badgeId, 'nu');
@@ -1821,7 +2060,12 @@ function chkRange(inp, lo, hi) {
 function chkFeld(inp) {
   if (!inp) return;
   const v = pDE(inp.value);
-  const badgeId = inp.id === 'kreis_feld_feld' ? 'b_kreis_feld' : 'b_laengs_feld';
+  let badgeId;
+  if (inp.id === 'kreis_feld_feld') badgeId = 'b_kreis_feld';
+  else if (inp.id === 'laengs_feld_feld') badgeId = 'b_laengs_feld';
+  else badgeId = null;
+  
+  if (!badgeId) return;
   
   if (isNaN(v) || !inp.value.trim()) {
     setBadge(inp, badgeId, 'nu');
@@ -1839,19 +2083,17 @@ function resolveCard(role) {
   const resolvedEl = document.getElementById(role === 'pruefer' ? 'pruefer_resolved_anzeige' : 'supervisor_resolved_anzeige');
   const hiddenEl = document.getElementById(role === 'pruefer' ? 'pruefer_name_versteckt' : 'supervisor_name_versteckt');
   const val = cardEl.value.trim();
-  
   cardEl.classList.remove('card-ok','card-er');
   if(!val){
     resolvedEl.style.display='none';
     hiddenEl.value='';
     return;
   }
-  
   const name = CARD_DB[val] || CARD_DB[val.toUpperCase()] || CARD_DB[val.toLowerCase()];
   if(name){
     resolvedEl.style.display='block';
     resolvedEl.className='card-resolved ok';
-    resolvedEl.textContent='✓ '+name;
+    resolvedEl.textContent='✓ ' + name;
     hiddenEl.value=name;
     cardEl.classList.add('card-ok');
   } else {
@@ -1865,14 +2107,81 @@ function resolveCard(role) {
 
 // ==================== ERGEBNIS ====================
 function selErg(v){
-  ['keine','linear','nichtlinear'].forEach(o=>{
-    document.getElementById('eo-'+o).classList.remove('ok','er');
-    document.getElementById('ec-'+o).textContent='';
-  });
-  ergVal=v;
-  document.getElementById('eo-'+v).classList.add(v==='keine'?'ok':'er');
-  document.getElementById('ec-'+v).textContent=v==='keine'?'✓':'✕';
+  ['keine','linear','nichtlinear'].forEach(o=>{document.getElementById('eo-'+o).classList.remove('ok','er');document.getElementById('ec-'+o).textContent='';});
+  ergVal=v;document.getElementById('eo-'+v).classList.add(v==='keine'?'ok':'er');document.getElementById('ec-'+v).textContent=v==='keine'?'✓':'✕';
 }
+
+// ==================== TRACKING FUNKTIONEN ====================
+function setTrackingMode(mode) {
+  currentTrackingMode = mode;
+  
+  document.getElementById('mode_stueckzahl').classList.toggle('active', mode === 'stueckzahl');
+  document.getElementById('mode_ringnummern').classList.toggle('active', mode === 'ringnummern');
+  
+  if (mode === 'stueckzahl') {
+    document.getElementById('stueckzahl_container').style.display = 'flex';
+    document.getElementById('ringnummern_preview').style.display = 'none';
+    document.getElementById('ringnummern_editor').style.display = 'none';
+  } else {
+    document.getElementById('stueckzahl_container').style.display = 'none';
+    document.getElementById('ringnummern_preview').style.display = 'flex';
+    document.getElementById('ringnummern_editor').style.display = 'block';
+    updateRingnummernPreview();
+  }
+}
+
+function addRingnummer() {
+  const input = document.getElementById('new_ringnummer_input');
+  const nummer = input.value.trim();
+  
+  if (!nummer) {
+    alert('Bitte Ringnummer eingeben!');
+    return;
+  }
+  
+  ringnummernListe.push(nummer);
+  input.value = '';
+  updateRingnummernPreview();
+  updateRingnummernListe();
+}
+
+function removeRingnummer(index) {
+  ringnummernListe.splice(index, 1);
+  updateRingnummernPreview();
+  updateRingnummernListe();
+}
+
+function updateRingnummernPreview() {
+  const countBadge = document.getElementById('ringnummern_count_badge');
+  const kurzListe = document.getElementById('ringnummern_kurzliste');
+  
+  countBadge.textContent = ringnummernListe.length + (ringnummernListe.length === 1 ? ' Nummer' : ' Nummern');
+  
+  if (ringnummernListe.length > 0) {
+    const anzeige = ringnummernListe.slice(0, 3).join(', ');
+    kurzListe.textContent = anzeige + (ringnummernListe.length > 3 ? ` +${ringnummernListe.length - 3}` : '');
+  } else {
+    kurzListe.textContent = '';
+  }
+}
+
+function updateRingnummernListe() {
+  const container = document.getElementById('ringnummern_list');
+  
+  let html = '';
+  ringnummernListe.forEach((nummer, idx) => {
+    html += `
+      <div class="ringnummer-item" style="display:flex;align-items:center;padding:5px;border-bottom:1px solid #eee">
+        <span style="flex:1">${nummer}</span>
+        <span class="remove" onclick="removeRingnummer(${idx})" style="color:var(--er-b);cursor:pointer;padding:0 8px">✕</span>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html || '<div style="padding:10px;text-align:center;color:#888;">Keine Ringnummern</div>';
+}
+
+function updateStueckzahl() {}
 
 // ==================== PROTOKOLL SPEICHERN ====================
 async function submitForm() {
@@ -1883,12 +2192,11 @@ async function submitForm() {
     {id:'datum_feld',l:'Datum'},
     {id:'supervisor_name_versteckt',l:'Aufsicht'}
   ];
-  
   const miss=req.filter(r=>!document.getElementById(r.id).value.trim());
   if(miss.length){alert('Pflichtfelder fehlen:\n'+miss.map(r=>r.l).join('\n'));return;}
   if(!ergVal){alert('Bitte Prüfergebnis auswählen.');return;}
   
-  const protocolNumber = generateProtocolNumber();
+  const protokollNummer = generateProtocolNumber();
   
   let trackingData = {};
   if (currentTrackingMode === 'stueckzahl') {
@@ -1904,7 +2212,7 @@ async function submitForm() {
   }
   
   const protocol = {
-    protokollNr: protocolNumber,
+    protokollNr: protokollNummer,
     datum: document.getElementById('datum_feld').value,
     auftrag: document.getElementById('auftragsnummer_feld').value,
     pruefgegenstand: document.getElementById('pruefgegenstand_feld').value,
@@ -1920,21 +2228,37 @@ async function submitForm() {
     weiss_raum: document.getElementById('weiss_raum_feld').value,
     uv1: document.getElementById('uv1_uw_feld')?.value || '',
     uv1_eq: document.getElementById('eq_uv1_auswahl')?.value || '',
+    uv1_lx: document.getElementById('uv1_lx_feld')?.value || '',
     uv2: document.getElementById('uv2_uw_feld')?.value || '',
     uv2_eq: document.getElementById('eq_uv2_auswahl')?.value || '',
+    uv2_lx: document.getElementById('uv2_lx_feld')?.value || '',
+    vk1_sn: document.getElementById('vk1_sn_auswahl').value,
+    vk1_eq: document.getElementById('vk1_eq_auswahl').value,
+    vk1_checked: document.getElementById('cb_vk1_feld')?.checked || false,
     luxmeter_eq: document.getElementById('eq_luxmeter_auswahl').value,
     feldmesser_eq: document.getElementById('eq_feldmesser_auswahl').value,
     tracking: trackingData,
     checkliste: {
       funktionstest: document.getElementById('cb_funktionstest_feld')?.checked || false,
-      vk1: document.getElementById('cb_vk1_feld')?.checked || false
+      entmag: document.getElementById('cb_entmag_feld')?.checked || false,
+      uv_v: document.getElementById('cb_uv_v_feld')?.checked || false,
+      rueck: document.getElementById('cb_rueck_feld')?.checked || false,
+      weiss_v: document.getElementById('cb_weiss_v_feld')?.checked || false,
+      feldhom: document.getElementById('cb_feldhom_feld')?.checked || false
+    },
+    level: {
+      l1: document.getElementById('level1_check')?.checked || false,
+      l2: document.getElementById('level2_check')?.checked || false,
+      l3: document.getElementById('level3_check')?.checked || false,
+      pw: document.getElementById('pw_check')?.checked || false
     }
   };
   
   const datumTeile = protocol.datum.split('T');
   const datum = datumTeile[0].replace(/-/g, '');
   const uhrzeit = datumTeile[1].replace(/:/g, '').substring(0,6);
-  const filename = `MT_${datum}_${uhrzeit}.json`;
+  const auftragClean = protocol.auftrag.replace(/[^a-zA-Z0-9]/g, '_');
+  const filename = `${protokollNummer}_${auftragClean}_${datum}_${uhrzeit}.json`;
   
   const saved = await saveProtocolToGithub(protocol, filename);
   
@@ -1943,48 +2267,67 @@ async function submitForm() {
     savedList.push({ filename, ...protocol });
     localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
     
-    await updateMainGithubFile();
     incrementProtocolCounter();
+    await updateMainGithubFile();
     
-    document.getElementById('saved_protocol_number').textContent = protocolNumber;
+    document.getElementById('succ_protokoll_nummer').textContent = protokollNummer;
     document.getElementById('succ').style.display = 'flex';
-    updateProtocolNumber();
   } else {
-    alert('Fehler beim Speichern!');
+    alert('Fehler beim Speichern in GitHub!');
   }
 }
 
 // ==================== ALLE FELDER AKTIVIEREN/DEAKTIVIEREN ====================
 function enableAllFields(enable) {
   const fields = [
-    'pruefgegenstand_feld', 'auftragsnummer_feld', 'pruefer_name_manuell',
-    'kreis_feld_feld', 'laengs_feld_feld', 'uv1_uw_feld', 'uv2_uw_feld',
-    'weiss_raum_feld', 'konzentration_feld', 'restmag_feld',
-    'kreis_stufe_feld', 'kreis_anzeige_feld', 'laengs_stufe_feld', 'laengs_anzeige_feld',
-    'pruefer_card_feld', 'supervisor_card_feld', 'datum_feld', 'ansatz_datum_feld',
-    'eq_flux_auswahl', 'eq_luxmeter_auswahl', 'eq_feldmesser_auswahl',
-    'eq_uv1_auswahl', 'eq_uv2_auswahl',
-    'cb_funktionstest_feld', 'cb_vk1_feld',
-    'stueckzahl_input', 'new_ringnummer_input',
-    'mode_stueckzahl', 'mode_ringnummern'
+    'pruefgegenstand_feld', 'auftragsnummer_feld', 'pruefer_name_manuell', 'kreis_feld_feld', 'laengs_feld_feld',
+    'uv1_uw_feld', 'uv2_uw_feld', 'uv1_lx_feld', 'uv2_lx_feld', 'weiss_raum_feld', 'konzentration_feld', 'restmag_feld',
+    'kreis_stufe_feld', 'kreis_anzeige_feld', 'laengs_stufe_feld', 'laengs_anzeige_feld', 'pruefer_card_feld',
+    'supervisor_card_feld', 'eq_flux_auswahl', 'eq_luxmeter_auswahl', 'eq_feldmesser_auswahl', 'dorn_both_auswahl',
+    'dorn_kreis_auswahl', 'dorn_laengs_auswahl', 'vk1_sn_auswahl', 'vk1_eq_auswahl', 'eq_uv1_auswahl', 'eq_uv2_auswahl', 'ansatz_datum_feld',
+    'cb_funktionstest_feld', 'cb_vk1_feld', 'cb_entmag_feld', 'cb_uv_v_feld', 'cb_rueck_feld', 'cb_weiss_v_feld',
+    'cb_feldhom_feld', 'level1_check', 'level2_check', 'level3_check', 'pw_check', 'flux_charge_feld', 'traeger_charge_feld',
+    'stueckzahl_input', 'new_ringnummer_input'
   ];
   
   fields.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      if (enable) el.removeAttribute('disabled');
-      else el.setAttribute('disabled', 'disabled');
+      if (enable) {
+        el.removeAttribute('disabled');
+      } else {
+        el.setAttribute('disabled', 'disabled');
+      }
     }
   });
   
-  document.querySelectorAll('.ringnummer-badge .remove').forEach(btn => {
+  document.getElementById('dm_dorn_button').disabled = !enable;
+  document.getElementById('dm_getrennt_button').disabled = !enable;
+  document.getElementById('mode_stueckzahl').disabled = !enable;
+  document.getElementById('mode_ringnummern').disabled = !enable;
+  
+  document.querySelectorAll('.ringnummer-item .remove').forEach(btn => {
     btn.style.pointerEvents = enable ? 'auto' : 'none';
     btn.style.opacity = enable ? '1' : '0.3';
   });
   
   document.querySelectorAll('.ergo').forEach(el => {
-    el.style.pointerEvents = enable ? 'auto' : 'none';
-    el.style.opacity = enable ? '1' : '0.7';
+    if (enable) {
+      el.style.pointerEvents = 'auto';
+      el.style.opacity = '1';
+    } else {
+      el.style.pointerEvents = 'none';
+      el.style.opacity = '0.7';
+    }
+  });
+  
+  document.querySelectorAll('.acts .btn').forEach(btn => {
+    if (btn.textContent.includes('Drucken')) return;
+    if (enable) {
+      btn.removeAttribute('disabled');
+    } else {
+      btn.setAttribute('disabled', 'disabled');
+    }
   });
 }
 
@@ -1998,31 +2341,39 @@ function loadSavedProtocols() {
   
   const tbody = document.getElementById('protokolle_table_body');
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:30px">Keine Protokolle</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:30px">Keine Protokolle</td></tr>';
     return;
   }
   
   let html = '';
   filtered.forEach((p, index) => {
-    let menge = '';
+    const datumTeile = p.datum.split('T');
+    const datum = datumTeile[0];
+    const uhrzeit = datumTeile[1] || '';
+    
+    let trackingAnzeige = '';
     if (p.tracking) {
-      if (p.tracking.modus === 'stueckzahl') menge = `${p.tracking.stueckzahl} Stk`;
-      else menge = `${p.tracking.ringnummern?.length || 0} Ringe`;
+      if (p.tracking.modus === 'stueckzahl') {
+        trackingAnzeige = `${p.tracking.stueckzahl} Stk`;
+      } else if (p.tracking.ringnummern) {
+        trackingAnzeige = `${p.tracking.ringnummern.length} Ringe`;
+      }
     } else {
-      menge = '1 Stk';
+      trackingAnzeige = '1 Stk';
     }
     
     html += `<tr>
       <td>${p.protokollNr || '—'}</td>
-      <td>${p.datum.split('T')[0]}</td>
+      <td>${datum} ${uhrzeit}</td>
+      <td>${p.anlagenEq || '—'}</td>
       <td>${p.auftrag}</td>
       <td>${p.pruefgegenstand}</td>
       <td>${p.pruefer}</td>
       <td>${p.ergebnis}</td>
-      <td>${menge}</td>
-      <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="loadProtocol('${p.filename}')">📂</button></td>
-      <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="printProtocol('${p.filename}')">🖨</button></td>
-      <td><button class="btn sec" style="padding:4px 8px;font-size:12px;background:var(--er-b);color:white" onclick="deleteProtocol('${p.filename}', ${index})">✕</button></td>
+      <td>${trackingAnzeige}</td>
+      <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="loadProtocol('${p.filename}')">📂 Laden</button></td>
+      <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="printProtocol('${p.filename}')">🖨 Drucken</button></td>
+      <td><button class="btn sec" style="padding:4px 8px;font-size:12px;background:var(--er-b);color:white" onclick="deleteProtocol('${p.filename}', ${index})">✕ Löschen</button></td>
     </tr>`;
   });
   tbody.innerHTML = html;
@@ -2030,11 +2381,16 @@ function loadSavedProtocols() {
 
 // ==================== PROTOKOLL LADEN ====================
 async function loadProtocol(filename) {
-  if (!githubConfig.token) { alert('GitHub nicht konfiguriert!'); return; }
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('GitHub nicht konfiguriert!');
+    return;
+  }
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const response = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     if (response.ok) {
       const data = await response.json();
@@ -2046,8 +2402,10 @@ async function loadProtocol(filename) {
       setTimeout(() => {
         loadProtocolToForm(protocol);
         enableAllFields(false);
-        alert('✅ Protokoll geladen');
+        alert('✅ Protokoll geladen (nur Lesen)');
       }, 500);
+    } else {
+      alert('Fehler beim Laden des Protokolls!');
     }
   } catch(e) {
     alert('Fehler: ' + e.message);
@@ -2056,11 +2414,16 @@ async function loadProtocol(filename) {
 
 // ==================== PROTOKOLL DRUCKEN ====================
 async function printProtocol(filename) {
-  if (!githubConfig.token) { alert('GitHub nicht konfiguriert!'); return; }
+  if (!githubConfig.token || !githubConfig.owner) {
+    alert('GitHub nicht konfiguriert!');
+    return;
+  }
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const response = await fetch(url, { headers: { 'Authorization': `token ${githubConfig.token}` } });
+    const response = await fetch(url, {
+      headers: { 'Authorization': `token ${githubConfig.token}` }
+    });
     
     if (response.ok) {
       const data = await response.json();
@@ -2074,6 +2437,8 @@ async function printProtocol(filename) {
         enableAllFields(false);
         setTimeout(() => window.print(), 500);
       }, 500);
+    } else {
+      alert('Fehler beim Laden des Protokolls!');
     }
   } catch(e) {
     alert('Fehler: ' + e.message);
@@ -2088,7 +2453,7 @@ async function deleteProtocol(filename, index) {
     return;
   }
   
-  if (!confirm(`Protokoll löschen?`)) return;
+  if (!confirm(`Protokoll ${filename} wirklich löschen?`)) return;
   
   const deleted = await deleteProtocolFromGithub(filename);
   
@@ -2098,17 +2463,19 @@ async function deleteProtocol(filename, index) {
     localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
     await updateMainGithubFile();
     loadSavedProtocols();
-    alert('✅ Gelöscht');
+    alert('✅ Protokoll gelöscht');
+  } else {
+    alert('❌ Fehler beim Löschen!');
   }
 }
 
 // ==================== PROTOKOLL IN FORMULAR LADEN ====================
 function loadProtocolToForm(protocol) {
+  console.log('Lade Protokoll:', protocol);
+  
   document.getElementById('pruefgegenstand_feld').value = protocol.pruefgegenstand || '';
   document.getElementById('auftragsnummer_feld').value = protocol.auftrag || '';
   document.getElementById('pruefer_name_manuell').value = protocol.pruefer || '';
-  document.getElementById('datum_feld').value = protocol.datum || '';
-  document.getElementById('protocol_number_display').textContent = `Protokoll-Nr.: ${protocol.protokollNr || '—'}`;
   
   if (protocol.pruefer) {
     const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.pruefer);
@@ -2126,14 +2493,38 @@ function loadProtocolToForm(protocol) {
     }
   }
   
+  document.getElementById('datum_feld').value = protocol.datum || '';
+  
   if (protocol.ergebnis) selErg(protocol.ergebnis);
   
   document.getElementById('konzentration_feld').value = protocol.konzentration || '';
   document.getElementById('ansatz_datum_feld').value = protocol.ansatz_datum || '2026-01-01';
   document.getElementById('restmag_feld').value = protocol.restmag || '';
+  if (protocol.restmag) chkMax(document.getElementById('restmag_feld'), 4.0, 5.0);
+  
   document.getElementById('kreis_feld_feld').value = protocol.feld_kreis || '';
+  if (protocol.feld_kreis) chkFeld(document.getElementById('kreis_feld_feld'));
+  
   document.getElementById('laengs_feld_feld').value = protocol.feld_laengs || '';
+  if (protocol.feld_laengs) chkFeld(document.getElementById('laengs_feld_feld'));
+  
   document.getElementById('weiss_raum_feld').value = protocol.weiss_raum || '';
+  if (protocol.weiss_raum) chkMax(document.getElementById('weiss_raum_feld'), 15, 20);
+  
+  if (protocol.tracking) {
+    if (protocol.tracking.modus === 'stueckzahl') {
+      setTrackingMode('stueckzahl');
+      document.getElementById('stueckzahl_input').value = protocol.tracking.stueckzahl || 1;
+    } else if (protocol.tracking.modus === 'ringnummern') {
+      setTrackingMode('ringnummern');
+      ringnummernListe = protocol.tracking.ringnummern ? [...protocol.tracking.ringnummern] : [];
+      updateRingnummernPreview();
+      updateRingnummernListe();
+    }
+  } else {
+    setTrackingMode('stueckzahl');
+    document.getElementById('stueckzahl_input').value = 1;
+  }
   
   if (protocol.anlagenEq) {
     const eqFlux = document.getElementById('eq_flux_auswahl');
@@ -2145,35 +2536,73 @@ function loadProtocolToForm(protocol) {
   }
   
   setTimeout(() => {
-    if (protocol.uv1_eq) document.getElementById('eq_uv1_auswahl').value = protocol.uv1_eq;
-    if (protocol.uv2_eq) document.getElementById('eq_uv2_auswahl').value = protocol.uv2_eq;
-    if (protocol.uv1) document.getElementById('uv1_uw_feld').value = protocol.uv1;
-    if (protocol.uv2) document.getElementById('uv2_uw_feld').value = protocol.uv2;
-  }, 300);
-  
-  if (protocol.luxmeter_eq) document.getElementById('eq_luxmeter_auswahl').value = protocol.luxmeter_eq;
-  if (protocol.feldmesser_eq) document.getElementById('eq_feldmesser_auswahl').value = protocol.feldmesser_eq;
-  
-  document.getElementById('cb_funktionstest_feld').checked = protocol.checkliste?.funktionstest || false;
-  document.getElementById('cb_vk1_feld').checked = protocol.checkliste?.vk1 || false;
-  
-  if (protocol.tracking) {
-    if (protocol.tracking.modus === 'stueckzahl') {
-      setTrackingMode('stueckzahl');
-      document.getElementById('stueckzahl_input').value = protocol.tracking.stueckzahl || 1;
-    } else {
-      setTrackingMode('ringnummern');
-      ringnummernListe = protocol.tracking.ringnummern ? [...protocol.tracking.ringnummern] : [];
-      updateRingnummernListe();
+    if (protocol.uv1_eq && document.getElementById('eq_uv1_auswahl')) {
+      document.getElementById('eq_uv1_auswahl').value = protocol.uv1_eq;
     }
-  } else {
-    setTrackingMode('stueckzahl');
-    document.getElementById('stueckzahl_input').value = 1;
+    if (protocol.uv2_eq && document.getElementById('eq_uv2_auswahl')) {
+      document.getElementById('eq_uv2_auswahl').value = protocol.uv2_eq;
+    }
+    
+    if (protocol.uv1 && document.getElementById('uv1_uw_feld')) {
+      document.getElementById('uv1_uw_feld').value = protocol.uv1;
+      chkUV(document.getElementById('uv1_uw_feld'));
+    }
+    if (protocol.uv2 && document.getElementById('uv2_uw_feld')) {
+      document.getElementById('uv2_uw_feld').value = protocol.uv2;
+      chkUV(document.getElementById('uv2_uw_feld'));
+    }
+    if (protocol.uv1_lx && document.getElementById('uv1_lx_feld')) {
+      document.getElementById('uv1_lx_feld').value = protocol.uv1_lx;
+      chkMax(document.getElementById('uv1_lx_feld'), 15, 20);
+    }
+    if (protocol.uv2_lx && document.getElementById('uv2_lx_feld')) {
+      document.getElementById('uv2_lx_feld').value = protocol.uv2_lx;
+      chkMax(document.getElementById('uv2_lx_feld'), 15, 20);
+    }
+  }, 500);
+  
+  if (protocol.vk1_sn && document.getElementById('vk1_sn_auswahl')) {
+    document.getElementById('vk1_sn_auswahl').value = protocol.vk1_sn;
+  }
+  if (protocol.vk1_eq && document.getElementById('vk1_eq_auswahl')) {
+    document.getElementById('vk1_eq_auswahl').value = protocol.vk1_eq;
+  }
+  if (document.getElementById('cb_vk1_feld')) {
+    document.getElementById('cb_vk1_feld').checked = protocol.vk1_checked || false;
+  }
+  
+  if (protocol.luxmeter_eq && document.getElementById('eq_luxmeter_auswahl')) {
+    document.getElementById('eq_luxmeter_auswahl').value = protocol.luxmeter_eq;
+  }
+  if (protocol.feldmesser_eq && document.getElementById('eq_feldmesser_auswahl')) {
+    document.getElementById('eq_feldmesser_auswahl').value = protocol.feldmesser_eq;
+  }
+  
+  const checkboxes = {
+    'cb_funktionstest_feld': protocol.checkliste?.funktionstest,
+    'cb_entmag_feld': protocol.checkliste?.entmag,
+    'cb_uv_v_feld': protocol.checkliste?.uv_v,
+    'cb_rueck_feld': protocol.checkliste?.rueck,
+    'cb_weiss_v_feld': protocol.checkliste?.weiss_v,
+    'cb_feldhom_feld': protocol.checkliste?.feldhom
+  };
+  
+  Object.entries(checkboxes).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.checked = value || false;
+  });
+  
+  if (protocol.level) {
+    document.getElementById('level1_check').checked = protocol.level.l1 || false;
+    document.getElementById('level2_check').checked = protocol.level.l2 || false;
+    document.getElementById('level3_check').checked = protocol.level.l3 || false;
+    document.getElementById('pw_check').checked = protocol.level.pw || false;
   }
 }
 
 // ==================== STATISTIK FUNKTIONEN ====================
 function updateStatistics() {
+  console.log('Aktualisiere Statistik...');
   const typ = document.getElementById('stats_type_selector').value;
   const von = document.getElementById('stat_von_field').value;
   const bis = document.getElementById('stat_bis_field').value;
@@ -2181,7 +2610,6 @@ function updateStatistics() {
   
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
   
-  // Daten FILTERN und in Zahlen konvertieren
   let data = protokolle
     .filter(p => {
       const datum = p.datum.split('T')[0];
@@ -2201,6 +2629,8 @@ function updateStatistics() {
     }))
     .sort((a, b) => a.datum.localeCompare(b.datum));
   
+  console.log('Gefilterte Daten:', data);
+  
   updateSummaryCards(data, typ);
   updateStatsChart(data, typ);
   updateStatsTable(data, typ);
@@ -2214,51 +2644,51 @@ function updateSummaryCards(data, typ) {
     const uv1Values = data.map(d => d.uv1).filter(v => v !== null);
     const uv2Values = data.map(d => d.uv2).filter(v => v !== null);
     
-    const avgUV1 = uv1Values.length ? (uv1Values.reduce((a, b) => a + b, 0) / uv1Values.length).toFixed(0) : '—';
-    const avgUV2 = uv2Values.length ? (uv2Values.reduce((a, b) => a + b, 0) / uv2Values.length).toFixed(0) : '—';
-    const maxUV1 = uv1Values.length ? Math.max(...uv1Values) : '—';
-    const maxUV2 = uv2Values.length ? Math.max(...uv2Values) : '—';
+    const avgUV1 = uv1Values.length ? (uv1Values.reduce((a, b) => a + b, 0) / uv1Values.length) : 0;
+    const avgUV2 = uv2Values.length ? (uv2Values.reduce((a, b) => a + b, 0) / uv2Values.length) : 0;
+    const maxUV1 = uv1Values.length ? Math.max(...uv1Values) : 0;
+    const maxUV2 = uv2Values.length ? Math.max(...uv2Values) : 0;
     
     html = `
-      <div class="summary-card"><div class="value">${avgUV1}</div><div class="label">Ø UV1</div></div>
-      <div class="summary-card"><div class="value">${avgUV2}</div><div class="label">Ø UV2</div></div>
+      <div class="summary-card"><div class="value">${avgUV1.toFixed(0)}</div><div class="label">Ø UV1</div></div>
+      <div class="summary-card"><div class="value">${avgUV2.toFixed(0)}</div><div class="label">Ø UV2</div></div>
       <div class="summary-card"><div class="value">${maxUV1}</div><div class="label">Max UV1</div></div>
       <div class="summary-card"><div class="value">${maxUV2}</div><div class="label">Max UV2</div></div>
     `;
   } else if (typ === 'konzentration') {
     const konzValues = data.map(d => d.konz).filter(v => v !== null);
     
-    const avg = konzValues.length ? (konzValues.reduce((a, b) => a + b, 0) / konzValues.length).toFixed(2) : '—';
-    const min = konzValues.length ? Math.min(...konzValues).toFixed(2) : '—';
-    const max = konzValues.length ? Math.max(...konzValues).toFixed(2) : '—';
+    const avg = konzValues.length ? (konzValues.reduce((a, b) => a + b, 0) / konzValues.length) : 0;
+    const min = konzValues.length ? Math.min(...konzValues) : 0;
+    const max = konzValues.length ? Math.max(...konzValues) : 0;
     const inToleranz = konzValues.filter(v => v >= 0.1 && v <= 0.4).length;
     
     html = `
-      <div class="summary-card"><div class="value">${avg}</div><div class="label">Ø Konz.</div></div>
-      <div class="summary-card"><div class="value">${min}</div><div class="label">Min</div></div>
-      <div class="summary-card"><div class="value">${max}</div><div class="label">Max</div></div>
+      <div class="summary-card"><div class="value">${avg.toFixed(2)}</div><div class="label">Ø Konz.</div></div>
+      <div class="summary-card"><div class="value">${min.toFixed(2)}</div><div class="label">Min</div></div>
+      <div class="summary-card"><div class="value">${max.toFixed(2)}</div><div class="label">Max</div></div>
       <div class="summary-card"><div class="value">${inToleranz}/${konzValues.length}</div><div class="label">i.O.</div></div>
     `;
   } else if (typ === 'restmagnetismus') {
     const restValues = data.map(d => d.restmag).filter(v => v !== null);
     
-    const avg = restValues.length ? (restValues.reduce((a, b) => a + b, 0) / restValues.length).toFixed(1) : '—';
+    const avg = restValues.length ? (restValues.reduce((a, b) => a + b, 0) / restValues.length) : 0;
     const nok = restValues.filter(v => v > 5).length;
     
     html = `
-      <div class="summary-card"><div class="value">${avg}</div><div class="label">Ø Restmag</div></div>
+      <div class="summary-card"><div class="value">${avg.toFixed(1)}</div><div class="label">Ø Restmag</div></div>
       <div class="summary-card"><div class="value">${nok}</div><div class="label">NOK</div></div>
     `;
   } else if (typ === 'feldstaerke') {
     const kreisValues = data.map(d => d.feld_kreis).filter(v => v !== null);
     const laengsValues = data.map(d => d.feld_laengs).filter(v => v !== null);
     
-    const avgKreis = kreisValues.length ? (kreisValues.reduce((a, b) => a + b, 0) / kreisValues.length).toFixed(1) : '—';
-    const avgLaengs = laengsValues.length ? (laengsValues.reduce((a, b) => a + b, 0) / laengsValues.length).toFixed(1) : '—';
+    const avgKreis = kreisValues.length ? (kreisValues.reduce((a, b) => a + b, 0) / kreisValues.length) : 0;
+    const avgLaengs = laengsValues.length ? (laengsValues.reduce((a, b) => a + b, 0) / laengsValues.length) : 0;
     
     html = `
-      <div class="summary-card"><div class="value">${avgKreis}</div><div class="label">Ø Kreis</div></div>
-      <div class="summary-card"><div class="value">${avgLaengs}</div><div class="label">Ø Längs</div></div>
+      <div class="summary-card"><div class="value">${avgKreis.toFixed(1)}</div><div class="label">Ø Kreis</div></div>
+      <div class="summary-card"><div class="value">${avgLaengs.toFixed(1)}</div><div class="label">Ø Längs</div></div>
     `;
   }
   
@@ -2274,24 +2704,57 @@ function updateStatsChart(data, typ) {
   
   if (typ === 'uv') {
     datasets = [
-      { label: 'UV1', data: data.map(d => d.uv1), borderColor: '#00893d', tension: 0.1, backgroundColor: 'rgba(0,137,61,0.1)' },
-      { label: 'UV2', data: data.map(d => d.uv2), borderColor: '#006b30', tension: 0.1, backgroundColor: 'rgba(0,107,48,0.1)' }
+      { label: 'UV1', data: data.map(d => d.uv1), borderColor: '#00893d', tension: 0.1 },
+      { label: 'UV2', data: data.map(d => d.uv2), borderColor: '#006b30', tension: 0.1 }
     ];
   } else if (typ === 'konzentration') {
     datasets = [
-      { label: 'Konzentration', data: data.map(d => d.konz), borderColor: '#00893d', tension: 0.1, backgroundColor: 'rgba(0,137,61,0.1)' },
-      { label: 'Grenze 0.4', data: data.map(() => 0.4), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0, fill: false },
-      { label: 'Grenze 0.1', data: data.map(() => 0.1), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0, fill: false }
+      { 
+        label: 'Konzentration', 
+        data: data.map(d => d.konz), 
+        borderColor: '#00893d', 
+        backgroundColor: 'rgba(0,137,61,0.1)',
+        tension: 0.1 
+      },
+      { 
+        label: 'Grenze 0.4', 
+        data: data.map(() => 0.4), 
+        borderColor: '#d48f00', 
+        borderDash: [5,5], 
+        pointRadius: 0,
+        fill: false
+      },
+      { 
+        label: 'Grenze 0.1', 
+        data: data.map(() => 0.1), 
+        borderColor: '#d48f00', 
+        borderDash: [5,5], 
+        pointRadius: 0,
+        fill: false
+      }
     ];
   } else if (typ === 'restmagnetismus') {
     datasets = [
-      { label: 'Restmagnetismus', data: data.map(d => d.restmag), borderColor: '#c0392b', tension: 0.1, backgroundColor: 'rgba(192,57,43,0.1)' },
-      { label: 'Grenze 5', data: data.map(() => 5), borderColor: '#d48f00', borderDash: [5,5], pointRadius: 0, fill: false }
+      { 
+        label: 'Restmagnetismus', 
+        data: data.map(d => d.restmag), 
+        borderColor: '#c0392b', 
+        backgroundColor: 'rgba(192,57,43,0.1)',
+        tension: 0.1 
+      },
+      { 
+        label: 'Grenze 5', 
+        data: data.map(() => 5), 
+        borderColor: '#d48f00', 
+        borderDash: [5,5], 
+        pointRadius: 0,
+        fill: false
+      }
     ];
   } else if (typ === 'feldstaerke') {
     datasets = [
-      { label: 'Kreis', data: data.map(d => d.feld_kreis), borderColor: '#00893d', tension: 0.1, backgroundColor: 'rgba(0,137,61,0.1)' },
-      { label: 'Längs', data: data.map(d => d.feld_laengs), borderColor: '#006b30', tension: 0.1, backgroundColor: 'rgba(0,107,48,0.1)' }
+      { label: 'Kreis', data: data.map(d => d.feld_kreis), borderColor: '#00893d', tension: 0.1 },
+      { label: 'Längs', data: data.map(d => d.feld_laengs), borderColor: '#006b30', tension: 0.1 }
     ];
   }
   
@@ -2301,7 +2764,11 @@ function updateStatsChart(data, typ) {
     options: { 
       responsive: true, 
       maintainAspectRatio: false,
-      scales: { y: { beginAtZero: true } }
+      scales: {
+        y: {
+          beginAtZero: typ === 'konzentration' ? true : false
+        }
+      }
     }
   });
 }
@@ -2310,11 +2777,11 @@ function updateStatsTable(data, typ) {
   const thead = document.getElementById('stats_table_header');
   const tbody = document.getElementById('stats_table_body');
   
-  let headers = ['Datum', 'Anlage'];
-  if (typ === 'uv') headers.push('UV1', 'UV1 EQ', 'UV2', 'UV2 EQ');
-  else if (typ === 'konzentration') headers.push('Konz.', 'Status');
-  else if (typ === 'restmagnetismus') headers.push('Restmag', 'Status');
-  else if (typ === 'feldstaerke') headers.push('Kreis', 'Längs');
+  let headers = ['Datum', 'Anlage EQ'];
+  if (typ === 'uv') headers.push('UV1 (µW)', 'UV1 EQ', 'UV2 (µW)', 'UV2 EQ');
+  else if (typ === 'konzentration') headers.push('Konz. (ml)', 'Status');
+  else if (typ === 'restmagnetismus') headers.push('Restmag (A/cm)', 'Status');
+  else if (typ === 'feldstaerke') headers.push('Kreis (A/cm)', 'Längs (A/cm)');
   
   thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
   
@@ -2326,10 +2793,12 @@ function updateStatsTable(data, typ) {
       row += `<td>${d.uv1?.toFixed(0) || '-'}</td><td>${d.uv1_eq}</td><td>${d.uv2?.toFixed(0) || '-'}</td><td>${d.uv2_eq}</td>`;
     } else if (typ === 'konzentration') {
       const status = d.konz !== null && d.konz >= 0.1 && d.konz <= 0.4 ? '✓' : (d.konz !== null ? '✕' : '-');
-      row += `<td>${d.konz !== null ? d.konz.toFixed(2) : '-'}</td><td>${status}</td>`;
+      const konzValue = d.konz !== null ? d.konz.toFixed(2) : '-';
+      row += `<td>${konzValue}</td><td>${status}</td>`;
     } else if (typ === 'restmagnetismus') {
       const status = d.restmag !== null && d.restmag <= 5 ? '✓' : (d.restmag !== null ? '✕' : '-');
-      row += `<td>${d.restmag !== null ? d.restmag.toFixed(1) : '-'}</td><td>${status}</td>`;
+      const restValue = d.restmag !== null ? d.restmag.toFixed(1) : '-';
+      row += `<td>${restValue}</td><td>${status}</td>`;
     } else if (typ === 'feldstaerke') {
       row += `<td>${d.feld_kreis || '-'}</td><td>${d.feld_laengs || '-'}</td>`;
     }
@@ -2366,7 +2835,7 @@ function exportStatistics() {
     }))
     .sort((a,b) => a.datum.localeCompare(b.datum));
   
-  let csv = 'Datum;Anlage';
+  let csv = 'Datum;Anlage EQ';
   if (typ === 'uv') csv += ';UV1;UV1 EQ;UV2;UV2 EQ\n';
   else if (typ === 'konzentration') csv += ';Konzentration\n';
   else if (typ === 'restmagnetismus') csv += ';Restmagnetismus\n';
@@ -2382,7 +2851,7 @@ function exportStatistics() {
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `statistik_${typ}_${von}_${bis}.csv`;
+  a.download = `statistik_${typ}_${filterEq}_${von}_${bis}.csv`;
   a.click();
 }
 
@@ -2393,11 +2862,12 @@ function resetForm() {
   enableAllFields(true);
   
   const inputIds = [
-    'pruefgegenstand_feld', 'auftragsnummer_feld', 'pruefer_name_manuell',
-    'kreis_feld_feld', 'laengs_feld_feld', 'uv1_uw_feld', 'uv2_uw_feld',
-    'weiss_raum_feld', 'konzentration_feld', 'restmag_feld',
-    'kreis_stufe_feld', 'kreis_anzeige_feld', 'laengs_stufe_feld', 'laengs_anzeige_feld',
-    'pruefer_card_feld', 'supervisor_card_feld'
+    'pruefgegenstand_feld', 'auftragsnummer_feld', 'pruefer_name_manuell', 
+    'kreis_feld_feld', 'laengs_feld_feld', 'uv1_uw_feld', 'uv2_uw_feld', 
+    'uv1_lx_feld', 'uv2_lx_feld', 'weiss_raum_feld', 'konzentration_feld', 
+    'restmag_feld', 'kreis_stufe_feld', 'kreis_anzeige_feld', 'laengs_stufe_feld', 
+    'laengs_anzeige_feld', 'flux_charge_feld', 'traeger_charge_feld',
+    'stueckzahl_input', 'new_ringnummer_input'
   ];
   
   inputIds.forEach(id => {
@@ -2405,47 +2875,78 @@ function resetForm() {
     if (el) el.value = '';
   });
   
-  document.getElementById('pruefer_name_versteckt').value = '';
-  document.getElementById('supervisor_name_versteckt').value = '';
+  ['pruefer_card_feld', 'supervisor_card_feld'].forEach(id => {
+    const el = document.getElementById(id); 
+    if (el) { 
+      el.value = ''; 
+      el.classList.remove('card-ok','card-er'); 
+    }
+  });
   
-  document.getElementById('pruefer_resolved_anzeige').style.display = 'none';
-  document.getElementById('supervisor_resolved_anzeige').style.display = 'none';
+  ['pruefer_name_versteckt', 'supervisor_name_versteckt'].forEach(id => { 
+    const el = document.getElementById(id); 
+    if (el) el.value = ''; 
+  });
   
-  document.getElementById('cb_funktionstest_feld').checked = false;
-  document.getElementById('cb_vk1_feld').checked = false;
+  ['pruefer_resolved_anzeige', 'supervisor_resolved_anzeige'].forEach(id => {
+    const el = document.getElementById(id); 
+    if (el) { 
+      el.style.display = 'none'; 
+      el.textContent = ''; 
+    }
+  });
   
-  const badgeFields = ['uv1_uw_feld', 'uv2_uw_feld', 'weiss_raum_feld', 'konzentration_feld', 'restmag_feld', 'kreis_feld_feld', 'laengs_feld_feld'];
+  const checkboxIds = [
+    'cb_funktionstest_feld', 'cb_vk1_feld', 'cb_entmag_feld', 'cb_uv_v_feld', 
+    'cb_rueck_feld', 'cb_weiss_v_feld', 'cb_feldhom_feld',
+    'level1_check', 'level2_check', 'level3_check', 'pw_check'
+  ];
+  
+  checkboxIds.forEach(id => {
+    const el = document.getElementById(id); 
+    if (el) el.checked = false;
+  });
+  
+  const badgeFields = [
+    'uv1_uw_feld', 'uv2_uw_feld', 'uv1_lx_feld', 'uv2_lx_feld', 
+    'weiss_raum_feld', 'konzentration_feld', 'restmag_feld', 
+    'kreis_feld_feld', 'laengs_feld_feld'
+  ];
+  
   badgeFields.forEach(id => {
     const inp = document.getElementById(id); 
     if (inp) inp.classList.remove('ok','wn','er');
     const badgeId = 'b_' + id.replace('_feld', '');
     const b = document.getElementById(badgeId); 
-    if (b) { b.className = 'badge nu'; b.textContent = '—'; }
+    if (b) { 
+      b.className = 'badge nu'; 
+      b.textContent = '—'; 
+    }
   });
   
   setTrackingMode('stueckzahl');
   document.getElementById('stueckzahl_input').value = 1;
   ringnummernListe = [];
+  updateRingnummernPreview();
   updateRingnummernListe();
   
-  document.querySelectorAll('.ergo').forEach(el => el.classList.remove('ok','er'));
-  document.getElementById('ec-keine').textContent = '';
-  document.getElementById('ec-linear').textContent = '';
-  document.getElementById('ec-nichtlinear').textContent = '';
+  ['keine','linear','nichtlinear'].forEach(o => {
+    document.getElementById('eo-'+o).classList.remove('ok','er');
+    document.getElementById('ec-'+o).textContent = '';
+  });
   ergVal = null;
   
   const now = new Date();
   document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
-  
-  updateProtocolNumber();
+  document.getElementById('erstell_datum_anzeige').textContent = now.toLocaleDateString('de-DE');
+  updateProtocolNumberDisplay();
 }
 
 // ==================== AUTOMATISCHE VERBINDUNG ====================
 async function autoConnect() {
+  console.log('🔄 Automatische GitHub-Verbindung wird hergestellt...');
   const statusEl = document.getElementById('github_status_message');
-  if (!statusEl) return;
-  
-  statusEl.innerHTML = '<span>⏳ Verbinde...</span>';
+  statusEl.innerHTML = '<span>⏳ Automatische Verbindung wird hergestellt...</span>';
   
   githubConfig = {
     owner: 'Acendrion1984',
@@ -2460,32 +2961,42 @@ async function autoConnect() {
   
   try {
     await connectGithub();
-    statusEl.innerHTML = '<span style="color:var(--sg)">✅ Verbunden</span>';
+    console.log('✅ Automatische Verbindung erfolgreich');
   } catch (e) {
-    statusEl.innerHTML = '<span style="color:var(--er-b)">❌ Fehler</span>';
+    console.error('❌ Automatische Verbindung fehlgeschlagen:', e);
+    statusEl.innerHTML = '<span style="color:var(--er-b)">❌ Automatische Verbindung fehlgeschlagen</span>';
   }
 }
 
 // ==================== INITIALISIERUNG ====================
 window.addEventListener('load', async () => {
-  setTimeout(() => updateAllDropdowns(), 500);
+  console.log('🚀 App wird gestartet...');
+  
+  document.getElementById('erstell_datum_anzeige').textContent = new Date().toLocaleDateString('de-DE');
+  updateProtocolNumberDisplay();
+  
+  await autoConnect();
+  setInterval(autoConnect, 300000);
+  
+  setTimeout(() => {
+    updateAllDropdowns();
+  }, 1000);
   
   restoreEQ();
   updateLampenAuswahl();
-  updateEmployeeList();
   
   const now = new Date();
   document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   
+  updateEmployeeList();
+  
   setTrackingMode('stueckzahl');
   document.getElementById('stueckzahl_input').value = 1;
   ringnummernListe = [];
+  updateRingnummernPreview();
   updateRingnummernListe();
   
-  updateProtocolNumber();
-  
-  setTimeout(autoConnect, 1000);
-  setInterval(autoConnect, 300000);
+  console.log('✅ App gestartet');
 });
 </script>
 </body>
