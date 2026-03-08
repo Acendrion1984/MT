@@ -1109,11 +1109,11 @@ let githubConfig = {
   repo: 'SelfAudit',
   branch: 'main',
   filename: 'MT_Protokoll.json',
-  token: 'ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND', // RICHTIGER Token!
+  token: 'ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND',
   supervisorPassword: 'MT-SUPER-2026'
 };
 
-// Dropdown-Daten (werden aus GitHub geladen)
+// Dropdown-Daten
 let dropdownData = {
   flux: ['12425560', '12425561', '12425562', '12425563', '12425564'],
   luxmeter: ['12911164', '12911165', '12911166', '12911167'],
@@ -1174,7 +1174,6 @@ function switchView(view) {
     document.getElementById('supervisor_password_field').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
   }
   
-  // Wenn wir zurück zum Protokoll wechseln, alle Felder wieder aktivieren
   if (view === 'protokoll') {
     enableAllFields(true);
   }
@@ -1182,7 +1181,6 @@ function switchView(view) {
 
 // ==================== DROPDOWN FUNKTIONEN ====================
 
-// Standard-Dropdowns erstellen
 async function createDefaultDropdowns() {
   if (!confirm('Standard-Dropdowns erstellen? Vorhandene werden überschrieben.')) return;
   
@@ -1207,7 +1205,6 @@ async function createDefaultDropdowns() {
   document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Standard-Dropdowns erstellt und gespeichert</span>';
 }
 
-// Dropdown-Tab umschalten
 function showDropdownTab(tab) {
   document.querySelectorAll('.dropdown-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.dropdown-panel').forEach(p => p.classList.remove('active'));
@@ -1216,9 +1213,7 @@ function showDropdownTab(tab) {
   loadDropdownsToEditor();
 }
 
-// Dropdown-Liste im Editor anzeigen
 function loadDropdownsToEditor() {
-  // Flux
   let html = '';
   dropdownData.flux.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1228,7 +1223,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('flux_list_container').innerHTML = html;
   
-  // Luxmeter
   html = '';
   dropdownData.luxmeter.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1238,7 +1232,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('luxmeter_list_container').innerHTML = html;
   
-  // Feldmesser
   html = '';
   dropdownData.feldmesser.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1248,7 +1241,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('feldmesser_list_container').innerHTML = html;
   
-  // UV-Lampen
   html = '';
   dropdownData.uvlampen.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1258,7 +1250,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('uvlampen_list_container').innerHTML = html;
   
-  // Dorne
   html = '';
   dropdownData.dorne.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1268,7 +1259,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('dorne_list_container').innerHTML = html;
   
-  // VK1
   html = '';
   dropdownData.vk1.forEach((item, idx) => {
     html += `<div class="dropdown-item">
@@ -1278,7 +1268,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('vk1_list_container').innerHTML = html;
 
-  // Lampen-Zuordnung
   html = '';
   if (!dropdownData.lampenzuordnung) dropdownData.lampenzuordnung = {};
   
@@ -1292,7 +1281,6 @@ function loadDropdownsToEditor() {
   });
   document.getElementById('lampenzuordnung_list_container').innerHTML = html || '<p>Keine Zuordnungen definiert</p>';
   
-  // Dropdowns für neue Zuordnung füllen
   updateZuordnungDropdowns();
 }
 
@@ -1332,18 +1320,15 @@ function removeLampenZuordnung(anlage) {
   loadDropdownsToEditor();
 }
 
-// Dropdown-Item aktualisieren
 function updateDropdownItem(category, index, newValue) {
   dropdownData[category][index] = newValue;
 }
 
-// Dropdown-Item entfernen
 function removeDropdownItem(category, index) {
   dropdownData[category].splice(index, 1);
   loadDropdownsToEditor();
 }
 
-// Neues Dropdown-Item hinzufügen
 function addDropdownItem(category) {
   const input = document.getElementById(`new_${category}_input`);
   const value = input.value.trim();
@@ -1354,7 +1339,6 @@ function addDropdownItem(category) {
   loadDropdownsToEditor();
 }
 
-// Dropdowns in GitHub speichern
 async function saveDropdownsToGithub(silent = false) {
   if (!githubConfig.token || !githubConfig.owner) {
     alert('Bitte zuerst GitHub konfigurieren!');
@@ -1406,7 +1390,6 @@ async function saveDropdownsToGithub(silent = false) {
   }
 }
 
-// Dropdowns von GitHub laden
 async function loadDropdownsFromGithub() {
   if (!githubConfig.token || !githubConfig.owner) {
     alert('Bitte zuerst GitHub konfigurieren!');
@@ -1437,11 +1420,9 @@ async function loadDropdownsFromGithub() {
   }
 }
 
-// Alle Dropdowns im Protokoll aktualisieren
 function updateAllDropdowns() {
-  console.log('Aktualisiere alle Dropdowns mit Daten:', dropdownData);
+  console.log('Aktualisiere alle Dropdowns');
   
-  // Fluxanlagen
   let html = '<option value="">— Bitte wählen —</option>';
   dropdownData.flux.forEach(eq => {
     html += `<option value="${eq}">${eq}</option>`;
@@ -1449,7 +1430,6 @@ function updateAllDropdowns() {
   let eqFlux = document.getElementById('eq_flux_auswahl');
   if (eqFlux) eqFlux.innerHTML = html;
   
-  // Luxmeter
   html = '<option value="">— Bitte wählen —</option>';
   dropdownData.luxmeter.forEach(eq => {
     html += `<option value="${eq}">${eq}</option>`;
@@ -1457,7 +1437,6 @@ function updateAllDropdowns() {
   let eqLux = document.getElementById('eq_luxmeter_auswahl');
   if (eqLux) eqLux.innerHTML = html;
   
-  // Feldmesser
   html = '<option value="">— Bitte wählen —</option>';
   dropdownData.feldmesser.forEach(eq => {
     html += `<option value="${eq}">${eq}</option>`;
@@ -1465,7 +1444,6 @@ function updateAllDropdowns() {
   let eqFeld = document.getElementById('eq_feldmesser_auswahl');
   if (eqFeld) eqFeld.innerHTML = html;
   
-  // Dorne
   html = '<option value="">— Dorn wählen —</option>';
   dropdownData.dorne.forEach(d => {
     html += `<option value="${d}">${d}</option>`;
@@ -1473,7 +1451,6 @@ function updateAllDropdowns() {
   let dornBoth = document.getElementById('dorn_both_auswahl');
   if (dornBoth) dornBoth.innerHTML = html;
   
-  // VK1 Seriennummern
   html = '<option value="">— wählen —</option>';
   dropdownData.vk1.forEach(sn => {
     html += `<option value="${sn}">${sn}</option>`;
@@ -1481,7 +1458,6 @@ function updateAllDropdowns() {
   let vk1Sn = document.getElementById('vk1_sn_auswahl');
   if (vk1Sn) vk1Sn.innerHTML = html;
   
-  // VK1 EQ-Nummern
   html = '<option value="">— EQ wählen —</option>';
   dropdownData.uvlampen.forEach(eq => {
     html += `<option value="${eq}">${eq}</option>`;
@@ -1491,12 +1467,9 @@ function updateAllDropdowns() {
   
   updateEquipmentFilter();
   updateZuordnungDropdowns();
-  
-  // Lampenbereich aktualisieren
   updateLampenAuswahl();
 }
 
-// Equipment Filter für Statistik aktualisieren
 function updateEquipmentFilter() {
   const select = document.getElementById('stat_equipment_selector');
   if (!select) return;
@@ -1510,7 +1483,6 @@ function updateEquipmentFilter() {
 
 // ==================== GITHUB FUNKTIONEN ====================
 
-// GitHub Config speichern
 function saveGithubConfig() {
   githubConfig = {
     owner: document.getElementById('github_owner_field').value,
@@ -1524,7 +1496,6 @@ function saveGithubConfig() {
   document.getElementById('github_status_message').innerHTML = '<span style="color:var(--sg)">✅ Konfiguration gespeichert</span>';
 }
 
-// GitHub Verbindung testen
 async function testGithubConnection() {
   const statusEl = document.getElementById('github_status_message');
   statusEl.innerHTML = '<span>⏳ Verbinde...</span>';
@@ -1548,14 +1519,12 @@ async function testGithubConnection() {
   }
 }
 
-// Mit GitHub verbinden
 async function connectGithub() {
   saveGithubConfig();
   const statusEl = document.getElementById('github_status_message');
   statusEl.innerHTML = '<span>⏳ Lade Daten von GitHub...</span>';
   
   try {
-    // Zuerst Verbindung testen
     const connected = await testGithubConnection();
     if (!connected) return;
     
@@ -1590,7 +1559,6 @@ async function connectGithub() {
   }
 }
 
-// Einzelnes Protokoll in GitHub speichern
 async function saveProtocolToGithub(protocol, filename) {
   if (!githubConfig.token || !githubConfig.owner) return false;
   
@@ -1630,7 +1598,6 @@ async function saveProtocolToGithub(protocol, filename) {
   }
 }
 
-// Protokoll aus GitHub löschen
 async function deleteProtocolFromGithub(filename) {
   if (!githubConfig.token || !githubConfig.owner) return false;
   
@@ -1665,7 +1632,6 @@ async function deleteProtocolFromGithub(filename) {
   }
 }
 
-// Hauptdatei aktualisieren
 async function updateMainGithubFile() {
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
   const messungen = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
@@ -1713,7 +1679,6 @@ async function updateMainGithubFile() {
   }
 }
 
-// Sync mit GitHub
 async function syncWithGithub() {
   await connectGithub();
   loadSavedProtocols();
@@ -1767,7 +1732,6 @@ const LS = 'mt_eq_selections';
 const LS_MODE = 'mt_dorn_mode';
 
 function saveEQ(id) {
-  // Nicht speichern wenn wir im "gespeicherten" Modus sind (readonly)
   if (document.getElementById(id)?.disabled) return;
   
   const s = JSON.parse(localStorage.getItem(LS) || '{}');
@@ -1794,11 +1758,9 @@ function updateLampenAuswahl() {
   const container = document.getElementById('lampen_container');
   const isReadOnly = document.getElementById('eq_flux_auswahl')?.disabled || false;
   
-  // Liste aller verfügbaren Lampen aus den Dropdowns
   const uvOptions = '<option value="">— Lampe wählen —</option>' + 
     dropdownData.uvlampen.map(eq => `<option value="${eq}">${eq}</option>`).join('');
   
-  // Standard-Lampen aus der Zuordnung holen (falls vorhanden)
   let defaultLampe1 = '';
   let defaultLampe2 = '';
   if (anlage && dropdownData.lampenzuordnung && dropdownData.lampenzuordnung[anlage]) {
@@ -1806,7 +1768,6 @@ function updateLampenAuswahl() {
     defaultLampe2 = dropdownData.lampenzuordnung[anlage].lampe2 || '';
   }
   
-  // HTML für zwei völlig identische Dropdowns mit allen Lampen
   let html = `
     <div class="ir">
       <div class="irl"><div class="lbl">UV Lampe 1</div><div class="sub">Alle verfügbaren Lampen</div></div>
@@ -1819,14 +1780,14 @@ function updateLampenAuswahl() {
     <div class="ir alt">
       <div class="irl"><div class="lbl">UV1 Intensität</div></div>
       <div class="irr">
-        <input type="text" id="uv1_uw_feld" class="tol" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
+        <input type="text" id="uv1_uw_feld" class="tol" placeholder="—" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv1_uw">—</span>
       </div>
     </div>
     <div class="ir">
       <div class="irl"><div class="lbl">UV1 Restweißlicht</div></div>
       <div class="irr">
-        <input type="text" id="uv1_lx_feld" class="tol" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
+        <input type="text" id="uv1_lx_feld" class="tol" placeholder="—" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv1_lx">—</span>
       </div>
     </div>
@@ -1842,14 +1803,14 @@ function updateLampenAuswahl() {
     <div class="ir">
       <div class="irl"><div class="lbl">UV2 Intensität</div></div>
       <div class="irr">
-        <input type="text" id="uv2_uw_feld" class="tol" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
+        <input type="text" id="uv2_uw_feld" class="tol" placeholder="—" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv2_uw">—</span>
       </div>
     </div>
     <div class="ir alt">
       <div class="irl"><div class="lbl">UV2 Restweißlicht</div></div>
       <div class="irr">
-        <input type="text" id="uv2_lx_feld" class="tol" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
+        <input type="text" id="uv2_lx_feld" class="tol" placeholder="—" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv2_lx">—</span>
       </div>
     </div>
@@ -1857,10 +1818,8 @@ function updateLampenAuswahl() {
   
   container.innerHTML = html;
   
-  // Wenn wir im ReadOnly-Modus sind, keine Werte wiederherstellen
   if (isReadOnly) return;
   
-  // Gespeicherte Werte wiederherstellen
   const s = loadStore();
   if (s['eq_uv1_auswahl']) {
     document.getElementById('eq_uv1_auswahl').value = s['eq_uv1_auswahl'];
@@ -1905,18 +1864,111 @@ function jochExklusiv(seite) {
 
 // ==================== TOLERANZ ====================
 function pDE(s) { return parseFloat((s||'').replace(',','.')); }
-function setBadge(inp,bid,st) {
-  inp.classList.remove('ok','wn','er');
-  const b=document.getElementById(bid); b.className='badge';
-  if(st==='ok'){inp.classList.add('ok');b.classList.add('ok');b.textContent='✓ OK';}
-  else if(st==='wn'){inp.classList.add('wn');b.classList.add('wn');b.textContent='⚠ GRENZ';}
-  else if(st==='er'){inp.classList.add('er');b.classList.add('er');b.textContent='✕ NOK';}
-  else{b.classList.add('nu');b.textContent='—';}
+
+function setBadge(inp, bid, st) {
+  if (!inp) return;
+  inp.classList.remove('ok', 'wn', 'er');
+  const b = document.getElementById(bid);
+  if (!b) return;
+  
+  b.className = 'badge';
+  if (st === 'ok') {
+    inp.classList.add('ok');
+    b.classList.add('ok');
+    b.textContent = '✓ OK';
+  } else if (st === 'wn') {
+    inp.classList.add('wn');
+    b.classList.add('wn');
+    b.textContent = '⚠ GRENZ';
+  } else if (st === 'er') {
+    inp.classList.add('er');
+    b.classList.add('er');
+    b.textContent = '✕ NOK';
+  } else {
+    b.classList.add('nu');
+    b.textContent = '—';
+  }
 }
-function chkUV(inp){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=1600&&v<=5000?'ok':v>=1500&&v<=5200?'wn':'er');}
-function chkMax(inp,w,h){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v<=w?'ok':v<=h?'wn':'er');}
-function chkRange(inp,lo,hi){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=lo&&v<=hi?'ok':'er');}
-function chkFeld(inp){const v=pDE(inp.value),id='b_'+inp.id;if(isNaN(v)||!inp.value.trim())return setBadge(inp,id,'nu');setBadge(inp,id,v>=32&&v<=59?'ok':v>=60&&v<=72?'wn':'er');}
+
+function chkUV(inp) {
+  if (!inp) return;
+  const v = pDE(inp.value);
+  let badgeId;
+  if (inp.id === 'uv1_uw_feld') badgeId = 'b_uv1_uw';
+  else if (inp.id === 'uv2_uw_feld') badgeId = 'b_uv2_uw';
+  else badgeId = null;
+  
+  if (!badgeId) return;
+  
+  if (isNaN(v) || !inp.value.trim()) {
+    setBadge(inp, badgeId, 'nu');
+    return;
+  }
+  
+  if (v >= 1600 && v <= 5000) setBadge(inp, badgeId, 'ok');
+  else if (v >= 1500 && v <= 5200) setBadge(inp, badgeId, 'wn');
+  else setBadge(inp, badgeId, 'er');
+}
+
+function chkMax(inp, w, h) {
+  if (!inp) return;
+  const v = pDE(inp.value);
+  let badgeId;
+  if (inp.id === 'weiss_raum_feld') badgeId = 'b_weiss_raum';
+  else if (inp.id === 'restmag_feld') badgeId = 'b_restmag';
+  else if (inp.id === 'uv1_lx_feld') badgeId = 'b_uv1_lx';
+  else if (inp.id === 'uv2_lx_feld') badgeId = 'b_uv2_lx';
+  else badgeId = null;
+  
+  if (!badgeId) return;
+  
+  if (isNaN(v) || !inp.value.trim()) {
+    setBadge(inp, badgeId, 'nu');
+    return;
+  }
+  
+  if (v <= w) setBadge(inp, badgeId, 'ok');
+  else if (v <= h) setBadge(inp, badgeId, 'wn');
+  else setBadge(inp, badgeId, 'er');
+}
+
+function chkRange(inp, lo, hi) {
+  if (!inp) return;
+  const v = pDE(inp.value);
+  let badgeId;
+  if (inp.id === 'konzentration_feld') badgeId = 'b_konzentration';
+  else badgeId = null;
+  
+  if (!badgeId) return;
+  
+  if (isNaN(v) || !inp.value.trim()) {
+    setBadge(inp, badgeId, 'nu');
+    return;
+  }
+  
+  if (v >= lo && v <= hi) setBadge(inp, badgeId, 'ok');
+  else setBadge(inp, badgeId, 'er');
+}
+
+function chkFeld(inp) {
+  if (!inp) return;
+  const v = pDE(inp.value);
+  let badgeId;
+  if (inp.id === 'kreis_feld_feld') badgeId = 'b_kreis_feld';
+  else if (inp.id === 'laengs_feld_feld') badgeId = 'b_laengs_feld';
+  else badgeId = null;
+  
+  if (!badgeId) return;
+  
+  if (isNaN(v) || !inp.value.trim()) {
+    setBadge(inp, badgeId, 'nu');
+    return;
+  }
+  
+  if (v >= 32 && v <= 59) setBadge(inp, badgeId, 'ok');
+  else if (v >= 60 && v <= 72) setBadge(inp, badgeId, 'wn');
+  else setBadge(inp, badgeId, 'er');
+}
 
 // ==================== CARD-ID LOOKUP ====================
 function resolveCard(role) {
@@ -2019,17 +2071,18 @@ async function submitForm() {
     savedList.push({ filename, ...protocol });
     localStorage.setItem('mt_protokolle_list', JSON.stringify(savedList));
     
+    // Konzentration als Zahl speichern - WICHTIG für Statistik!
     measurements.push({
       datum: protocol.datum.split('T')[0],
       anlagenEq: protocol.anlagenEq,
-      uv1: parseFloat(protocol.uv1) || 0,
+      uv1: protocol.uv1 ? parseFloat(protocol.uv1) : 0,
       uv1_eq: protocol.uv1_eq,
-      uv2: parseFloat(protocol.uv2) || 0,
+      uv2: protocol.uv2 ? parseFloat(protocol.uv2) : 0,
       uv2_eq: protocol.uv2_eq,
-      konz: parseFloat(protocol.konzentration) || 0,
-      restmag: parseFloat(protocol.restmag) || 0,
-      feld_kreis: parseFloat(protocol.feld_kreis) || 0,
-      feld_laengs: parseFloat(protocol.feld_laengs) || 0,
+      konz: protocol.konzentration ? parseFloat(protocol.konzentration) : 0,
+      restmag: protocol.restmag ? parseFloat(protocol.restmag) : 0,
+      feld_kreis: protocol.feld_kreis ? parseFloat(protocol.feld_kreis) : 0,
+      feld_laengs: protocol.feld_laengs ? parseFloat(protocol.feld_laengs) : 0,
       vk1_sn: protocol.vk1_sn,
       vk1_eq: protocol.vk1_eq,
       vk1_checked: protocol.vk1_checked
@@ -2066,11 +2119,9 @@ function enableAllFields(enable) {
     }
   });
   
-  // Dorne-Mode Buttons
   document.getElementById('dm_dorn_button').disabled = !enable;
   document.getElementById('dm_getrennt_button').disabled = !enable;
   
-  // Ergebnis-Auswahl
   document.querySelectorAll('.ergo').forEach(el => {
     if (enable) {
       el.style.pointerEvents = 'auto';
@@ -2081,9 +2132,8 @@ function enableAllFields(enable) {
     }
   });
   
-  // Buttons
   document.querySelectorAll('.acts .btn').forEach(btn => {
-    if (btn.textContent.includes('Drucken')) return; // Drucken bleibt aktiv
+    if (btn.textContent.includes('Drucken')) return;
     if (enable) {
       btn.removeAttribute('disabled');
     } else {
@@ -2146,20 +2196,12 @@ async function loadProtocol(filename) {
       const data = await response.json();
       const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
       
-      // Zur Protokoll-Ansicht wechseln
       switchView('protokoll');
-      
-      // Alle Dropdowns laden
       updateAllDropdowns();
       
-      // Kurz warten bis DOM aktualisiert
       setTimeout(() => {
-        // Protokoll in Formular laden
         loadProtocolToForm(protocol);
-        
-        // Alle Felder deaktivieren (nur Lesen)
         enableAllFields(false);
-        
         alert('✅ Protokoll geladen (nur Lesen)');
       }, 500);
     } else {
@@ -2187,21 +2229,12 @@ async function printProtocol(filename) {
       const data = await response.json();
       const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
       
-      // Zur Protokoll-Ansicht wechseln
       switchView('protokoll');
-      
-      // Alle Dropdowns laden
       updateAllDropdowns();
       
-      // Kurz warten bis DOM aktualisiert
       setTimeout(() => {
-        // Protokoll in Formular laden
         loadProtocolToForm(protocol);
-        
-        // Alle Felder deaktivieren (nur Lesen)
         enableAllFields(false);
-        
-        // Drucken auslösen
         setTimeout(() => window.print(), 500);
       }, 500);
     } else {
@@ -2240,12 +2273,10 @@ async function deleteProtocol(filename, index) {
 function loadProtocolToForm(protocol) {
   console.log('Lade Protokoll:', protocol);
   
-  // Grunddaten
   document.getElementById('pruefgegenstand_feld').value = protocol.pruefgegenstand || '';
   document.getElementById('auftragsnummer_feld').value = protocol.auftrag || '';
   document.getElementById('pruefer_name_manuell').value = protocol.pruefer || '';
   
-  // Prüfer Card-ID
   if (protocol.pruefer) {
     const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.pruefer);
     if (found) {
@@ -2254,7 +2285,6 @@ function loadProtocolToForm(protocol) {
     }
   }
   
-  // Supervisor Card-ID
   if (protocol.supervisor) {
     const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.supervisor);
     if (found) {
@@ -2263,19 +2293,15 @@ function loadProtocolToForm(protocol) {
     }
   }
   
-  // Datum
   document.getElementById('datum_feld').value = protocol.datum || '';
   
-  // Ergebnis
   if (protocol.ergebnis) selErg(protocol.ergebnis);
   
-  // Prüfbedingungen
   document.getElementById('konzentration_feld').value = protocol.konzentration || '';
   document.getElementById('ansatz_datum_feld').value = protocol.ansatz_datum || '2026-01-01';
   document.getElementById('restmag_feld').value = protocol.restmag || '';
   if (protocol.restmag) chkMax(document.getElementById('restmag_feld'), 4.0, 5.0);
   
-  // Magnetisierung
   document.getElementById('kreis_feld_feld').value = protocol.feld_kreis || '';
   if (protocol.feld_kreis) chkFeld(document.getElementById('kreis_feld_feld'));
   
@@ -2285,18 +2311,15 @@ function loadProtocolToForm(protocol) {
   document.getElementById('weiss_raum_feld').value = protocol.weiss_raum || '';
   if (protocol.weiss_raum) chkMax(document.getElementById('weiss_raum_feld'), 15, 20);
   
-  // Anlage
   if (protocol.anlagenEq) {
     const eqFlux = document.getElementById('eq_flux_auswahl');
     if (eqFlux) {
       eqFlux.value = protocol.anlagenEq;
       saveEQ('eq_flux_auswahl');
-      // Lampenbereich neu aufbauen
       updateLampenAuswahl();
     }
   }
   
-  // Lampen (nachdem die Dropdowns geladen wurden)
   setTimeout(() => {
     if (protocol.uv1_eq && document.getElementById('eq_uv1_auswahl')) {
       document.getElementById('eq_uv1_auswahl').value = protocol.uv1_eq;
@@ -2323,7 +2346,6 @@ function loadProtocolToForm(protocol) {
     }
   }, 500);
   
-  // VK1
   if (protocol.vk1_sn && document.getElementById('vk1_sn_auswahl')) {
     document.getElementById('vk1_sn_auswahl').value = protocol.vk1_sn;
   }
@@ -2334,7 +2356,6 @@ function loadProtocolToForm(protocol) {
     document.getElementById('cb_vk1_feld').checked = protocol.vk1_checked || false;
   }
   
-  // Messgeräte
   if (protocol.luxmeter_eq && document.getElementById('eq_luxmeter_auswahl')) {
     document.getElementById('eq_luxmeter_auswahl').value = protocol.luxmeter_eq;
   }
@@ -2342,7 +2363,6 @@ function loadProtocolToForm(protocol) {
     document.getElementById('eq_feldmesser_auswahl').value = protocol.feldmesser_eq;
   }
   
-  // Checkliste
   const checkboxes = {
     'cb_funktionstest_feld': protocol.checkliste?.funktionstest,
     'cb_entmag_feld': protocol.checkliste?.entmag,
@@ -2357,7 +2377,6 @@ function loadProtocolToForm(protocol) {
     if (el) el.checked = value || false;
   });
   
-  // Level
   if (protocol.level) {
     document.getElementById('level1_check').checked = protocol.level.l1 || false;
     document.getElementById('level2_check').checked = protocol.level.l2 || false;
@@ -2370,15 +2389,16 @@ function loadProtocolToForm(protocol) {
 function changeStatisticType() { updateStatistics(); }
 
 function updateStatistics() {
+  console.log('Aktualisiere Statistik...');
   const typ = document.getElementById('stats_type_selector').value;
   const von = document.getElementById('stat_von_field').value;
   const bis = document.getElementById('stat_bis_field').value;
   const filterEq = document.getElementById('stat_equipment_selector').value;
   
-  let data = [];
-  
-  // Daten aus Protokollen holen
   const protokolle = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  console.log('Protokolle:', protokolle);
+  
+  let data = [];
   
   if (typ === 'uv' || typ === 'konzentration' || typ === 'restmagnetismus' || typ === 'feldstaerke') {
     data = protokolle
@@ -2413,6 +2433,8 @@ function updateStatistics() {
   data = data.filter(d => d.datum >= von && d.datum <= bis);
   data.sort((a,b) => a.datum.localeCompare(b.datum));
   
+  console.log('Gefilterte Daten:', data);
+  
   updateSummaryCards(data, typ);
   updateStatsChart(data, typ);
   updateStatsTable(data, typ);
@@ -2428,7 +2450,6 @@ function updateSummaryCards(data, typ) {
     const maxUV1 = Math.max(...data.map(d => d.uv1 || 0));
     const maxUV2 = Math.max(...data.map(d => d.uv2 || 0));
     
-    // Häufigste Lampe ermitteln (egal ob UV1 oder UV2)
     const eqCounts = {};
     data.forEach(d => {
       if (d.uv1_eq) eqCounts[d.uv1_eq] = (eqCounts[d.uv1_eq] || 0) + 1;
@@ -2622,10 +2643,8 @@ function exportStatistics() {
 function resetForm() {
   if (!confirm('Formular zurücksetzen?')) return;
   
-  // Alle Felder wieder aktivieren
   enableAllFields(true);
   
-  // Alle Eingabefelder leeren
   const inputIds = [
     'pruefgegenstand_feld', 'auftragsnummer_feld', 'pruefer_name_manuell', 
     'kreis_feld_feld', 'laengs_feld_feld', 'uv1_uw_feld', 'uv2_uw_feld', 
@@ -2639,7 +2658,6 @@ function resetForm() {
     if (el) el.value = '';
   });
   
-  // Card-ID Felder
   ['pruefer_card_feld', 'supervisor_card_feld'].forEach(id => {
     const el = document.getElementById(id); 
     if (el) { 
@@ -2648,13 +2666,11 @@ function resetForm() {
     }
   });
   
-  // Hidden Felder
   ['pruefer_name_versteckt', 'supervisor_name_versteckt'].forEach(id => { 
     const el = document.getElementById(id); 
     if (el) el.value = ''; 
   });
   
-  // Resolved Anzeigen
   ['pruefer_resolved_anzeige', 'supervisor_resolved_anzeige'].forEach(id => {
     const el = document.getElementById(id); 
     if (el) { 
@@ -2663,7 +2679,6 @@ function resetForm() {
     }
   });
   
-  // Checkboxen
   const checkboxIds = [
     'cb_funktionstest_feld', 'cb_vk1_feld', 'cb_entmag_feld', 'cb_uv_v_feld', 
     'cb_rueck_feld', 'cb_weiss_v_feld', 'cb_feldhom_feld',
@@ -2675,7 +2690,6 @@ function resetForm() {
     if (el) el.checked = false;
   });
   
-  // Badges zurücksetzen
   const badgeFields = [
     'uv1_uw_feld', 'uv2_uw_feld', 'uv1_lx_feld', 'uv2_lx_feld', 
     'weiss_raum_feld', 'konzentration_feld', 'restmag_feld', 
@@ -2685,21 +2699,20 @@ function resetForm() {
   badgeFields.forEach(id => {
     const inp = document.getElementById(id); 
     if (inp) inp.classList.remove('ok','wn','er');
-    const b = document.getElementById('b_' + id.replace('_feld', '')); 
+    const badgeId = id.replace('_feld', '');
+    const b = document.getElementById('b_' + badgeId); 
     if (b) { 
       b.className = 'badge nu'; 
       b.textContent = '—'; 
     }
   });
   
-  // Ergebnis zurücksetzen
   ['keine','linear','nichtlinear'].forEach(o => {
     document.getElementById('eo-'+o).classList.remove('ok','er');
     document.getElementById('ec-'+o).textContent = '';
   });
   ergVal = null;
   
-  // Aktuelles Datum setzen
   const now = new Date();
   document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
 }
@@ -2710,13 +2723,12 @@ async function autoConnect() {
   const statusEl = document.getElementById('github_status_message');
   statusEl.innerHTML = '<span>⏳ Automatische Verbindung wird hergestellt...</span>';
   
-  // GitHub Config mit dem RICHTIGEN Token setzen
   githubConfig = {
     owner: 'Acendrion1984',
     repo: 'SelfAudit',
     branch: 'main',
     filename: 'MT_Protokoll.json',
-    token: 'ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND', // RICHTIGER Token!
+    token: 'ghp_BgJ1gGZC1TmlClyAt3k7flP94d2urA33DCND',
     supervisorPassword: 'MT-SUPER-2026'
   };
   
@@ -2735,31 +2747,20 @@ async function autoConnect() {
 window.addEventListener('load', async () => {
   console.log('🚀 App wird gestartet...');
   
-  // Automatische Verbindung herstellen
   await autoConnect();
-  
-  // Regelmäßige Synchronisation alle 5 Minuten
   setInterval(autoConnect, 300000);
   
-  // Dropdowns initialisieren (Fallback)
   setTimeout(() => {
     updateAllDropdowns();
   }, 1000);
   
-  // Gespeicherte EQ-Werte wiederherstellen
   restoreEQ();
-  
-  // Lampenauswahl initialisieren
   updateLampenAuswahl();
   
-  // Aktuelles Datum setzen
   const now = new Date();
   document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   
-  // Messdaten laden
   measurements = JSON.parse(localStorage.getItem('mt_measurements') || '[]');
-  
-  // Mitarbeiterliste aktualisieren
   updateEmployeeList();
   
   console.log('✅ App gestartet');
