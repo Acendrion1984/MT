@@ -383,7 +383,6 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   .skizt{font-size:9px!important}
   .meta{font-size:9px!important;padding:4px 10px!important}
   
-  /* Gespeicherte Protokolle: Keine Bearbeitung möglich */
   input:disabled, select:disabled, .cbox-inp:disabled {
     opacity:1!important;
     background:#f5f5f5!important;
@@ -1356,9 +1355,6 @@ function updateAllDropdowns() {
   
   updateEquipmentFilter();
   updateZuordnungDropdowns();
-  
-  // Lampenbereich aktualisieren
-  updateLampenAuswahl();
 }
 
 // Equipment Filter für Statistik aktualisieren
@@ -2003,19 +1999,23 @@ async function printProtocol(filename) {
       // Zur Protokoll-Ansicht wechseln
       switchView('protokoll');
       
-      // Kurz warten bis die View geladen ist
+      // Wichtig: Alle Dropdowns laden und dann Protokoll laden
       setTimeout(() => {
-        // Protokoll laden
-        loadProtocolToForm(protocol);
+        updateAllDropdowns();
         
-        // Alle Felder deaktivieren (nur Lesen)
-        enableAllFields(false);
-        
-        // Drucken auslösen
-        setTimeout(() => window.print(), 500);
+        setTimeout(() => {
+          // Protokoll laden
+          loadProtocolToForm(protocol);
+          
+          // Alle Felder deaktivieren (nur Lesen)
+          enableAllFields(false);
+          
+          // Kurz warten bis alles geladen ist, dann drucken
+          setTimeout(() => window.print(), 1000);
+        }, 300);
       }, 200);
     } else {
-      alert('Fehler beim Laden');
+      alert('Fehler beim Laden des Protokolls!');
     }
   } catch(e) {
     alert('Fehler: ' + e.message);
@@ -2042,15 +2042,12 @@ async function deleteProtocol(filename, index) {
     loadSavedProtocols();
     alert('✅ Gelöscht');
   } else {
-    alert('❌ Fehler');
+    alert('❌ Fehler beim Löschen!');
   }
 }
 
 // ==================== PROTOKOLL LADEN ====================
 function loadProtocolToForm(protocol) {
-  // Sicherstellen, dass alle Dropdowns geladen sind
-  updateAllDropdowns();
-  
   document.getElementById('pruefgegenstand').value = protocol.pruefgegenstand || '';
   document.getElementById('auftragsnummer').value = protocol.auftrag || '';
   document.getElementById('pruefer_name_input').value = protocol.pruefer || '';
@@ -2099,8 +2096,15 @@ function loadProtocolToForm(protocol) {
     }
   }
   
-  // Kurz warten bis die Lampen-Dropdowns existieren
+  // Werte für Lampen setzen (nachdem die Dropdowns geladen wurden)
   setTimeout(() => {
+    if (protocol.uv1_eq && document.getElementById('eq_uv1')) {
+      document.getElementById('eq_uv1').value = protocol.uv1_eq;
+    }
+    if (protocol.uv2_eq && document.getElementById('eq_uv2')) {
+      document.getElementById('eq_uv2').value = protocol.uv2_eq;
+    }
+    
     if (protocol.uv1 && document.getElementById('uv1_uw')) {
       document.getElementById('uv1_uw').value = protocol.uv1;
       chkUV(document.getElementById('uv1_uw'));
@@ -2117,14 +2121,7 @@ function loadProtocolToForm(protocol) {
       document.getElementById('uv2_lx').value = protocol.uv2_lx;
       chkMax(document.getElementById('uv2_lx'), 15, 20);
     }
-    
-    if (protocol.uv1_eq && document.getElementById('eq_uv1')) {
-      document.getElementById('eq_uv1').value = protocol.uv1_eq;
-    }
-    if (protocol.uv2_eq && document.getElementById('eq_uv2')) {
-      document.getElementById('eq_uv2').value = protocol.uv2_eq;
-    }
-  }, 300);
+  }, 500);
   
   if (protocol.vk1_sn && document.getElementById('vk1_sn')) {
     document.getElementById('vk1_sn').value = protocol.vk1_sn;
@@ -2442,8 +2439,31 @@ function resetForm() {
   document.getElementById('datum').value = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
 }
 
+// ==================== AUTOMATISCHE SYNCHRONISATION ====================
+async function autoSync() {
+  console.log('🔄 Automatische Synchronisation läuft...');
+  if (githubConfig.token && githubConfig.owner) {
+    try {
+      await connectGithub();
+      console.log('✅ Synchronisation erfolgreich');
+    } catch (e) {
+      console.error('❌ Synchronisation fehlgeschlagen:', e);
+    }
+  }
+}
+
 // ==================== INITIALISIERUNG ====================
 window.addEventListener('load', async () => {
+  console.log('🚀 App wird gestartet...');
+  
+  // Automatische Synchronisation beim Start
+  if (githubConfig.token) {
+    await autoSync();
+  }
+  
+  // Regelmäßige Synchronisation alle 5 Minuten
+  setInterval(autoSync, 300000);
+  
   if (githubConfig.token) await loadDropdownsFromGithub();
   else updateAllDropdowns();
   
@@ -2464,6 +2484,8 @@ window.addEventListener('load', async () => {
   document.getElementById('supervisor_password').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
   
   updateEquipmentFilter();
+  
+  console.log('✅ App gestartet');
 });
 </script>
 </body>
