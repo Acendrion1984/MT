@@ -382,6 +382,26 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   .skizc{min-height:60px!important;padding:4px 10px!important}
   .skizt{font-size:9px!important}
   .meta{font-size:9px!important;padding:4px 10px!important}
+  
+  /* Gespeicherte Protokolle: Keine Bearbeitung möglich */
+  input:disabled, select:disabled, .cbox-inp:disabled {
+    opacity:1!important;
+    background:#f5f5f5!important;
+    border-color:#ccc!important;
+    color:var(--sa)!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  
+  .cbox-inp:checked:disabled {
+    background:var(--sg)!important;
+    border-color:var(--sg)!important;
+  }
+  
+  .badge {
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
 }
 </style>
 </head>
@@ -807,7 +827,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     </div>
   </div>
   
-  <!-- Dynamischer Lampenbereich - Jetzt mit einfacher Liste aller Lampen -->
+  <!-- Dynamischer Lampenbereich -->
   <div id="lampen_container"></div>
   
   <div class="ir">
@@ -970,7 +990,11 @@ let dropdownData = {
   uvlampen: ['12817865', '12817866', '12817867', '12817868', '12817869', '12817870'],
   dorne: ['400x25', '400x40', '400x50', '400x65', '400x70', '400x80', '600x25', '600x40'],
   vk1: ['KD200811', 'KD200812', 'KD200813', 'KD200814', 'KD200815'],
-  lampenzuordnung: {}  // z.B. {"12425560": {"lampe1":"12817865", "lampe2":"12817866"}}
+  lampenzuordnung: {
+    "12425560": {"lampe1":"12817865", "lampe2":"12817866"},
+    "12425561": {"lampe1":"12817867", "lampe2":"12817868"},
+    "12425562": {"lampe1":"12817869", "lampe2":"12817870"}
+  }
 };
 
 // Lade gespeicherte Config
@@ -1017,6 +1041,11 @@ function switchView(view) {
     document.getElementById('github_filename').value = githubConfig.filename;
     document.getElementById('github_token').value = githubConfig.token;
     document.getElementById('supervisor_password').value = githubConfig.supervisorPassword || 'MT-SUPER-2026';
+  }
+  
+  // Wenn wir zurück zum Protokoll wechseln, alle Felder wieder aktivieren
+  if (view === 'protokoll') {
+    enableAllFields(true);
   }
 }
 
@@ -1327,6 +1356,9 @@ function updateAllDropdowns() {
   
   updateEquipmentFilter();
   updateZuordnungDropdowns();
+  
+  // Lampenbereich aktualisieren
+  updateLampenAuswahl();
 }
 
 // Equipment Filter für Statistik aktualisieren
@@ -1593,6 +1625,9 @@ const LS = 'mt_eq_selections';
 const LS_MODE = 'mt_dorn_mode';
 
 function saveEQ(id) {
+  // Nicht speichern wenn wir im "gespeicherten" Modus sind (readonly)
+  if (document.getElementById(id)?.disabled) return;
+  
   const s = JSON.parse(localStorage.getItem(LS) || '{}');
   s[id] = document.getElementById(id)?.value;
   localStorage.setItem(LS, JSON.stringify(s));
@@ -1605,7 +1640,7 @@ function loadStore() { try { return JSON.parse(localStorage.getItem(LS)) || {}; 
 
 function restoreEQ() {
   const s = loadStore();
-  EQ_IDS.forEach(id => { if (s[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = s[id]; } });
+  EQ_IDS.forEach(id => { if (s[id] !== undefined) { const el = document.getElementById(id); if (el && !el.disabled) el.value = s[id]; } });
   document.getElementById('dorn_eq_ref').textContent = document.getElementById('eq_flux')?.value || '12425560';
   const mode = localStorage.getItem(LS_MODE) || 'dorn';
   setDornMode(mode, true);
@@ -1615,6 +1650,7 @@ function restoreEQ() {
 function updateLampenAuswahl() {
   const anlage = document.getElementById('eq_flux').value;
   const container = document.getElementById('lampen_container');
+  const isReadOnly = document.getElementById('eq_flux')?.disabled || false;
   
   // Liste aller verfügbaren Lampen aus den Dropdowns
   const uvOptions = '<option value="">— Lampe wählen —</option>' + 
@@ -1633,7 +1669,7 @@ function updateLampenAuswahl() {
     <div class="ir">
       <div class="irl"><div class="lbl">UV Lampe 1</div><div class="sub">Alle verfügbaren Lampen</div></div>
       <div class="irr">
-        <select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')">
+        <select class="eq-dd" id="eq_uv1" onchange="saveEQ('eq_uv1')" ${isReadOnly ? 'disabled' : ''}>
           ${uvOptions}
         </select>
       </div>
@@ -1641,14 +1677,14 @@ function updateLampenAuswahl() {
     <div class="ir alt">
       <div class="irl"><div class="lbl">UV1 Intensität</div></div>
       <div class="irr">
-        <input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)">
+        <input type="text" id="uv1_uw" class="tol" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv1_uw">—</span>
       </div>
     </div>
     <div class="ir">
       <div class="irl"><div class="lbl">UV1 Restweißlicht</div></div>
       <div class="irr">
-        <input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)">
+        <input type="text" id="uv1_lx" class="tol" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv1_lx">—</span>
       </div>
     </div>
@@ -1656,7 +1692,7 @@ function updateLampenAuswahl() {
     <div class="ir alt">
       <div class="irl"><div class="lbl">UV Lampe 2</div><div class="sub">Alle verfügbaren Lampen</div></div>
       <div class="irr">
-        <select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')">
+        <select class="eq-dd" id="eq_uv2" onchange="saveEQ('eq_uv2')" ${isReadOnly ? 'disabled' : ''}>
           ${uvOptions}
         </select>
       </div>
@@ -1664,20 +1700,23 @@ function updateLampenAuswahl() {
     <div class="ir">
       <div class="irl"><div class="lbl">UV2 Intensität</div></div>
       <div class="irr">
-        <input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)">
+        <input type="text" id="uv2_uw" class="tol" oninput="chkUV(this)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv2_uw">—</span>
       </div>
     </div>
     <div class="ir alt">
       <div class="irl"><div class="lbl">UV2 Restweißlicht</div></div>
       <div class="irr">
-        <input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)">
+        <input type="text" id="uv2_lx" class="tol" oninput="chkMax(this,15,20)" ${isReadOnly ? 'disabled' : ''}>
         <span class="badge nu" id="b_uv2_lx">—</span>
       </div>
     </div>
   `;
   
   container.innerHTML = html;
+  
+  // Wenn wir im ReadOnly-Modus sind, keine Werte wiederherstellen
+  if (isReadOnly) return;
   
   // Gespeicherte Werte wiederherstellen
   const s = loadStore();
@@ -1859,6 +1898,55 @@ async function submitForm() {
   }
 }
 
+// ==================== ALLE FELDER AKTIVIEREN/DEAKTIVIEREN ====================
+function enableAllFields(enable) {
+  const fields = [
+    'pruefgegenstand', 'auftragsnummer', 'pruefer_name_input', 'kreis_feld', 'laengs_feld',
+    'uv1_uw', 'uv2_uw', 'uv1_lx', 'uv2_lx', 'weiss_raum', 'konzentration', 'restmag',
+    'kreis_stufe', 'kreis_anzeige', 'laengs_stufe', 'laengs_anzeige', 'pruefer_card',
+    'supervisor_card', 'eq_flux', 'eq_luxmeter', 'eq_feldmesser', 'dorn_both',
+    'dorn_kreis', 'dorn_laengs', 'vk1_sn', 'vk1_eq', 'eq_uv1', 'eq_uv2', 'ansatz_datum',
+    'cb_funktionstest', 'cb_vk1', 'cb_entmag', 'cb_uv_v', 'cb_rueck', 'cb_weiss_v',
+    'cb_feldhom', 'level1', 'level2', 'level3', 'pw'
+  ];
+  
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      if (enable) {
+        el.removeAttribute('disabled');
+      } else {
+        el.setAttribute('disabled', 'disabled');
+      }
+    }
+  });
+  
+  // Dorne-Mode Buttons
+  document.getElementById('dm_dorn').disabled = !enable;
+  document.getElementById('dm_getrennt').disabled = !enable;
+  
+  // Ergebnis-Auswahl
+  document.querySelectorAll('.ergo').forEach(el => {
+    if (enable) {
+      el.style.pointerEvents = 'auto';
+      el.style.opacity = '1';
+    } else {
+      el.style.pointerEvents = 'none';
+      el.style.opacity = '0.7';
+    }
+  });
+  
+  // Buttons
+  document.querySelectorAll('.acts .btn').forEach(btn => {
+    if (btn.textContent.includes('Drucken')) return; // Drucken bleibt aktiv
+    if (enable) {
+      btn.removeAttribute('disabled');
+    } else {
+      btn.setAttribute('disabled', 'disabled');
+    }
+  });
+}
+
 // ==================== GESPEICHERTE PROTOKOLLE ====================
 function loadSavedProtocols() {
   const saved = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
@@ -1912,9 +2000,20 @@ async function printProtocol(filename) {
       const data = await response.json();
       const protocol = JSON.parse(atob(data.content.replace(/\n/g, '')));
       
+      // Zur Protokoll-Ansicht wechseln
       switchView('protokoll');
-      loadProtocolToForm(protocol);
-      setTimeout(() => window.print(), 500);
+      
+      // Kurz warten bis die View geladen ist
+      setTimeout(() => {
+        // Protokoll laden
+        loadProtocolToForm(protocol);
+        
+        // Alle Felder deaktivieren (nur Lesen)
+        enableAllFields(false);
+        
+        // Drucken auslösen
+        setTimeout(() => window.print(), 500);
+      }, 200);
     } else {
       alert('Fehler beim Laden');
     }
@@ -1949,8 +2048,12 @@ async function deleteProtocol(filename, index) {
 
 // ==================== PROTOKOLL LADEN ====================
 function loadProtocolToForm(protocol) {
+  // Sicherstellen, dass alle Dropdowns geladen sind
+  updateAllDropdowns();
+  
   document.getElementById('pruefgegenstand').value = protocol.pruefgegenstand || '';
   document.getElementById('auftragsnummer').value = protocol.auftrag || '';
+  document.getElementById('pruefer_name_input').value = protocol.pruefer || '';
   
   if (protocol.pruefer) {
     const found = Object.entries(CARD_DB).find(([id, name]) => name === protocol.pruefer);
@@ -1991,10 +2094,12 @@ function loadProtocolToForm(protocol) {
     if (eqFlux) {
       eqFlux.value = protocol.anlagenEq;
       saveEQ('eq_flux');
+      // Lampenbereich neu aufbauen
       updateLampenAuswahl();
     }
   }
   
+  // Kurz warten bis die Lampen-Dropdowns existieren
   setTimeout(() => {
     if (protocol.uv1 && document.getElementById('uv1_uw')) {
       document.getElementById('uv1_uw').value = protocol.uv1;
@@ -2015,13 +2120,11 @@ function loadProtocolToForm(protocol) {
     
     if (protocol.uv1_eq && document.getElementById('eq_uv1')) {
       document.getElementById('eq_uv1').value = protocol.uv1_eq;
-      saveEQ('eq_uv1');
     }
     if (protocol.uv2_eq && document.getElementById('eq_uv2')) {
       document.getElementById('eq_uv2').value = protocol.uv2_eq;
-      saveEQ('eq_uv2');
     }
-  }, 200);
+  }, 300);
   
   if (protocol.vk1_sn && document.getElementById('vk1_sn')) {
     document.getElementById('vk1_sn').value = protocol.vk1_sn;
@@ -2301,6 +2404,9 @@ function exportStatistics() {
 // ==================== RESET ====================
 function resetForm() {
   if (!confirm('Formular zurücksetzen?')) return;
+  
+  // Alle Felder wieder aktivieren
+  enableAllFields(true);
   
   ['pruefgegenstand','auftragsnummer','pruefer_name_input','kreis_feld','laengs_feld',
    'uv1_uw','uv2_uw','uv1_lx','uv2_lx','weiss_raum','konzentration','restmag',
