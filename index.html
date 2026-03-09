@@ -113,6 +113,8 @@ input.num::-webkit-outer-spin-button,input.num::-webkit-inner-spin-button{-webki
 .dorne-toggle{padding:6px 16px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
 .dorne-toggle.active{background:var(--sg);color:#fff}
 .dorne-toggle:hover:not(.active){background:var(--sg3);color:var(--sg2)}
+.mag-skizze{padding:8px 14px 6px;border-bottom:1px solid #e0e0e0;background:#fafcfb}
+.mag-skizze-title{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--sa3);letter-spacing:.6px;margin-bottom:5px;font-family:'Barlow Condensed','Arial Narrow',sans-serif}
 .card-resolved{margin-top:5px;padding:5px 10px;border-radius:4px;font-size:12px;font-weight:700}
 .card-resolved.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
 .card-resolved.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
@@ -259,16 +261,18 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   }
   
   /* Skizze - sichtbar im Druck */
-  .skizze-container {
-    display: flex!important;
-    justify-content: center!important;
-    padding: 10px 0!important;
-    background: #f9f9f9!important;
-    border: 1px solid #ccc!important;
-    margin: 10px 14px!important;
-    border-radius: 4px!important;
-    page-break-inside: avoid!important;
-  }
+.skizze-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  background: #f5f5f5;
+  border: 1px solid var(--gmid);
+  margin: 10px auto;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+}
   
   /* Zwei-Seiten-Layout */
   .page-break {
@@ -330,6 +334,18 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     padding: 3px 5px!important;
     font-size: 9px!important;
   }
+  /* RINGNUMMERN FIX - NUR IM DRUCK */
+  #new_ringnummer_input,
+  #ringnummern_editor .btn.sec,
+  #ringnummern_editor div:first-child {
+    display: none !important;
+  }
+  #ringnummern_list:empty {
+    display: none !important;
+  }
+  #ringnummern_list div:only-child:contains("Keine Ringnummern") {
+    display: none !important;
+  }
 }
 /* === ENDE DRUCKOPTIMIERUNG === */
 
@@ -344,10 +360,19 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   border-radius: 4px;
 }
 
+
 .skizze-svg {
+  display: block;
+  margin: 0 auto;
   max-width: 100%;
   height: auto;
 }
+  .skizze-svg text,
+  .skizze-svg rect,
+  .skizze-svg circle,
+  .skizze-svg line {
+    vector-effect: non-scaling-stroke!important;
+  }
 /* === ENDE SKIZZE === */
 </style>
 <style>
@@ -549,34 +574,57 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   </div>
 </div>
 
-<!-- === SKIZZE vor Magnetisierung === -->
-<div class="skizze-container">
-  <svg class="skizze-svg" width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
-    <!-- Kreis-Magnetisierung (links) -->
-    <rect x="30" y="30" width="120" height="60" fill="#f0f0f0" stroke="#333" stroke-width="1.5" />
-    <text x="60" y="20" font-family="Arial" font-size="12" fill="#333">Kreis-Magnetisierung</text>
-    <line x1="90" y1="30" x2="90" y2="90" stroke="#00893d" stroke-width="2" stroke-dasharray="5,3" />
-    <text x="100" y="60" font-family="Arial" font-size="10" fill="#00893d">Strom I</text>
-    <circle cx="90" cy="60" r="30" fill="none" stroke="#c0392b" stroke-width="2" />
-    <text x="130" y="80" font-family="Arial" font-size="9" fill="#c0392b">H-Feld (kreisförmig)</text>
-    
-    <!-- Längs-Magnetisierung (rechts) -->
-    <rect x="280" y="30" width="150" height="60" fill="#f0f0f0" stroke="#333" stroke-width="1.5" />
-    <text x="320" y="20" font-family="Arial" font-size="12" fill="#333">Längs-Magnetisierung</text>
-    <line x1="330" y1="40" x2="380" y2="40" stroke="#00893d" stroke-width="2" marker-end="url(#arrow)" />
-    <text x="340" y="30" font-family="Arial" font-size="10" fill="#00893d">Spule / Joch</text>
-    <rect x="330" y="50" width="50" height="30" fill="none" stroke="#c0392b" stroke-width="2" />
-    <text x="340" y="80" font-family="Arial" font-size="9" fill="#c0392b">H-Feld (longitudinal)</text>
-    
-    <!-- Pfeil-Marker -->
+<!-- MAGNETISIERUNGSSKIZZE -->
+<div class="mag-skizze">
+  <div class="mag-skizze-title">Magnetisierungsprinzip &mdash; Magnetization principle</div>
+  <svg viewBox="0 0 540 105" style="width:100%;max-width:600px;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
-        <path d="M0,0 L10,5 L0,10 Z" fill="#00893d" />
-      </marker>
+      <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#00893d"/></marker>
     </defs>
+    <!-- KREISMAGNETISIERUNG links -->
+    <text x="8" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">KREISMAGNETISIERUNG / circumferential</text>
+    <text x="8" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Aufsicht / top view</text>
+    <!-- Aussenring -->
+    <circle cx="105" cy="63" r="36" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
+    <!-- Bohrung -->
+    <circle cx="105" cy="63" r="17" fill="#ffffff" stroke="#444" stroke-width="1.5"/>
+    <!-- Dorn -->
+    <circle cx="105" cy="63" r="8" fill="#888" stroke="#555" stroke-width="1.2"/>
+    <text x="105" y="67" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#fff">I</text>
+    <!-- B-Feld-Pfeile zirkular -->
+    <line x1="96" y1="27" x2="114" y2="27" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="141" y1="55" x2="141" y2="71" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="114" y1="99" x2="96" y2="99" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="69" y1="71" x2="69" y2="55" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <text x="148" y="46" font-family="Arial,sans-serif" font-size="9" font-style="italic" font-weight="bold" fill="#00893d">B</text>
+    <text x="105" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="#666">Ring</text>
+    <!-- Trennlinie -->
+    <line x1="228" y1="5" x2="228" y2="102" stroke="#d0d0d0" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <!-- LAENGSMAGNETISIERUNG rechts -->
+    <text x="240" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">LAENGSMAGNETISIERUNG / longitudinal</text>
+    <text x="240" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Seitenansicht / side view</text>
+    <!-- Ring-Querschnitt -->
+    <rect x="308" y="31" width="116" height="50" rx="3" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
+    <!-- Bohrung gestrichelt -->
+    <line x1="308" y1="45" x2="424" y2="45" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="308" y1="68" x2="424" y2="68" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <text x="366" y="59" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" fill="#555">Ring</text>
+    <!-- N-Pol -->
+    <rect x="264" y="39" width="40" height="34" rx="3" fill="#3366cc" stroke="#223" stroke-width="1.2"/>
+    <text x="284" y="61" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#fff">N</text>
+    <!-- S-Pol -->
+    <rect x="428" y="39" width="40" height="34" rx="3" fill="#cc3333" stroke="#322" stroke-width="1.2"/>
+    <text x="448" y="61" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#fff">S</text>
+    <!-- H-Pfeile -->
+    <line x1="304" y1="56" x2="320" y2="56" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="342" y1="56" x2="360" y2="56" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="380" y1="56" x2="398" y2="56" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <line x1="420" y1="56" x2="436" y2="56" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
+    <text x="366" y="44" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-style="italic" font-weight="bold" fill="#00893d">H &#8594;</text>
+    <text x="284" y="83" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" fill="#3366cc">Joch/yoke</text>
+    <text x="448" y="83" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" fill="#cc3333">Joch/yoke</text>
   </svg>
 </div>
-<!-- === ENDE SKIZZE === -->
 
 <div class="card">
   <div class="sec">Magnetisierung — Magnetization</div>
