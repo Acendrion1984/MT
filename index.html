@@ -1699,52 +1699,10 @@ async function connectGithub() {
 }
 
 async function saveProtocolToGithub(protocol, filename) {
-  // Insert OMS order details JSON into protocol before saving
-  if (window.getOMSResponse) {
-    try {
-      protocol.omsOrderDetails = window.getOMSResponse();
-    } catch (e) {
-      console.warn('Could not attach OMS response to protocol', e);
-    }
-  }
-
   if (!githubConfig.token || !githubConfig.owner) return false;
   
   try {
     const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    
-    const getResponse = await fetch(url, {
-      headers: { 'Authorization': `token ${githubConfig.token}` }
-    });
-    
-    let sha = null;
-    if (getResponse.ok) {
-      const existing = await getResponse.json();
-      sha = existing.sha;
-    }
-    
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(protocol, null, 2))));
-    
-    const putResponse = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${githubConfig.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: `Protokoll ${filename}`,
-        content: content,
-        branch: githubConfig.branch,
-        sha: sha
-      })
-    });
-    
-    return putResponse.ok;
-  } catch(e) {
-    console.error('Fehler:', e);
-    return false;
-  }
-}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
     
     const getResponse = await fetch(url, {
       headers: { 'Authorization': `token ${githubConfig.token}` }
@@ -3067,90 +3025,5 @@ window.addEventListener('load', async () => {
   console.log('✅ App gestartet');
 });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const orderInput = document.getElementById('auftragsnummer_feld');
-    let debounceTimer;
-    let lastJsonResponse = null;
-
-    // Create UI div for OMS API status near input
-    const apiStatusDiv = document.createElement('div');
-    apiStatusDiv.id = 'oms_api_status';
-    apiStatusDiv.style.marginTop = '6px';
-    apiStatusDiv.style.fontSize = '0.9em';
-    apiStatusDiv.style.color = '#333';
-    orderInput.parentNode.insertBefore(apiStatusDiv, orderInput.nextSibling);
-    
-    // Function to validate input: exactly 7 digits
-    function validateInput(value) {
-      return /^\d{7}$/.test(value);
-    }
-    
-    // Debounce function to delay API calls
-    function debounceFetch(orderNumber) {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => fetchOrderDetails(orderNumber), 500);
-    }
-    
-    // Fetch OMS order details and display response
-    async function fetchOrderDetails(orderNumber) {
-      const url = `https://oms-csw.de-d.aks.schaeffler.com/oms/api/extern/GetOrderDetail?OrderNumber=${orderNumber}`;
-      apiStatusDiv.textContent = 'Querying OMS API...';
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          apiStatusDiv.textContent = 'Error fetching order details. Status: ' + response.status;
-          lastJsonResponse = null;
-          return;
-        }
-        const json = await response.json();
-        lastJsonResponse = json;
-        displayOrderDetails(json);
-      } catch (error) {
-        apiStatusDiv.textContent = 'Fetch error: ' + error.message;
-        lastJsonResponse = null;
-      }
-    }
-    
-    // Display parsed order details in UI near order input
-    function displayOrderDetails(json) {
-      if (!json || Object.keys(json).length === 0) {
-        apiStatusDiv.textContent = 'No order details found.';
-        return;
-      }
-      // Customize the fields you want to display from JSON
-      const status = json.Status || 'Status N/A';
-      const orderNumber = json.OrderNumber || 'OrderNumber N/A';
-      const customer = json.CustomerName || 'Customer N/A';
-      apiStatusDiv.innerHTML = `<strong>Order Number:</strong> ${orderNumber} <br/>
-                                <strong>Status:</strong> ${status} <br/>
-                                <strong>Customer:</strong> ${customer}`;
-    }
-    
-    // Hook input events
-    orderInput.addEventListener('input', (e) => {
-      const value = e.target.value;
-      // Enforce only digits and max 7 chars
-      if (/[^0-9]/.test(value)) {
-        e.target.value = value.replace(/[^0-9]/g, '');
-      }
-      if (e.target.value.length > 7) {
-        e.target.value = e.target.value.slice(0, 7);
-      }
-      
-      if (validateInput(e.target.value)) {
-        debounceFetch(e.target.value);
-      } else {
-        apiStatusDiv.textContent = 'Order number must be exactly 7 digits.';
-        lastJsonResponse = null;
-      }
-    });
-    
-    // Expose lastJsonResponse for later use, e.g., saving protocol
-    window.getOMSResponse = () => lastJsonResponse || null;
-});
-</script>
-
 </body>
 </html>
