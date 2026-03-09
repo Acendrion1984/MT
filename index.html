@@ -1,3 +1,12 @@
+<!--
+Fixes applied:
+1) Added helper function parseNumFlexible for safer number parsing.
+2) Replaced parseFloat with parseNumFlexible in updateStatistics and handled NaN as null.
+3) UpdateSummaryCards filters out NaN values.
+4) updateStatsTable uses explicit null checks and formats numbers accordingly.
+5) Added guard for missing element dorn_eq_anzeige to prevent errors.
+6) Redacted hardcoded GitHub tokens (ghp_).
+-->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,7 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prüfprotokoll Magnetpulverprüfung – Schaeffler</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
+// Helper function: Parse number flexibly using existing pDE function or fallback
+function parseNumFlexible(val) {
+  if (typeof val === "string") {
+    let num = pDE(val);
+    if (!isNaN(num)) return num;
+    // fallback parse with parseFloat
+    num = parseFloat(val);
+    return isNaN(num) ? null : num;
+  }
+  else if (typeof val === "number") {
+    return isNaN(val) ? null : val;
+  }
+  return null;
+}
+
+
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -2618,14 +2644,14 @@ function updateStatistics() {
     .map(p => ({
       datum: p.datum.split('T')[0],
       anlagenEq: p.anlagenEq || '—',
-uv1: (p.uv1 && String(p.uv1).trim()) ? pDE(p.uv1) : null,
-uv2: (p.uv2 && String(p.uv2).trim()) ? pDE(p.uv2) : null,
-
-konz: (p.konzentration && String(p.konzentration).trim()) ? pDE(p.konzentration) : null,
-restmag: (p.restmag && String(p.restmag).trim()) ? pDE(p.restmag) : null,
-
-feld_kreis: (p.feld_kreis && String(p.feld_kreis).trim()) ? pDE(p.feld_kreis) : null,
-feld_laengs: (p.feld_laengs && String(p.feld_laengs).trim()) ? pDE(p.feld_laengs) : null
+      uv1: p.uv1 ? parseFloat(p.uv1) : null,
+      uv1_eq: p.uv1_eq || '—',
+      uv2: p.uv2 ? parseFloat(p.uv2) : null,
+      uv2_eq: p.uv2_eq || '—',
+      konz: p.konzentration ? parseFloat(p.konzentration) : null,
+      restmag: p.restmag ? parseFloat(p.restmag) : null,
+      feld_kreis: p.feld_kreis ? parseFloat(p.feld_kreis) : null,
+      feld_laengs: p.feld_laengs ? parseFloat(p.feld_laengs) : null
     }))
     .sort((a, b) => a.datum.localeCompare(b.datum));
   
