@@ -584,6 +584,18 @@ let CARD_DB = {"SCH-00001":"H\u00e4usner Daniel","SCH-00002":"Sommerfeld Stefan"
 try { const c = localStorage.getItem('mt_card_db'); if(c) CARD_DB = JSON.parse(c); } catch(e){}
 
 // ============================================================
+// NEUE FUNKTION: GitHub-Felder aus Konfiguration befüllen
+// ============================================================
+function fillGithubFieldsFromConfig() {
+  document.getElementById('github_owner_field').value = githubConfig.owner || '';
+  document.getElementById('github_repo_field').value = githubConfig.repo || '';
+  document.getElementById('github_branch_field').value = githubConfig.branch || 'main';
+  document.getElementById('github_filename_field').value = githubConfig.filename || 'MT_Protokoll.json';
+  document.getElementById('github_token_field').value = githubConfig.token || '';
+  document.getElementById('supervisor_password_field').value = githubConfig.supervisorPassword || '';
+}
+
+// ============================================================
 // PROTOKOLLNUMMER
 // ============================================================
 function generateProtocolNumber(){const n=new Date();return`MT-${n.getFullYear()}-${String(protokollZaehler).padStart(5,'0')}`;}
@@ -602,13 +614,7 @@ function switchView(view,btn){
   if(view==='gespeichert')loadSavedProtocols();
   if(view==='dropdowns')loadDropdownsToEditor();
   if(view==='github'){
-    // Felder aus gespeicherter Konfiguration befüllen
-    document.getElementById('github_owner_field').value=githubConfig.owner||'';
-    document.getElementById('github_repo_field').value=githubConfig.repo||'';
-    document.getElementById('github_branch_field').value=githubConfig.branch||'main';
-    document.getElementById('github_filename_field').value=githubConfig.filename||'MT_Protokoll.json';
-    document.getElementById('github_token_field').value=githubConfig.token||'';
-    document.getElementById('supervisor_password_field').value=githubConfig.supervisorPassword||'';
+    fillGithubFieldsFromConfig();
   }
   if(view==='protokoll'){enableAllFields(true);updateProtocolNumberDisplay();}
 }
@@ -704,6 +710,9 @@ async function autoConnect(){
 
   // Immer aus localStorage laden – nie überschreiben
   githubConfig=loadGithubConfigFromStorage();
+  
+  // GitHub-Felder mit geladenen Werten befüllen
+  fillGithubFieldsFromConfig();
 
   if(!githubConfig.token||!githubConfig.owner||!githubConfig.repo){
     if(s)s.innerHTML='<span style="color:#d48f00">&#9888; Noch nicht konfiguriert &#8211; bitte unter &#128296; GitHub einrichten und speichern.</span>';
@@ -1112,6 +1121,11 @@ function resetForm(){
 window.addEventListener('load',async()=>{
   document.getElementById('erstell_datum_anzeige').textContent=new Date().toLocaleDateString('de-DE');
   updateProtocolNumberDisplay();
+  
+  // GitHub-Konfiguration laden und Felder befüllen
+  githubConfig = loadGithubConfigFromStorage();
+  fillGithubFieldsFromConfig();
+  
   await autoConnect();
   setInterval(autoConnect,300000);
   setTimeout(()=>updateAllDropdowns(),1000);
