@@ -2618,14 +2618,14 @@ function updateStatistics() {
     .map(p => ({
       datum: p.datum.split('T')[0],
       anlagenEq: p.anlagenEq || '—',
-      uv1: p.uv1 ? parseFloat(p.uv1) : null,
-      uv1_eq: p.uv1_eq || '—',
-      uv2: p.uv2 ? parseFloat(p.uv2) : null,
-      uv2_eq: p.uv2_eq || '—',
-      konz: p.konzentration ? parseFloat(p.konzentration) : null,
-      restmag: p.restmag ? parseFloat(p.restmag) : null,
-      feld_kreis: p.feld_kreis ? parseFloat(p.feld_kreis) : null,
-      feld_laengs: p.feld_laengs ? parseFloat(p.feld_laengs) : null
+uv1: (p.uv1 && String(p.uv1).trim()) ? pDE(p.uv1) : null,
+uv2: (p.uv2 && String(p.uv2).trim()) ? pDE(p.uv2) : null,
+
+konz: (p.konzentration && String(p.konzentration).trim()) ? pDE(p.konzentration) : null,
+restmag: (p.restmag && String(p.restmag).trim()) ? pDE(p.restmag) : null,
+
+feld_kreis: (p.feld_kreis && String(p.feld_kreis).trim()) ? pDE(p.feld_kreis) : null,
+feld_laengs: (p.feld_laengs && String(p.feld_laengs).trim()) ? pDE(p.feld_laengs) : null
     }))
     .sort((a, b) => a.datum.localeCompare(b.datum));
   
