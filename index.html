@@ -201,22 +201,169 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 .protokoll-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f0f0f0;border-bottom:1px solid #d0d0d0}
 .protokoll-nummer{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--sg)}
 .protokoll-nummer span{color:var(--sa2);font-weight:400;font-size:13px;margin-right:10px}
+
+/* === DRUCKOPTIMIERUNG === */
 @media print{
   @page{size:A4;margin:1.2cm 1cm}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box}
   html{font-size:10.5px}body{background:#fff!important;padding:0!important;margin:0}.app{max-width:100%;padding:0}
+  
+  /* Ausblenden von UI-Elementen */
   .nav,.acts,#succ,.modal,.github-config,.dropdown-editor,.stats-controls,.stats-table-container,.stats-chart,.stats-summary,.nav-btn,.btn,.dorne-mode,.tracking-mode{display:none!important}
+  
+  /* Protokoll anzeigen */
   #view-protokoll{display:block!important}
-  .hdr{border-bottom:1.5px solid var(--sg)!important;margin-bottom:10px}
-  .card{border:1px solid #ccc!important;margin-bottom:8px!important;break-inside:avoid}
-  .sec{font-size:10px!important;padding:3px 8px!important;background:var(--sa)!important;color:#fff!important;-webkit-print-color-adjust:exact!important}
-  .f{padding:3px 8px!important}.ir{padding:3px 8px!important;min-height:28px!important}.cbr{padding:3px 8px!important;min-height:28px!important}
-  .lbl{font-size:9px!important}.sub{font-size:8px!important}.fs{font-size:9px!important}.unit{font-size:8px!important}
-  input,select,.tol,.num{font-size:9px!important;padding:2px 4px!important;border:1px solid #aaa!important;background:#f9f9f9!important;color:var(--sa)!important}
-  .cbox-inp{width:14px!important;height:14px!important;border:1px solid #333!important;background:#fff!important}
-  .cbox-inp:checked{background:var(--sg)!important;border-color:var(--sg)!important}
-  .badge{font-size:8px!important;padding:1px 4px!important;border:1px solid!important}
-  .meta{font-size:8px!important;padding:3px 8px!important;margin-top:5px!important}
+  
+  /* Einheitliche Schriftgrößen für alle Listenelemente */
+  .ir .lbl, .cbr .de, .f .lbl, .magl, .dorneitem label, .pruefer-levels label {
+    font-size: 9px!important;
+  }
+  
+  .ir .unit, .cbr .en, .f .sub, .sub, .ergs {
+    font-size: 8px!important;
+  }
+  
+  .ir input, .ir select, .cbr input, .f input, .f select, .magr input, .magr select, .tol, .num {
+    font-size: 9px!important;
+    padding: 2px 4px!important;
+  }
+  
+  /* Optimierte Checkboxen - gleiches Aussehen wie bei UV-Werten */
+  .cbox-inp {
+    width: 14px!important;
+    height: 14px!important;
+    border: 1px solid #333!important;
+    border-radius: 3px!important;
+    background: #fff!important;
+    -webkit-appearance: none!important;
+    appearance: none!important;
+    position: relative!important;
+  }
+  
+  .cbox-inp:checked {
+    background: var(--sg)!important;
+    border-color: var(--sg)!important;
+  }
+  
+  .cbox-inp:checked::after {
+    content: ''!important;
+    position: absolute!important;
+    left: 4px!important;
+    top: 1px!important;
+    width: 4px!important;
+    height: 7px!important;
+    border-right: 2px solid #fff!important;
+    border-bottom: 2px solid #fff!important;
+    transform: rotate(40deg)!important;
+    opacity: 1!important;
+  }
+  
+  /* Skizze - sichtbar im Druck */
+  .skizze-container {
+    display: flex!important;
+    justify-content: center!important;
+    padding: 10px 0!important;
+    background: #f9f9f9!important;
+    border: 1px solid #ccc!important;
+    margin: 10px 14px!important;
+    border-radius: 4px!important;
+    page-break-inside: avoid!important;
+  }
+  
+  /* Zwei-Seiten-Layout */
+  .page-break {
+    page-break-before: always!important;
+    margin-top: 20px!important;
+  }
+  
+  /* Einzelteilverfolgung auf dritter Seite */
+  .tracking-page {
+    page-break-before: always!important;
+  }
+  
+  /* Header und Footer für alle Seiten */
+  .hdr {
+    border-bottom: 1.5px solid var(--sg)!important;
+    margin-bottom: 10px!important;
+  }
+  
+  .meta {
+    font-size: 8px!important;
+    padding: 3px 8px!important;
+    margin-top: 5px!important;
+    position: running(footer)!important;
+  }
+  
+  .sec {
+    font-size: 10px!important;
+    padding: 3px 8px!important;
+    background: var(--sa)!important;
+    color: #fff!important;
+    -webkit-print-color-adjust: exact!important;
+  }
+  
+  .card {
+    border: 1px solid #ccc!important;
+    margin-bottom: 8px!important;
+    break-inside: avoid;
+  }
+  
+  .ir, .cbr, .f {
+    padding: 3px 8px!important;
+    min-height: 24px!important;
+  }
+  
+  .badge {
+    font-size: 8px!important;
+    padding: 1px 4px!important;
+    border: 1px solid!important;
+  }
+  
+  /* Ringnummern-Liste auf dritter Seite */
+  #ringnummern_editor, #ringnummern_list {
+    display: block!important;
+    max-height: none!important;
+    overflow: visible!important;
+  }
+  
+  #ringnummern_list div {
+    padding: 3px 5px!important;
+    font-size: 9px!important;
+  }
+}
+/* === ENDE DRUCKOPTIMIERUNG === */
+
+/* === SKIZZE === */
+.skizze-container {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  background: #f5f5f5;
+  border: 1px solid var(--gmid);
+  margin: 10px 14px;
+  border-radius: 4px;
+}
+
+.skizze-svg {
+  max-width: 100%;
+  height: auto;
+}
+/* === ENDE SKIZZE === */
+</style>
+<style>
+@media print {
+    #new_ringnummer_input,
+    #ringnummern_editor .btn.sec,
+    #ringnummern_editor div:first-child {
+        display: none !important;
+    }
+    #ringnummern_list:empty {
+        display: none !important;
+    }
+    #ringnummern_list div {
+        padding: 2px 5px;
+        border-bottom: 1px dotted #ccc;
+    }
 }
 </style>
 </head>
@@ -401,6 +548,35 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     <div><div class="ir"><div class="irl"><div class="lbl">Referenzkörper</div><div class="sub">reference block</div></div><div class="irr"><span class="fs">EN ISO 9934-2</span></div></div></div>
   </div>
 </div>
+
+<!-- === SKIZZE vor Magnetisierung === -->
+<div class="skizze-container">
+  <svg class="skizze-svg" width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- Kreis-Magnetisierung (links) -->
+    <rect x="30" y="30" width="120" height="60" fill="#f0f0f0" stroke="#333" stroke-width="1.5" />
+    <text x="60" y="20" font-family="Arial" font-size="12" fill="#333">Kreis-Magnetisierung</text>
+    <line x1="90" y1="30" x2="90" y2="90" stroke="#00893d" stroke-width="2" stroke-dasharray="5,3" />
+    <text x="100" y="60" font-family="Arial" font-size="10" fill="#00893d">Strom I</text>
+    <circle cx="90" cy="60" r="30" fill="none" stroke="#c0392b" stroke-width="2" />
+    <text x="130" y="80" font-family="Arial" font-size="9" fill="#c0392b">H-Feld (kreisförmig)</text>
+    
+    <!-- Längs-Magnetisierung (rechts) -->
+    <rect x="280" y="30" width="150" height="60" fill="#f0f0f0" stroke="#333" stroke-width="1.5" />
+    <text x="320" y="20" font-family="Arial" font-size="12" fill="#333">Längs-Magnetisierung</text>
+    <line x1="330" y1="40" x2="380" y2="40" stroke="#00893d" stroke-width="2" marker-end="url(#arrow)" />
+    <text x="340" y="30" font-family="Arial" font-size="10" fill="#00893d">Spule / Joch</text>
+    <rect x="330" y="50" width="50" height="30" fill="none" stroke="#c0392b" stroke-width="2" />
+    <text x="340" y="80" font-family="Arial" font-size="9" fill="#c0392b">H-Feld (longitudinal)</text>
+    
+    <!-- Pfeil-Marker -->
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+        <path d="M0,0 L10,5 L0,10 Z" fill="#00893d" />
+      </marker>
+    </defs>
+  </svg>
+</div>
+<!-- === ENDE SKIZZE === -->
 
 <div class="card">
   <div class="sec">Magnetisierung — Magnetization</div>
