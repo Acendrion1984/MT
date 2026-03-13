@@ -32,15 +32,6 @@ body{background:#e0e0e0;font-family:'Barlow',Arial,sans-serif;color:var(--sa);pa
 .nav-btn.special{background:var(--sa2);border-color:var(--sa2);color:var(--wh)}
 .nav-btn.special:hover{background:var(--sa)}
 .view{display:none}.view.active{display:block}
-.github-config{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;border-top:4px solid var(--sg)}
-.github-config h3{color:var(--sg);margin-bottom:15px;font-size:18px;font-family:'Barlow Condensed',sans-serif}
-.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-bottom:15px}
-.config-item{display:flex;flex-direction:column;gap:5px}
-.config-item label{font-size:13px;font-weight:700;text-transform:uppercase;color:var(--sa2)}
-.config-item input{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:14px;font-family:inherit}
-.config-item input:focus{border-color:var(--sg);outline:none;background:#f0faf4}
-.warning{background:var(--wn-bg);border-left:4px solid var(--wn-b);padding:12px 15px;font-size:13px;margin:15px 0;color:var(--wn-t);border-radius:0 4px 4px 0}
-.github-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
 .dropdown-editor{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px}
 .dropdown-editor h3{color:var(--sg);margin-bottom:15px;font-size:16px}
 .dropdown-tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
@@ -205,233 +196,215 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   @page{size:A4;margin:0.7cm 0.8cm}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box}
   html{font-size:8.5px}
-  body{background:#fff!important;padding:0!important;margin:0}
+  body{background:#fff!important;padding:0!important;margin:0;color:#000!important}
   .app{max-width:100%;padding:0}
-
-  /* Ausblenden */
-  .nav,.acts,#succ,.modal,.github-config,.dropdown-editor,
+  .nav,.acts,#succ,.dropdown-editor,
   .stats-controls,.stats-table-container,.stats-chart,.stats-summary,
   .nav-btn,.btn,.dorne-mode,.tracking-mode,
   #ringnummern_editor,.stueckzahl-compact input,#ringnummern_preview,
   .dorne-toggle,.tracking-toggle {display:none!important}
-
-  /* Druck-Elemente einblenden */
-  .print-only {
-    display: block !important;
-  }
-  
-  table.print-only {
-    display: table !important;
-  }
-
-  /* Header */
-  .hdr{margin-bottom:3px!important}
-  .hdr-text h1{font-size:10px!important}
-  .hdr-text p{font-size:6.5px!important;margin-top:1px!important}
+  .print-only {display: block !important;}
+  table.print-only {display: table !important;}
+  .hdr{margin-bottom:3px!important;background:#fff!important;border-color:#ccc!important}
+  .hdr-text h1{font-size:10px!important;color:#000!important}
+  .hdr-text p{font-size:6.5px!important;margin-top:1px!important;color:#555!important}
   .schaeffler-logo img{height:20px!important}
   .hdr-text{padding:6px 10px!important}
-  .protokoll-header{padding:2px 8px!important;font-size:8px!important}
+  .protokoll-header{padding:2px 8px!important;font-size:8px!important;background:#f0f0f0!important;border-color:#ccc!important}
   .protokoll-nummer{font-size:9px!important}
-
-  /* Section-Balken */
-  .sec{font-size:8px!important;padding:2px 6px!important;letter-spacing:0.3px!important}
-
-  /* Cards */
-  .card{border:1px solid #ccc!important;margin-bottom:3px!important}
-
-  /* Zeilen */
-  .ir,.f{padding:2px 6px!important;min-height:15px!important;border-bottom:1px solid #f0f0f0!important}
+  .sec{font-size:8px!important;padding:2px 6px!important;letter-spacing:0.3px!important;background:#1a1a1a!important;color:#fff!important}
+  .card{border:1px solid #ccc!important;margin-bottom:3px!important;background:#fff!important}
+  .ir,.f{padding:2px 6px!important;min-height:15px!important;border-bottom:1px solid #f0f0f0!important;background:#fff!important}
+  .ir.alt,.cbr.alt{background:#fafafa!important}
   .g2{grid-template-columns:1fr 1fr!important}
-
-  /* Labels & Text */
-  .lbl,.ir .lbl,.f .lbl,.magl,.dorneitem label,.legt,.legi{font-size:7.5px!important;letter-spacing:0!important}
-  .sub,.ir .sub,.f .sub,.ergs,.unit{font-size:6.5px!important}
-  .fs{font-size:7.5px!important}
-
-  /* Inputs & Selects */
+  .lbl,.ir .lbl,.f .lbl,.magl,.dorneitem label,.legt,.legi{font-size:7.5px!important;letter-spacing:0!important;color:#333!important}
+  .sub,.ir .sub,.f .sub,.ergs,.unit{font-size:6.5px!important;color:#666!important}
+  .fs{font-size:7.5px!important;color:#000!important}
   input[type=text],input[type=datetime-local],input[type=date],
   input[type=number],select,input.tol,input.num{
-    font-size:7.5px!important;padding:1px 3px!important}
+    font-size:7.5px!important;padding:1px 3px!important;background:#fff!important;color:#000!important;border-color:#aaa!important}
   input.tol{width:52px!important}
+  input.tol.ok{background:#d6f0dc!important;color:#005a28!important;border-color:#00893d!important}
+  input.tol.wn{background:#fff3cd!important;color:#7a5200!important;border-color:#d48f00!important}
+  input.tol.er{background:#fde8e8!important;color:#7b241c!important;border-color:#c0392b!important}
   input.num{width:44px!important}
-  select.eq-dd{min-width:80px!important;padding:1px 18px 1px 4px!important;font-size:7.5px!important}
+  select.eq-dd{min-width:80px!important;padding:1px 18px 1px 4px!important;font-size:7.5px!important;background:#fff!important;border-color:#aaa!important;color:#000!important}
   .badge{font-size:6.5px!important;padding:1px 3px!important}
+  .badge.ok{background:#d6f0dc!important;color:#005a28!important;border-color:#00893d!important}
+  .badge.wn{background:#fff3cd!important;color:#7a5200!important;border-color:#d48f00!important}
+  .badge.er{background:#fde8e8!important;color:#7b241c!important;border-color:#c0392b!important}
   .irr{gap:3px!important}
-
-  /* Checkboxen als 3-Spalten-Grid */
   .cbr{display:none!important}
-  .cbr-wrapper{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;
-    border-bottom:1px solid #eee!important}
-  .cbr-wrapper .cbr{display:flex!important;align-items:center!important;gap:4px!important;
-    padding:2px 5px!important;min-height:14px!important;border-bottom:none!important;
-    border-right:1px solid #f0f0f0!important}
+  .cbr-wrapper{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;border-bottom:1px solid #eee!important}
+  .cbr-wrapper .cbr{display:flex!important;align-items:center!important;gap:4px!important;padding:2px 5px!important;min-height:14px!important;border-bottom:none!important;border-right:1px solid #f0f0f0!important}
   .cbr-wrapper .cbr:nth-child(3n){border-right:none!important}
-  .cbl .de{font-size:7px!important}
-  .cbl .en{font-size:6px!important;margin-top:0!important}
-  .cbox-inp{width:10px!important;height:10px!important;border:1px solid #333!important;
-    border-radius:2px!important;flex-shrink:0!important;position:relative!important;
-    -webkit-appearance:none!important;appearance:none!important;background:#fff!important}
-  .cbox-inp:checked{background:var(--sg)!important;border-color:var(--sg)!important}
-  .cbox-inp:checked::after{content:''!important;position:absolute!important;
-    left:2px!important;top:0px!important;width:3px!important;height:6px!important;
-    border-right:1.5px solid #fff!important;border-bottom:1.5px solid #fff!important;
-    transform:rotate(40deg)!important;opacity:1!important}
-
-  /* === LAMPEN-TABELLE FÜR DRUCK === */
-  #lampen_print_table.print-only {
-    display: table !important;
-    width: 100% !important;
-    border-collapse: collapse !important;
-    margin: 10px 0 !important;
-    border: 1px solid #000 !important;
-  }
-  
-  #lampen_print_table td {
-    border: 1px solid #999 !important;
-    padding: 4px !important;
-    vertical-align: top !important;
-    width: 50% !important;
-  }
-  
-  #lampen_print_table .lampen-header {
-    background: #e8f5ee !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    font-size: 9px !important;
-    border-bottom: 2px solid #00893d !important;
-  }
-  
-  #lampen_print_table .label-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    padding: 2px 0 !important;
-    border-bottom: 1px dotted #ccc !important;
-  }
-  
-  #lampen_print_table .label-row:last-child {
-    border-bottom: none !important;
-  }
-  
-  #lampen_print_table .label {
-    font-weight: bold !important;
-  }
-
-  /* Stückzahl-Anzeige im Druck */
-  #stueckzahl_druck_anzeige.print-only {
-    display: block !important;
-    padding: 5px 14px !important;
-    border-top: 1px solid #eee !important;
-    font-size: 9px !important;
-  }
-  
-  /* Ringanzahl-Anzeige im Druck */
-  #ringanzahl_druck_anzeige.print-only {
-    display: block !important;
-    padding: 5px 14px !important;
-    border-top: 1px solid #eee !important;
-    font-size: 9px !important;
-  }
-  
-  /* Stückzahl-Label beibehalten */
-  .stueckzahl-compact label {
-    display: inline !important;
-    font-size: 7.5px !important;
-  }
-
-  /* Magnetisierungs-SVG */
+  .cbl .de{font-size:7px!important;color:#000!important}
+  .cbl .en{font-size:6px!important;margin-top:0!important;color:#666!important}
+  .cbox-inp{width:10px!important;height:10px!important;border:1px solid #333!important;border-radius:2px!important;flex-shrink:0!important;position:relative!important;-webkit-appearance:none!important;appearance:none!important;background:#fff!important}
+  .cbox-inp:checked{background:#00893d!important;border-color:#00893d!important}
+  .cbox-inp:checked::after{content:''!important;position:absolute!important;left:2px!important;top:0px!important;width:3px!important;height:6px!important;border-right:1.5px solid #fff!important;border-bottom:1.5px solid #fff!important;transform:rotate(40deg)!important;opacity:1!important}
+  #lampen_print_table.print-only{display:table!important;width:100%!important;border-collapse:collapse!important;margin:10px 0!important;border:1px solid #000!important}
+  #lampen_print_table td{border:1px solid #999!important;padding:4px!important;vertical-align:top!important;width:50%!important}
+  #lampen_print_table .lampen-header{background:#e8f5ee!important;font-weight:bold!important;text-align:center!important;font-size:9px!important;border-bottom:2px solid #00893d!important}
+  #lampen_print_table .label-row{display:flex!important;justify-content:space-between!important;padding:2px 0!important;border-bottom:1px dotted #ccc!important}
+  #lampen_print_table .label-row:last-child{border-bottom:none!important}
+  #lampen_print_table .label{font-weight:bold!important}
+  #stueckzahl_druck_anzeige.print-only{display:block!important;padding:5px 14px!important;border-top:1px solid #eee!important;font-size:9px!important;background:#fff!important;color:#000!important}
+  #ringanzahl_druck_anzeige.print-only{display:block!important;padding:5px 14px!important;border-top:1px solid #eee!important;font-size:9px!important;background:#fff!important;color:#000!important}
+  .stueckzahl-compact label{display:inline!important;font-size:7.5px!important;color:#333!important}
   .mag-skizze{padding:2px 6px!important;background:#fff!important}
-  .mag-skizze-title{font-size:6.5px!important;margin-bottom:1px!important}
+  .mag-skizze-title{font-size:6.5px!important;margin-bottom:1px!important;color:#555!important}
   .mag-skizze svg{max-height:52px!important;display:block!important}
-
-  /* Magnetisierung Grid */
-  .maghdr{font-size:7.5px!important;padding:2px 6px!important;letter-spacing:0!important}
-  .magr{padding:2px 6px!important;min-height:15px!important}
-  .magl{width:68px!important;font-size:7.5px!important}
-
-  /* Dorn-Sektion */
-  .dornesec{padding:2px 6px!important}
+  .maghdr{font-size:7.5px!important;padding:2px 6px!important;letter-spacing:0!important;background:#e8f5ee!important;color:#006b30!important}
+  .magr{padding:2px 6px!important;min-height:15px!important;background:#fff!important}
+  .magl{width:68px!important;font-size:7.5px!important;color:#333!important}
+  .dornesec{padding:2px 6px!important;background:#fff!important}
   .dorneg{gap:4px!important;margin-top:2px!important}
-
-  /* Legende */
-  .leg{padding:2px 6px!important;gap:6px!important}
+  .leg{padding:2px 6px!important;gap:6px!important;background:#f8faf9!important}
   .legd{width:8px!important;height:8px!important}
-
-  /* Ergebnis */
   .ergg{grid-template-columns:1fr 1fr 1fr!important}
-  .ergo{padding:3px 4px!important}
+  .ergo{padding:3px 4px!important;background:#fff!important}
+  .ergo.ok{background:#d6f0dc!important}
+  .ergo.er{background:#fde8e8!important}
   .ergc{width:16px!important;height:16px!important;font-size:9px!important}
-  .ergl{font-size:7.5px!important}
-
-  /* Personal */
+  .ergl{font-size:7.5px!important;color:#000!important}
   .persg{grid-template-columns:1fr 1fr 1fr!important}
   .pruefer-levels{gap:3px!important;margin-top:2px!important}
   .level-item input[type=checkbox]{width:9px!important;height:9px!important}
-  .level-item label{font-size:7px!important}
+  .level-item label{font-size:7px!important;color:#333!important}
   .card-resolved{font-size:6.5px!important;padding:1px 3px!important;margin-top:1px!important}
-
-  /* Meta */
-  .meta{font-size:6.5px!important;padding:2px 6px!important;margin-top:2px!important}
-
-  /* Ringnummern-Seite (2. Seite) */
-  #ringnummern_print_page.print-only {
-    display: block !important;
-    page-break-before: always !important;
-  }
-  
-  #ringnummern_print_page.print-only.no-rings {
-    display: none !important;
-  }
-  
-  .rn-header {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 8px 12px;
-    background: var(--sa);
-    color: #fff;
-    border-left: 4px solid var(--sg);
-    margin-bottom: 8px;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  
-  .rn-sub {
-    font-size: 9px;
-    color: #666;
-    padding: 4px 12px 6px;
-  }
-  
-  /* Normale Liste für Ringnummern */
-  #rn_print_list {
-    padding: 6px 12px !important;
-    font-family: monospace !important;
-    font-size: 11px !important;
-    line-height: 1.8 !important;
-    column-count: 3 !important;
-    column-gap: 20px !important;
-    column-rule: 1px solid #ddd !important;
-  }
-  
-  .rn-list-item {
-    display: block !important;
-    padding: 2px 0 !important;
-    border-bottom: 1px dotted #eee !important;
-    break-inside: avoid !important;
-  }
-  
-  .rn-list-number {
-    display: inline-block !important;
-    width: 30px !important;
-    color: var(--sg) !important;
-    font-weight: bold !important;
-  }
-  
-  .rn-list-value {
-    display: inline-block !important;
-  }
+  .card-resolved.ok{background:#d6f0dc!important;color:#005a28!important}
+  .card-resolved.er{background:#fde8e8!important;color:#7b241c!important}
+  .meta{font-size:6.5px!important;padding:2px 6px!important;margin-top:2px!important;background:#f0f0f0!important;color:#666!important}
+  #ringnummern_print_page.print-only{display:block!important;page-break-before:always!important}
+  #ringnummern_print_page.print-only.no-rings{display:none!important}
+  .rn-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;padding:8px 12px;background:#1a1a1a!important;color:#fff!important;border-left:4px solid #00893d;margin-bottom:8px}
+  .rn-sub{font-size:9px;color:#666;padding:4px 12px 6px}
+  #rn_print_list{padding:6px 12px!important;font-family:monospace!important;font-size:11px!important;line-height:1.8!important;column-count:3!important;column-gap:20px!important;column-rule:1px solid #ddd!important}
+  .rn-list-item{display:block!important;padding:2px 0!important;border-bottom:1px dotted #eee!important;break-inside:avoid!important}
+  .rn-list-number{display:inline-block!important;width:30px!important;color:#00893d!important;font-weight:bold!important}
+  .rn-list-value{display:inline-block!important}
 }
 /* === ENDE DRUCKOPTIMIERUNG === */
+
+/* === DARK MODE (nur Bildschirm) === */
+@media not print {
+  [data-theme="dark"] body{background:#111!important;color:#ccc!important}
+  [data-theme="dark"] .hdr{background:#1a1a1a!important;border-color:#333!important}
+  [data-theme="dark"] .hdr-text h1{color:#e0e0e0!important}
+  [data-theme="dark"] .hdr-text p{color:#777!important}
+  [data-theme="dark"] .protokoll-header{background:#141414!important;border-bottom-color:#333!important;color:#888!important}
+  [data-theme="dark"] .card{background:#1a1a1a!important;border-color:#333!important}
+  [data-theme="dark"] .sec{background:#0d0d0d!important;color:#ddd!important}
+  [data-theme="dark"] .maghdr{background:#0b1e10!important;color:#3dbd6e!important;border-bottom-color:#1a3d22!important;border-left-color:var(--sg)!important}
+  [data-theme="dark"] .mag-skizze{background:#1a1a1a!important}
+  [data-theme="dark"] .mag-skizze-title{color:#777!important}
+  [data-theme="dark"] .ir.alt,[data-theme="dark"] .cbr.alt{background:#1f1f1f!important}
+  [data-theme="dark"] .lbl{color:#bbb!important}
+  [data-theme="dark"] .sub{color:#666!important}
+  [data-theme="dark"] .unit{color:#777!important}
+  [data-theme="dark"] .ergs{color:#666!important}
+  [data-theme="dark"] .fs{color:#bbb!important}
+  [data-theme="dark"] .cbl .de{color:#ccc!important}
+  [data-theme="dark"] .cbl .en{color:#666!important}
+  [data-theme="dark"] .magl{color:#aaa!important}
+  [data-theme="dark"] .ergl{color:#ccc!important}
+  [data-theme="dark"] .legt{color:#888!important}
+  [data-theme="dark"] .legi{color:#999!important}
+  [data-theme="dark"] .f{border-bottom-color:#252525!important}
+  [data-theme="dark"] .ir{border-bottom-color:#252525!important}
+  [data-theme="dark"] .magr{border-bottom-color:#252525!important}
+  [data-theme="dark"] .cbr{border-bottom-color:#252525!important}
+  [data-theme="dark"] .dornesec{border-bottom-color:#252525!important}
+  [data-theme="dark"] .g2 .br{border-right-color:#252525!important}
+  [data-theme="dark"] .magc{border-right-color:#252525!important}
+  [data-theme="dark"] .persg>*:not(:last-child){border-right-color:#252525!important}
+  [data-theme="dark"] .leg{background:#111a14!important;border-bottom-color:#1a3d22!important}
+  [data-theme="dark"] .meta{background:#141414!important;border-color:#333!important;color:#555!important}
+  [data-theme="dark"] input[type=text],[data-theme="dark"] input[type=datetime-local],[data-theme="dark"] input[type=date],[data-theme="dark"] input[type=number],[data-theme="dark"] input[type=password]{background:#252525!important;border-color:#444!important;color:#e0e0e0!important}
+  [data-theme="dark"] input[type=text]:focus,[data-theme="dark"] input[type=datetime-local]:focus{background:#1a2e1f!important;border-color:var(--sg)!important}
+  [data-theme="dark"] select{background:#252525!important;border-color:#444!important;color:#ddd!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23aaa'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 9px center!important}
+  [data-theme="dark"] select.eq-dd{background-color:#162212!important;border-color:var(--sg)!important;color:#ddd!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23aaa'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 9px center!important}
+  [data-theme="dark"] input.num{background:#162212!important;border-color:var(--sg)!important;color:var(--sg)!important}
+  [data-theme="dark"] input.tol{background:#252525!important;border-color:#444!important;color:#ddd!important}
+  [data-theme="dark"] input.tol.ok{background:#0b1e10!important;border-color:var(--ok-b)!important;color:#4dcc80!important}
+  [data-theme="dark"] input.tol.wn{background:#1f1800!important;border-color:var(--wn-b)!important;color:#ffcc44!important}
+  [data-theme="dark"] input.tol.er{background:#1f0a0a!important;border-color:var(--er-b)!important;color:#ff8888!important}
+  [data-theme="dark"] .badge.ok{background:#0b1e10!important;color:#4dcc80!important;border-color:var(--ok-b)!important}
+  [data-theme="dark"] .badge.wn{background:#1f1800!important;color:#ffcc44!important;border-color:var(--wn-b)!important}
+  [data-theme="dark"] .badge.er{background:#1f0a0a!important;color:#ff8888!important;border-color:var(--er-b)!important}
+  [data-theme="dark"] .badge.nu{background:#252525!important;color:#666!important;border-color:#333!important}
+  [data-theme="dark"] input.cbox-inp{background:#252525!important;border-color:#555!important}
+  [data-theme="dark"] input.cbox-inp:checked{background:var(--sg)!important;border-color:var(--sg)!important}
+  [data-theme="dark"] .nav-btn{background:#1a1a1a!important;border-color:var(--sg)!important;color:var(--sg)!important}
+  [data-theme="dark"] .nav-btn.active{background:var(--sg)!important;color:#fff!important}
+  [data-theme="dark"] .nav-btn:hover:not(.active){background:#0b1e10!important}
+  [data-theme="dark"] .nav-btn.special{background:#2a2a2a!important;border-color:#2a2a2a!important;color:#ccc!important}
+  [data-theme="dark"] .nav-btn.special:hover{background:#333!important}
+  [data-theme="dark"] .ergo{background:#1a1a1a!important}
+  [data-theme="dark"] .ergo:hover{background:#202020!important}
+  [data-theme="dark"] .ergo.ok{background:#0b1e10!important}
+  [data-theme="dark"] .ergo.er{background:#1f0a0a!important}
+  [data-theme="dark"] .ergc{border-color:#444!important}
+  [data-theme="dark"] .ergo{border-right-color:#2a2a2a!important}
+  [data-theme="dark"] .card-resolved.ok{background:#0b1e10!important;color:#4dcc80!important;border-color:var(--ok-b)!important}
+  [data-theme="dark"] .card-resolved.er{background:#1f0a0a!important;color:#ff8888!important;border-color:var(--er-b)!important}
+  [data-theme="dark"] input.card-ok{border-color:var(--sg)!important;background:#162212!important}
+  [data-theme="dark"] input.card-er{border-color:var(--er-b)!important;background:#1f0a0a!important}
+  [data-theme="dark"] .dorne-mode{border-color:var(--sg)!important}
+  [data-theme="dark"] .dorne-toggle{background:#1a1a1a!important;color:#777!important}
+  [data-theme="dark"] .dorne-toggle.active{background:var(--sg)!important;color:#fff!important}
+  [data-theme="dark"] .dorne-toggle:hover:not(.active){background:#0b1e10!important;color:var(--sg)!important}
+  [data-theme="dark"] .tracking-mode{border-color:var(--sg)!important}
+  [data-theme="dark"] .tracking-toggle{background:#1a1a1a!important;color:#777!important}
+  [data-theme="dark"] .tracking-toggle.active{background:var(--sg)!important;color:#fff!important}
+  [data-theme="dark"] .ringnummern-badge{background:#0b1e10!important;color:#3dbd6e!important}
+  [data-theme="dark"] .dorneitem label{color:#777!important}
+  [data-theme="dark"] #ringnummern_list{background:#202020!important;border-color:#333!important}
+  [data-theme="dark"] .dropdown-editor{background:#1a1a1a!important;border-color:#333!important}
+  [data-theme="dark"] .dropdown-editor h3{color:var(--sg)!important}
+  [data-theme="dark"] .dropdown-list{background:#202020!important;border-color:#333!important}
+  [data-theme="dark"] .dropdown-tab{background:#252525!important;border-color:#444!important;color:#aaa!important}
+  [data-theme="dark"] .dropdown-tab.active{background:var(--sg)!important;border-color:var(--sg)!important;color:#fff!important}
+  [data-theme="dark"] .dropdown-item{background:#1a1a1a!important;border-bottom-color:#2a2a2a!important}
+  [data-theme="dark"] .dropdown-item input,[data-theme="dark"] .add-dropdown-item input,[data-theme="dark"] #new_ringnummer_input{background:#252525!important;border-color:#444!important;color:#ddd!important}
+  [data-theme="dark"] .stats-controls{background:#1a1a1a!important;border-color:#333!important}
+  [data-theme="dark"] .control-group label{color:#aaa!important}
+  [data-theme="dark"] .control-group select,[data-theme="dark"] .control-group input{background:#252525!important;border-color:#444!important;color:#ddd!important}
+  [data-theme="dark"] .stats-table-container,[data-theme="dark"] .stats-chart{background:#1a1a1a!important;border-color:#333!important}
+  [data-theme="dark"] .stats-table th{background:#0b1e10!important;color:#3dbd6e!important;border-bottom-color:var(--sg)!important}
+  [data-theme="dark"] .stats-table td{border-bottom-color:#252525!important;color:#bbb!important}
+  [data-theme="dark"] .stats-table tr:hover{background:#1f1f1f!important}
+  [data-theme="dark"] .summary-card{background:#0b1e10!important;border-left-color:var(--sg)!important}
+  [data-theme="dark"] .summary-card .value{color:var(--sg)!important}
+  [data-theme="dark"] .summary-card .label{color:#888!important}
+  [data-theme="dark"] .modal-content{background:#1a1a1a!important}
+  [data-theme="dark"] .modal-header{border-bottom-color:#333!important}
+  [data-theme="dark"] .modal-header h2{color:#e0e0e0!important}
+  [data-theme="dark"] .modal-footer{border-top-color:#333!important}
+  [data-theme="dark"] .form-group label{color:#aaa!important}
+  [data-theme="dark"] .form-group input{background:#252525!important;border-color:#444!important;color:#ddd!important}
+  [data-theme="dark"] .employee-list h3{color:#666!important}
+  [data-theme="dark"] .employee-item{background:#252525!important}
+  [data-theme="dark"] .employee-info{color:#ccc!important}
+  [data-theme="dark"] #succ>div{background:#1a1a1a!important;border-top-color:var(--sg)!important}
+  [data-theme="dark"] #succ>div h2{color:#e0e0e0!important}
+  [data-theme="dark"] #succ>div p{color:#aaa!important}
+  [data-theme="dark"] .rn-header{background:#0d0d0d!important}
+  [data-theme="dark"] .rn-sub{color:#666!important}
+  [data-theme="dark"] .stueckzahl-compact label{color:#aaa!important}
+  [data-theme="dark"] .stueckzahl-compact input{background:#252525!important;border-color:#444!important;color:#ddd!important}
+  [data-theme="dark"] .level-item label{color:#aaa!important}
+  [data-theme="dark"] .modal{background:rgba(0,0,0,0.85)!important}
+  [data-theme="dark"] .modal-close{color:#666!important}
+  [data-theme="dark"] .modal-close:hover{color:var(--er-b)!important}
+  [data-theme="dark"] .employee-remove{background:#1f0a0a!important}
+  [data-theme="dark"] .svg-steel{fill:#333!important;stroke:#666!important}
+  [data-theme="dark"] .svg-bore{fill:#1a1a1a!important;stroke:#666!important}
+  [data-theme="dark"] .mag-skizze svg text{fill:#aaa}
+  [data-theme="dark"] .mag-skizze svg line[stroke="#d0d0d0"]{stroke:#404040!important}
+}
+/* === ENDE DARK MODE === */
 </style>
 </head>
 <body>
@@ -462,42 +435,16 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   <button class="nav-btn active" onclick="switchView('protokoll',this)">📋 Prüfprotokoll</button>
   <button class="nav-btn" onclick="switchView('statistik',this)">📊 Statistische Auswertung</button>
   <button class="nav-btn" onclick="switchView('gespeichert',this)">📁 Gespeicherte Protokolle</button>
-  <button class="nav-btn" onclick="switchView('github',this)">🔧 GitHub</button>
   <button class="nav-btn" onclick="switchView('dropdowns',this)">📋 Dropdowns bearbeiten</button>
   <button class="nav-btn special" onclick="openCardModal()">👤 Mitarbeiter</button>
-</div>
-
-<!-- GITHUB -->
-<div id="view-github" class="view">
-  <div class="github-config">
-    <h3>🔧 GitHub JSON Datenbank</h3>
-    <p style="font-size:14px;color:var(--sa3);margin-bottom:15px">Daten werden als JSON-Datei direkt in einem GitHub Repository gespeichert. Jede Änderung erzeugt automatisch einen Commit.</p>
-    <div class="warning">⚠️ Personal Access Token wird lokal im Browser gespeichert. Niemals teilen!</div>
-    <div class="config-grid">
-      <div class="config-item"><label>GitHub Username (Owner)</label><input type="text" id="github_owner_field" placeholder="z.B. MeinName"></div>
-      <div class="config-item"><label>Repository Name</label><input type="text" id="github_repo_field" placeholder="z.B. MeinRepo"></div>
-      <div class="config-item"><label>Branch</label><input type="text" id="github_branch_field" placeholder="main"></div>
-      <div class="config-item"><label>Hauptdatei</label><input type="text" id="github_filename_field" placeholder="MT_Protokoll.json"></div>
-      <div class="config-item"><label>Personal Access Token (PAT)</label><input type="password" id="github_token_field" placeholder="ghp_..."></div>
-      <div class="config-item"><label>Supervisor-Passwort</label><input type="password" id="supervisor_password_field" placeholder="Passwort für Löschen"></div>
-    </div>
-    <div id="github_status_message" style="margin:15px 0;padding:10px;background:#f9f9f9;border-radius:4px;font-size:14px">
-      <span>⏳ Prüfe gespeicherte Konfiguration...</span>
-    </div>
-    <div class="github-actions">
-      <button class="btn pri" onclick="connectGithub()">🔌 Verbinden & Laden</button>
-      <button class="btn sec" onclick="saveGithubConfig()">💾 Einstellungen speichern</button>
-      <button class="btn sec" onclick="testGithubConnection()">🔍 Verbindung testen</button>
-      <button class="btn sec" onclick="createDefaultDropdowns()">📋 Standard-Dropdowns erstellen</button>
-    </div>
-  </div>
+  <button class="nav-btn" id="darkmode_btn" onclick="toggleDark()" style="margin-left:auto">🌙 Dark</button>
 </div>
 
 <!-- DROPDOWNS -->
 <div id="view-dropdowns" class="view">
   <div class="dropdown-editor">
     <h3>📋 Dropdown-Listen bearbeiten</h3>
-    <p style="font-size:14px;color:var(--sa3);margin-bottom:15px">Hier können alle Auswahllisten angepasst werden. Änderungen werden in GitHub gespeichert.</p>
+    <p style="font-size:14px;color:var(--sa3);margin-bottom:15px">Hier können alle Auswahllisten angepasst werden. Änderungen werden lokal gespeichert.</p>
     <div class="dropdown-tabs">
       <button class="dropdown-tab active" onclick="showDropdownTab('flux',event)">Fluxanlagen</button>
       <button class="dropdown-tab" onclick="showDropdownTab('luxmeter',event)">Lux-/UV-Meter</button>
@@ -527,8 +474,8 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       </div>
     </div>
     <div style="margin-top:20px;display:flex;gap:10px">
-      <button class="btn pri" onclick="saveDropdownsToGithub()">💾 Alle Änderungen in GitHub speichern</button>
-      <button class="btn sec" onclick="loadDropdownsFromGithub()">🔍 Vom GitHub laden</button>
+      <button class="btn pri" onclick="saveDropdownsLocal()">💾 Alle Änderungen speichern</button>
+      <button class="btn sec" onclick="loadDropdownsFromStorage()">↻ Vom Speicher laden</button>
     </div>
   </div>
 </div>
@@ -562,8 +509,8 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   <div class="stats-controls">
     <div class="control-group"><label>Von:</label><input type="date" id="proto_von_field" value="2026-01-01"></div>
     <div class="control-group"><label>Bis:</label><input type="date" id="proto_bis_field" value="2026-12-31"></div>
-    <div class="control-group"><label>Supervisor PW:</label><input type="password" id="delete_password_field" placeholder="Passwort für Löschen"></div>
-    <div class="control-group"><button class="btn pri" onclick="loadSavedProtocols()">Filtern</button><button class="btn sec" onclick="syncWithGithub()">🔍 Sync mit GitHub</button></div>
+    <div class="control-group"><label>Supervisor PW:</label><input type="password" id="delete_password_field" placeholder="Passwort für Löschen" value="admin"></div>
+    <div class="control-group"><button class="btn pri" onclick="loadSavedProtocols()">Filtern</button></div>
   </div>
   <div class="stats-table-container">
     <table class="stats-table"><thead><tr><th>Protokoll-Nr.</th><th>Datum</th><th>Anlage EQ</th><th>Auftrag</th><th>Prüfgegenstand</th><th>Prüfer</th><th>Ergebnis</th><th>Menge</th><th>Laden</th><th>Drucken</th><th>Löschen</th></tr></thead>
@@ -613,16 +560,14 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       </div></div>
     </div>
     <div>
-      <!-- SKIZZE jetzt rechts unter Referenzkörper -->
       <div class="mag-skizze" style="border-bottom:none;margin-top:4px">
         <div class="mag-skizze-title">Magnetisierungsprinzip &mdash; Magnetization principle</div>
         <svg viewBox="0 0 540 105" style="width:100%;max-width:825px;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
           <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#00893d"/></marker></defs>
-          <!-- KREISMAGNETISIERUNG links -->
           <text x="8" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">KREISMAGNETISIERUNG / circumferential</text>
           <text x="8" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Aufsicht / top view</text>
-          <circle cx="105" cy="63" r="36" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
-          <circle cx="105" cy="63" r="17" fill="#ffffff" stroke="#444" stroke-width="1.5"/>
+          <circle cx="105" cy="63" r="36" class="svg-steel" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
+          <circle cx="105" cy="63" r="17" class="svg-bore" fill="#ffffff" stroke="#444" stroke-width="1.5"/>
           <circle cx="105" cy="63" r="8" fill="#888" stroke="#555" stroke-width="1.2"/>
           <text x="105" y="67" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#fff">I</text>
           <line x1="96" y1="27" x2="114" y2="27" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
@@ -632,10 +577,9 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
           <text x="148" y="46" font-family="Arial,sans-serif" font-size="9" font-style="italic" font-weight="bold" fill="#00893d">B</text>
           <text x="105" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="#666">Ring</text>
           <line x1="228" y1="5" x2="228" y2="102" stroke="#d0d0d0" stroke-width="0.8" stroke-dasharray="3,2"/>
-          <!-- LAENGSMAGNETISIERUNG rechts -->
           <text x="240" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">LAENGSMAGNETISIERUNG / longitudinal</text>
           <text x="240" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Seitenansicht / side view</text>
-          <rect x="308" y="31" width="116" height="50" rx="3" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
+          <rect x="308" y="31" width="116" height="50" rx="3" class="svg-steel" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
           <line x1="308" y1="45" x2="424" y2="45" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
           <line x1="308" y1="68" x2="424" y2="68" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
           <text x="366" y="59" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" fill="#555">Ring</text>
@@ -752,8 +696,6 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
     </div>
   </div>
   
-  <!-- DRUCK-ANZEIGEN (nur im Druck sichtbar) -->
-  <!-- DRUCK-ANZEIGEN (nur im Druck sichtbar) -->
 <div id="stueckzahl_druck_anzeige" class="print-only" style="display:none;">
   <span style="color:var(--sg); font-weight:bold;">📦 Prüfmenge:</span> 
   <span id="stueckzahl_druck_wert">1</span> Stück
@@ -773,9 +715,6 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   </div>
 </div>
 
-
-
-<!-- RINGNUMMERN DRUCKSEITE (SEITE 2) - Normale Liste -->
 <div id="ringnummern_print_page" class="print-only no-rings" style="display:none">
   <div class="hdr" style="margin-bottom:12px">
     <div class="hdr-left">
@@ -799,10 +738,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   <div class="rn-header">Geprüfte Einzelteile — Inspected parts</div>
   <div class="rn-sub" id="rn_print_count">0 Teile</div>
   
-  <!-- Normale Liste (kein Grid) -->
-  <div id="rn_print_list" style="padding:6px 12px; font-family: monospace; font-size: 11px; line-height: 1.6;">
-    <!-- Hier werden die Ringnummern als normale Liste eingefügt -->
-  </div>
+  <div id="rn_print_list" style="padding:6px 12px; font-family: monospace; font-size: 11px; line-height: 1.6;"></div>
 </div>
 
 <div class="meta">
@@ -845,24 +781,19 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 
 <script>
 // ============================================================
-// KERN-FIX: Konfiguration wird aus localStorage geladen,
-// nie mit Hardcoded-Werten überschrieben.
+// DARK MODE TOGGLE
 // ============================================================
-
-function loadGithubConfigFromStorage() {
-  const defaults = {
-    owner: '', repo: '', branch: 'main',
-    filename: 'MT_Protokoll.json', token: '', supervisorPassword: ''
-  };
-  try {
-    const saved = localStorage.getItem('github_config');
-    if (saved) return Object.assign({}, defaults, JSON.parse(saved));
-  } catch(e) {}
-  return defaults;
+function toggleDark(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'':'dark');
+  document.getElementById('darkmode_btn').textContent=isDark?'🌙 Dark':'☀️ Hell';
+  localStorage.setItem('mt_darkmode',isDark?'':'dark');
 }
 
-let githubConfig = loadGithubConfigFromStorage();
-
+// ============================================================
+// LOKALE SPEICHERUNG
+// ============================================================
 let dropdownData = {
   flux:['12425560','12425561','12425562','12425563','12425564'],
   luxmeter:['12911164','12911165','12911166','12911167'],
@@ -872,6 +803,22 @@ let dropdownData = {
   vk1:['KD200811','KD200812','KD200813','KD200814','KD200815'],
   lampenzuordnung:{"12425560":{"lampe1":"12817865","lampe2":"12817866"},"12425561":{"lampe1":"12817867","lampe2":"12817868"},"12425562":{"lampe1":"12817869","lampe2":"12817870"}}
 };
+
+function loadDropdownsFromStorage() {
+  try {
+    const saved = localStorage.getItem('mt_dropdowns');
+    if (saved) { const parsed = JSON.parse(saved); dropdownData = { ...dropdownData, ...parsed }; }
+  } catch(e) { console.warn('Fehler beim Laden der Dropdowns', e); }
+  updateAllDropdowns();
+  loadDropdownsToEditor();
+}
+
+function saveDropdownsLocal() {
+  localStorage.setItem('mt_dropdowns', JSON.stringify(dropdownData));
+  alert('Dropdowns gespeichert!');
+  loadDropdownsToEditor();
+  updateAllDropdowns();
+}
 
 let ringnummernListe = [];
 let currentTrackingMode = 'stueckzahl';
@@ -884,14 +831,56 @@ try { const z = localStorage.getItem('mt_protokoll_zaehler'); if(z) protokollZae
 let CARD_DB = {"SCH-00001":"Häusner Daniel","SCH-00002":"Sommerfeld Stefan","123":"Mustermann Max"};
 try { const c = localStorage.getItem('mt_card_db'); if(c) CARD_DB = JSON.parse(c); } catch(e){}
 
-function fillGithubFieldsFromConfig() {
-  document.getElementById('github_owner_field').value = githubConfig.owner || '';
-  document.getElementById('github_repo_field').value = githubConfig.repo || '';
-  document.getElementById('github_branch_field').value = githubConfig.branch || 'main';
-  document.getElementById('github_filename_field').value = githubConfig.filename || 'MT_Protokoll.json';
-  document.getElementById('github_token_field').value = githubConfig.token || '';
-  document.getElementById('supervisor_password_field').value = githubConfig.supervisorPassword || '';
+function createDummyProtocols() {
+  const existing = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  if (existing.length > 0) return;
+  const anlagen = ['12425560', '12425561', '12425562'];
+  const pruefer = ['Häusner Daniel', 'Sommerfeld Stefan', 'Mustermann Max'];
+  const auftraege = ['4711', '4712', '4815', '4911', '5023'];
+  const gegenstaende = ['Innenring', 'Außenring', 'Rollenkörper', 'Lagerdeckel', 'Gehäuse'];
+  const dummys = [];
+  const startDate = new Date('2026-01-15');
+  const endDate = new Date('2026-06-15');
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
+    const datumStr = date.toISOString().slice(0, 16).replace('T', ' ');
+    const uv1 = 1800 + Math.random() * 800;
+    const uv2 = 1900 + Math.random() * 700;
+    const konz = 0.15 + Math.random() * 0.25;
+    const restmag = 2 + Math.random() * 4;
+    const feldKreis = 35 + Math.random() * 30;
+    const feldLaengs = 38 + Math.random() * 28;
+    const checkliste = {funktionstest:Math.random()>0.1,vk1:Math.random()>0.1,entmag:Math.random()>0.3,uvV:Math.random()>0.85,rueck:Math.random()>0.2,weissV:Math.random()>0.9,feldhom:Math.random()>0.2};
+    const level = {l1:Math.random()>0.3,l2:Math.random()>0.5,l3:Math.random()>0.7,pw:Math.random()>0.6};
+    const anlagenEq = anlagen[Math.floor(Math.random() * anlagen.length)];
+    const zuordnung = dropdownData.lampenzuordnung[anlagenEq] || {lampe1: '12817865', lampe2: '12817866'};
+    dummys.push({
+      protokollNr:`MT-2026-${String(100+i).padStart(5,'0')}`,datum:datumStr,
+      auftrag:auftraege[Math.floor(Math.random()*auftraege.length)],
+      pruefgegenstand:gegenstaende[Math.floor(Math.random()*gegenstaende.length)],
+      pruefer:pruefer[Math.floor(Math.random()*pruefer.length)],
+      supervisor:pruefer[Math.floor(Math.random()*pruefer.length)],
+      ergebnis:Math.random()>0.85?'linear':(Math.random()>0.95?'nichtlinear':'keine'),
+      anlagenEq:anlagenEq,vk1Seriennummer:dropdownData.vk1[Math.floor(Math.random()*dropdownData.vk1.length)],
+      fluxCharge:String(Math.floor(19000+Math.random()*1000)),traegerCharge:String(Math.floor(22000+Math.random()*1500)),
+      dornBoth:dropdownData.dorne[Math.floor(Math.random()*dropdownData.dorne.length)],dornKreis:'',dornLaengs:'',
+      kreisStufe:(Math.random()*10).toFixed(1),kreisAnzeige:(Math.random()*20).toFixed(1),feldKreis:feldKreis.toFixed(1),
+      laengsStufe:(Math.random()*10).toFixed(1),laengsAnzeige:(Math.random()*20).toFixed(1),feldLaengs:feldLaengs.toFixed(1),
+      luxmeterEq:dropdownData.luxmeter[Math.floor(Math.random()*dropdownData.luxmeter.length)],
+      feldmesserEq:dropdownData.feldmesser[Math.floor(Math.random()*dropdownData.feldmesser.length)],
+      uv1_eq:zuordnung.lampe1,uv1_uw:uv1.toFixed(0),uv1_lx:(Math.random()*15).toFixed(1),
+      uv2_eq:zuordnung.lampe2,uv2_uw:uv2.toFixed(0),uv2_lx:(Math.random()*15).toFixed(1),
+      weissRaum:(Math.random()*18).toFixed(1),konzentration:konz.toFixed(2),ansatzDatum:'2026-01-01',
+      restmag:restmag.toFixed(1),checkliste:checkliste,level:level,
+      tracking:{modus:'stueckzahl',stueckzahl:Math.floor(10+Math.random()*90)}
+    });
+  }
+  localStorage.setItem('mt_protokolle_list', JSON.stringify(dummys));
+  protokollZaehler = 130;
+  localStorage.setItem('mt_protokoll_zaehler', protokollZaehler);
 }
+
+createDummyProtocols();
 
 function generateProtocolNumber(){const n=new Date();return`MT-${n.getFullYear()}-${String(protokollZaehler).padStart(5,'0')}`;}
 function updateProtocolNumberDisplay(){const n=generateProtocolNumber();document.getElementById('protokoll_nummer_anzeige').textContent=n;document.getElementById('meta_protokoll_nummer').textContent=n;}
@@ -900,110 +889,12 @@ function incrementProtocolCounter(){protokollZaehler++;localStorage.setItem('mt_
 function switchView(view,btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.nav-btn:not(#darkmode_btn)').forEach(b=>b.classList.remove('active'));
+  if(btn&&btn.id!=='darkmode_btn')btn.classList.add('active');
   if(view==='statistik')updateStatistics();
   if(view==='gespeichert')loadSavedProtocols();
   if(view==='dropdowns')loadDropdownsToEditor();
-  if(view==='github'){fillGithubFieldsFromConfig();}
   if(view==='protokoll'){enableAllFields(true);updateProtocolNumberDisplay();}
-}
-
-function saveGithubConfig(){
-  githubConfig={
-    owner:document.getElementById('github_owner_field').value,
-    repo:document.getElementById('github_repo_field').value,
-    branch:document.getElementById('github_branch_field').value,
-    filename:document.getElementById('github_filename_field').value,
-    token:document.getElementById('github_token_field').value,
-    supervisorPassword:document.getElementById('supervisor_password_field').value
-  };
-  localStorage.setItem('github_config',JSON.stringify(githubConfig));
-  document.getElementById('github_status_message').innerHTML='<span style="color:var(--sg)">✓ Konfiguration gespeichert</span>';
-}
-
-async function testGithubConnection(){
-  const s=document.getElementById('github_status_message');
-  s.innerHTML='<span>⏳ Verbinde...</span>';
-  try{
-    const r=await fetch(`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}`,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(r.ok){s.innerHTML='<span style="color:var(--sg)">✓ Verbindung erfolgreich</span>';return true;}
-    else{s.innerHTML=`<span style="color:var(--er-b)">✗ Fehler: ${r.status}</span>`;return false;}
-  }catch(e){s.innerHTML=`<span style="color:var(--er-b)">✗ ${e.message}</span>`;return false;}
-}
-
-async function connectGithub(){
-  saveGithubConfig();
-  const s=document.getElementById('github_status_message');
-  s.innerHTML='<span>⏳ Lade Daten von GitHub...</span>';
-  try{
-    if(!await testGithubConnection())return;
-    await loadDropdownsFromGithub();
-    const r=await fetch(`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(r.ok){
-      const d=await r.json();
-      const c=JSON.parse(atob(d.content.replace(/\n/g,'')));
-      if(c.protokolle)localStorage.setItem('mt_protokolle_list',JSON.stringify(c.protokolle));
-      if(c.mitarbeiter){CARD_DB=c.mitarbeiter;localStorage.setItem('mt_card_db',JSON.stringify(CARD_DB));updateEmployeeList();}
-      s.innerHTML=`<span style="color:var(--sg)">✓ Erfolgreich geladen (${c.protokolle?.length||0} Protokolle)</span>`;
-    }else if(r.status===404){s.innerHTML='<span style="color:#d48f00">⚠ Keine Hauptdatei gefunden</span>';}
-    else{s.innerHTML=`<span style="color:var(--er-b)">✗ Fehler: ${r.status}</span>`;}
-  }catch(e){s.innerHTML=`<span style="color:var(--er-b)">✗ ${e.message}</span>`;}
-}
-
-async function saveProtocolToGithub(protocol,filename){
-  if(!githubConfig.token||!githubConfig.owner)return false;
-  try{
-    const url=`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const gr=await fetch(url,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    let sha=null;if(gr.ok){const gd=await gr.json();sha=gd.sha;}
-    const pr=await fetch(url,{method:'PUT',headers:{'Authorization':`token ${githubConfig.token}`,'Content-Type':'application/json'},body:JSON.stringify({message:`Protokoll ${filename}`,content:btoa(unescape(encodeURIComponent(JSON.stringify(protocol,null,2)))),branch:githubConfig.branch,sha})});
-    return pr.ok;
-  }catch(e){console.error(e);return false;}
-}
-
-async function deleteProtocolFromGithub(filename){
-  if(!githubConfig.token||!githubConfig.owner)return false;
-  try{
-    const url=`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`;
-    const gr=await fetch(url,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(!gr.ok)return false;
-    const gd=await gr.json();
-    const dr=await fetch(url,{method:'DELETE',headers:{'Authorization':`token ${githubConfig.token}`,'Content-Type':'application/json'},body:JSON.stringify({message:`Lösche ${filename}`,sha:gd.sha,branch:githubConfig.branch})});
-    return dr.ok;
-  }catch(e){return false;}
-}
-
-async function updateMainGithubFile(){
-  if(!githubConfig.token||!githubConfig.owner)return false;
-  try{
-    const url=`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${githubConfig.filename}?ref=${githubConfig.branch}`;
-    const gr=await fetch(url,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    let sha=null;if(gr.ok){const gd=await gr.json();sha=gd.sha;}
-    const data={protokolle:JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]'),mitarbeiter:CARD_DB,letztesUpdate:new Date().toISOString()};
-    const pr=await fetch(url,{method:'PUT',headers:{'Authorization':`token ${githubConfig.token}`,'Content-Type':'application/json'},body:JSON.stringify({message:`Update ${new Date().toLocaleString()}`,content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))),branch:githubConfig.branch,sha})});
-    return pr.ok;
-  }catch(e){return false;}
-}
-
-async function syncWithGithub(){await connectGithub();loadSavedProtocols();}
-
-async function autoConnect(){
-  const s=document.getElementById('github_status_message');
-  githubConfig=loadGithubConfigFromStorage();
-  fillGithubFieldsFromConfig();
-  if(!githubConfig.token||!githubConfig.owner||!githubConfig.repo){
-    if(s)s.innerHTML='<span style="color:#d48f00">⚠ Noch nicht konfiguriert – bitte unter 🔧 GitHub einrichten und speichern.</span>';
-    return;
-  }
-  try{await connectGithub();}catch(e){if(s)s.innerHTML=`<span style="color:var(--er-b)">✗ Verbindung fehlgeschlagen: ${e.message}</span>`;}
-}
-
-async function createDefaultDropdowns(){
-  if(!confirm('Standard-Dropdowns erstellen? Vorhandene werden überschrieben.'))return;
-  dropdownData={flux:['12425560','12425561','12425562','12425563','12425564'],luxmeter:['12911164','12911165','12911166','12911167'],feldmesser:['91885044','91885045','91885046','91885047'],uvlampen:['12817865','12817866','12817867','12817868','12817869','12817870'],dorne:['400x25','400x40','400x50','400x65','400x70','400x80','600x25','600x40'],vk1:['KD200811','KD200812','KD200813','KD200814','KD200815'],lampenzuordnung:{"12425560":{"lampe1":"12817865","lampe2":"12817866"},"12425561":{"lampe1":"12817867","lampe2":"12817868"},"12425562":{"lampe1":"12817869","lampe2":"12817870"}}};
-  await saveDropdownsToGithub(true);updateAllDropdowns();loadDropdownsToEditor();
-  document.getElementById('github_status_message').innerHTML='<span style="color:var(--sg)">✓ Standard-Dropdowns erstellt</span>';
 }
 
 function showDropdownTab(tab,e){
@@ -1045,28 +936,6 @@ function updateDropdownItem(c,i,v){dropdownData[c][i]=v;}
 function removeDropdownItem(c,i){dropdownData[c].splice(i,1);loadDropdownsToEditor();}
 function addDropdownItem(c){const inp=document.getElementById('new_'+c+'_input');const v=inp.value.trim();if(!v)return;dropdownData[c].push(v);inp.value='';loadDropdownsToEditor();}
 
-async function saveDropdownsToGithub(silent=false){
-  if(!githubConfig.token||!githubConfig.owner){if(!silent)alert('Bitte zuerst GitHub konfigurieren!');return false;}
-  try{
-    const url=`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`;
-    const gr=await fetch(url,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    let sha=null;if(gr.ok){const gd=await gr.json();sha=gd.sha;}
-    const pr=await fetch(url,{method:'PUT',headers:{'Authorization':`token ${githubConfig.token}`,'Content-Type':'application/json'},body:JSON.stringify({message:`Update Dropdowns ${new Date().toLocaleString()}`,content:btoa(unescape(encodeURIComponent(JSON.stringify(dropdownData,null,2)))),branch:githubConfig.branch,sha})});
-    if(pr.ok){if(!silent)document.getElementById('github_status_message').innerHTML='<span style="color:var(--sg)">✓ Dropdowns gespeichert</span>';return true;}
-    throw new Error('Fehler beim Speichern');
-  }catch(e){if(!silent)document.getElementById('github_status_message').innerHTML=`<span style="color:var(--er-b)">✗ ${e.message}</span>`;return false;}
-}
-
-async function loadDropdownsFromGithub(){
-  if(!githubConfig.token||!githubConfig.owner){alert('Bitte zuerst GitHub konfigurieren!');return;}
-  try{
-    const r=await fetch(`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/MT_Dropdowns.json?ref=${githubConfig.branch}`,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(r.ok){const d=await r.json();dropdownData=JSON.parse(atob(d.content.replace(/\n/g,'')));if(!dropdownData.lampenzuordnung)dropdownData.lampenzuordnung={};loadDropdownsToEditor();updateAllDropdowns();document.getElementById('github_status_message').innerHTML='<span style="color:var(--sg)">✓ Dropdowns geladen</span>';}
-    else if(r.status===404){await createDefaultDropdowns();}
-    else{throw new Error('Fehler '+r.status);}
-  }catch(e){document.getElementById('github_status_message').innerHTML=`<span style="color:var(--er-b)">✗ ${e.message}</span>`;}
-}
-
 function updateAllDropdowns(){
   const mk=(items,ph)=>'<option value="">'+ph+'</option>'+items.map(e=>`<option value="${e}">${e}</option>`).join('');
   const se=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
@@ -1080,7 +949,7 @@ function updateAllDropdowns(){
   updateZuordnungDropdowns();updateLampenAuswahl();
 }
 
-function saveCardDB(){localStorage.setItem('mt_card_db',JSON.stringify(CARD_DB));updateEmployeeList();updateMainGithubFile();}
+function saveCardDB(){localStorage.setItem('mt_card_db',JSON.stringify(CARD_DB));updateEmployeeList();}
 function openCardModal(){document.getElementById('cardModal').classList.add('show');updateEmployeeList();}
 function closeCardModal(){document.getElementById('cardModal').classList.remove('show');}
 function addNewCard(){const id=document.getElementById('new_card_id_feld').value.trim();const name=document.getElementById('new_card_name_feld').value.trim();if(!id||!name){alert('Bitte ID und Namen eingeben!');return;}CARD_DB[id]=name;saveCardDB();document.getElementById('new_card_id_feld').value='';document.getElementById('new_card_name_feld').value='';}
@@ -1174,7 +1043,7 @@ function updateRingnummernPreview(){document.getElementById('ringnummern_count_b
 function updateRingnummernListe(){const c=document.getElementById('ringnummern_list');c.innerHTML=ringnummernListe.length?ringnummernListe.map((n,i)=>`<div style="display:flex;align-items:center;padding:5px;border-bottom:1px solid #eee"><span style="flex:1">${n}</span><span onclick="removeRingnummer(${i})" style="color:var(--er-b);cursor:pointer;padding:0 8px">✕</span></div>`).join(''):'<div style="padding:10px;text-align:center;color:#888">Keine Ringnummern</div>';}
 function updateStueckzahl(){}
 
-async function submitForm(){
+function submitForm(){
   const req=[{id:'pruefgegenstand_feld',l:'Prüfgegenstand'},{id:'auftragsnummer_feld',l:'Auftragsnummer'},{id:'pruefer_name_versteckt',l:'Prüfer'},{id:'datum_feld',l:'Datum'},{id:'supervisor_name_versteckt',l:'Aufsicht'}];
   const miss=req.filter(r=>!document.getElementById(r.id).value.trim());
   if(miss.length){alert('Pflichtfelder fehlen:\n'+miss.map(r=>r.l).join('\n'));return;}
@@ -1187,9 +1056,8 @@ async function submitForm(){
     pruefgegenstand:document.getElementById('pruefgegenstand_feld').value,
     pruefer:document.getElementById('pruefer_name_versteckt').value,
     supervisor:document.getElementById('supervisor_name_versteckt').value,
-    ergebnis:ergVal,
-    anlagenEq:document.getElementById('eq_flux_auswahl').value,
-    vk1Seriennummer: document.getElementById('vk1_seriennummer_auswahl')?.value || '',
+    ergebnis:ergVal,anlagenEq:document.getElementById('eq_flux_auswahl').value,
+    vk1Seriennummer:document.getElementById('vk1_seriennummer_auswahl')?.value||'',
     fluxCharge:document.getElementById('flux_charge_feld').value,
     traegerCharge:document.getElementById('traeger_charge_feld').value,
     dornBoth:document.getElementById('dorn_both_auswahl')?.value||'',
@@ -1230,27 +1098,17 @@ async function submitForm(){
     },
     tracking:tracking
   };
-  const dt=p.datum.split('T');
-  const fn=`${nr}_${p.auftrag.replace(/[^a-zA-Z0-9]/g,'_')}_${dt[0].replace(/-/g,'')}${(dt[1]||'').replace(/:/g,'').substring(0,6)}.json`;
-  const ok=await saveProtocolToGithub(p,fn);
-  if(ok){
-    let l=JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]');
-    l.push({filename:fn,...p});
-    localStorage.setItem('mt_protokolle_list',JSON.stringify(l));
-    incrementProtocolCounter();
-    await updateMainGithubFile();
-    document.getElementById('succ_protokoll_nummer').textContent=nr;
-    document.getElementById('succ').style.display='flex';
-  } else {
-    alert('Fehler beim Speichern in GitHub!');
-  }
+  let protokolleListe = JSON.parse(localStorage.getItem('mt_protokolle_list') || '[]');
+  protokolleListe.push({filename: nr + '.json', ...p});
+  localStorage.setItem('mt_protokolle_list', JSON.stringify(protokolleListe));
+  incrementProtocolCounter();
+  document.getElementById('succ_protokoll_nummer').textContent = nr;
+  document.getElementById('succ').style.display = 'flex';
 }
 
 function loadProtocolToForm(p){
-  // Protokollnummer aus dem geladenen Protokoll setzen
   document.getElementById('protokoll_nummer_anzeige').textContent = p.protokollNr || generateProtocolNumber();
   document.getElementById('meta_protokoll_nummer').textContent = p.protokollNr || generateProtocolNumber();
-  
   const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   const sc=(id,c)=>{const el=document.getElementById(id);if(el)el.checked=c||false;};
   sv('pruefgegenstand_feld',p.pruefgegenstand);sv('auftragsnummer_feld',p.auftrag);
@@ -1259,21 +1117,17 @@ function loadProtocolToForm(p){
   sv('eq_flux_auswahl',p.anlagenEq);sv('flux_charge_feld',p.fluxCharge);sv('traeger_charge_feld',p.traegerCharge);
   sv('dorn_both_auswahl',p.dornBoth);sv('dorn_kreis_auswahl',p.dornKreis);sv('dorn_laengs_auswahl',p.dornLaengs);
   sv('kreis_stufe_feld',p.kreisStufe);sv('kreis_anzeige_feld',p.kreisAnzeige);sv('kreis_feld_feld',p.feldKreis);
-  if(p.feldKreis) chkFeld(document.getElementById('kreis_feld_feld'));
+  if(p.feldKreis)chkFeld(document.getElementById('kreis_feld_feld'));
   sv('laengs_stufe_feld',p.laengsStufe);sv('laengs_anzeige_feld',p.laengsAnzeige);sv('laengs_feld_feld',p.feldLaengs);
-  if(p.feldLaengs) chkFeld(document.getElementById('laengs_feld_feld'));
+  if(p.feldLaengs)chkFeld(document.getElementById('laengs_feld_feld'));
   sv('eq_luxmeter_auswahl',p.luxmeterEq);sv('eq_feldmesser_auswahl',p.feldmesserEq);
-  
-  // VK1 Seriennummer sofort laden
-  sv('vk1_seriennummer_auswahl', p.vk1Seriennummer || '');
-  
+  sv('vk1_seriennummer_auswahl',p.vk1Seriennummer||'');
   setTimeout(()=>{
     sv('eq_uv1_auswahl',p.uv1_eq);sv('uv1_uw_feld',p.uv1_uw);if(p.uv1_uw)chkUV(document.getElementById('uv1_uw_feld'));
     sv('uv1_lx_feld',p.uv1_lx);if(p.uv1_lx)chkMax(document.getElementById('uv1_lx_feld'),15,20);
     sv('eq_uv2_auswahl',p.uv2_eq);sv('uv2_uw_feld',p.uv2_uw);if(p.uv2_uw)chkUV(document.getElementById('uv2_uw_feld'));
     sv('uv2_lx_feld',p.uv2_lx);if(p.uv2_lx)chkMax(document.getElementById('uv2_lx_feld'),15,20);
   },500);
-  
   sv('weiss_raum_feld',p.weissRaum);if(p.weissRaum)chkMax(document.getElementById('weiss_raum_feld'),15,20);
   sv('konzentration_feld',p.konzentration);if(p.konzentration)chkRange(document.getElementById('konzentration_feld'),0.1,0.4);
   sv('ansatz_datum_feld',p.ansatzDatum||'2026-01-01');
@@ -1287,8 +1141,7 @@ function loadProtocolToForm(p){
     if(p.tracking.modus==='stueckzahl'){setTrackingMode('stueckzahl');document.getElementById('stueckzahl_input').value=p.tracking.stueckzahl||1;}
     else{setTrackingMode('ringnummern');ringnummernListe=p.tracking.ringnummern?[...p.tracking.ringnummern]:[];updateRingnummernPreview();updateRingnummernListe();}
   }
-  saveEQ('eq_flux_auswahl');saveEQ('eq_luxmeter_auswahl');saveEQ('eq_feldmesser_auswahl');saveEQ('dorn_both_auswahl');saveEQ('dorn_kreis_auswahl');saveEQ('dorn_laengs_auswahl');
-  saveEQ('vk1_seriennummer_auswahl');
+  saveEQ('eq_flux_auswahl');saveEQ('eq_luxmeter_auswahl');saveEQ('eq_feldmesser_auswahl');saveEQ('dorn_both_auswahl');saveEQ('dorn_kreis_auswahl');saveEQ('dorn_laengs_auswahl');saveEQ('vk1_seriennummer_auswahl');
 }
 
 function enableAllFields(enable){
@@ -1310,40 +1163,33 @@ function loadSavedProtocols(){
     const[datum,uhrzeit]=(p.datum||'').split('T');
     let menge='1 Stk';if(p.tracking){menge=p.tracking.modus==='stueckzahl'?`${p.tracking.stueckzahl} Stk`:p.tracking.ringnummern?`${p.tracking.ringnummern.length} Ringe`:menge;}
     return`<tr><td>${p.protokollNr||'—'}</td><td>${datum||''} ${uhrzeit||''}</td><td>${p.anlagenEq||'—'}</td><td>${p.auftrag}</td><td>${p.pruefgegenstand}</td><td>${p.pruefer}</td><td>${p.ergebnis}</td><td>${menge}</td>
-    <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="loadProtocol('${p.filename}')">📂 Laden</button></td>
-    <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="printProtocol('${p.filename}')">🖨 Drucken</button></td>
-    <td><button class="btn sec" style="padding:4px 8px;font-size:12px;background:var(--er-b);color:white" onclick="deleteProtocol('${p.filename}',${i})">✕ Löschen</button></td></tr>`;
+    <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="loadProtocol(${i})">📂 Laden</button></td>
+    <td><button class="btn sec" style="padding:4px 8px;font-size:12px" onclick="printProtocol(${i})">🖨 Drucken</button></td>
+    <td><button class="btn sec" style="padding:4px 8px;font-size:12px;background:var(--er-b);color:white" onclick="deleteProtocol(${i})">✕ Löschen</button></td></tr>`;
   }).join('');
 }
 
-async function loadProtocol(filename){
-  if(!githubConfig.token||!githubConfig.owner){alert('GitHub nicht konfiguriert!');return;}
-  try{
-    const r=await fetch(`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(r.ok){const d=await r.json();const p=JSON.parse(atob(d.content.replace(/\n/g,'')));switchView('protokoll',document.querySelector('.nav-btn'));updateAllDropdowns();setTimeout(()=>{loadProtocolToForm(p);enableAllFields(false);alert('✓ Protokoll geladen (nur Lesen)');},500);}
-    else{alert('Fehler beim Laden!');}
-  }catch(e){alert('Fehler: '+e.message);}
+function loadProtocol(index){
+  const saved=JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]');
+  const p=saved[index];
+  if(p){switchView('protokoll',document.querySelector('.nav-btn'));updateAllDropdowns();setTimeout(()=>{loadProtocolToForm(p);enableAllFields(false);alert('✓ Protokoll geladen (nur Lesen)');},500);}
 }
 
-async function printProtocol(filename){
-  if(!githubConfig.token||!githubConfig.owner){alert('GitHub nicht konfiguriert!');return;}
-  try{
-    const r=await fetch(`https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${filename}?ref=${githubConfig.branch}`,{headers:{'Authorization':`token ${githubConfig.token}`}});
-    if(r.ok){const d=await r.json();const p=JSON.parse(atob(d.content.replace(/\n/g,'')));switchView('protokoll',document.querySelector('.nav-btn'));updateAllDropdowns();setTimeout(()=>{
-        document.getElementById('protokoll_nummer_anzeige').textContent = p.protokollNr;
-        document.getElementById('meta_protokoll_nummer').textContent = p.protokollNr;
-        loadProtocolToForm(p);enableAllFields(false);setTimeout(()=>window.print(),500);},500);}
-    else{alert('Fehler!');}
-  }catch(e){alert('Fehler: '+e.message);}
+function printProtocol(index){
+  const saved=JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]');
+  const p=saved[index];
+  if(p){switchView('protokoll',document.querySelector('.nav-btn'));updateAllDropdowns();setTimeout(()=>{loadProtocolToForm(p);enableAllFields(false);setTimeout(()=>window.print(),500);},500);}
 }
 
-async function deleteProtocol(filename,index){
+function deleteProtocol(index){
   const pw=document.getElementById('delete_password_field')?.value||'';
-  if(pw!==githubConfig.supervisorPassword){alert('✗ Falsches Passwort!');return;}
-  if(!confirm(`Protokoll ${filename} wirklich löschen?`))return;
-  const ok=await deleteProtocolFromGithub(filename);
-  if(ok){let l=JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]');l.splice(index,1);localStorage.setItem('mt_protokolle_list',JSON.stringify(l));await updateMainGithubFile();loadSavedProtocols();alert('✓ Protokoll gelöscht');}
-  else{alert('✗ Fehler beim Löschen!');}
+  if(pw!=='admin'){alert('✗ Falsches Passwort! (admin)');return;}
+  if(!confirm('Protokoll wirklich löschen?'))return;
+  let saved=JSON.parse(localStorage.getItem('mt_protokolle_list')||'[]');
+  saved.splice(index,1);
+  localStorage.setItem('mt_protokolle_list',JSON.stringify(saved));
+  loadSavedProtocols();
+  alert('✓ Protokoll gelöscht');
 }
 
 function updateStatistics(){
@@ -1370,11 +1216,12 @@ function updateSummaryCards(data,typ){
 function updateStatsChart(data,typ){
   const ctx=document.getElementById('stats_chart_canvas').getContext('2d');
   if(statsChart)statsChart.destroy();
+  if(!data||data.length===0){statsChart=new Chart(ctx,{type:'line',data:{labels:['Keine Daten'],datasets:[{label:'Keine Daten',data:[0]}]},options:{responsive:true,maintainAspectRatio:false}});return;}
   const labels=data.map(d=>d.datum);let datasets=[];
-  if(typ==='uv'){datasets=[{label:'UV1',data:data.map(d=>d.uv1),borderColor:'#00893d',tension:0.1},{label:'UV2',data:data.map(d=>d.uv2),borderColor:'#006b30',tension:0.1}];}
-  else if(typ==='konzentration'){datasets=[{label:'Konzentration',data:data.map(d=>d.konz),borderColor:'#00893d',backgroundColor:'rgba(0,137,61,0.1)',tension:0.1},{label:'Grenze 0.4',data:data.map(()=>0.4),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0},{label:'Grenze 0.1',data:data.map(()=>0.1),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0}];}
-  else if(typ==='restmagnetismus'){datasets=[{label:'Restmagnetismus',data:data.map(d=>d.restmag),borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,0.1)',tension:0.1},{label:'Grenze 5',data:data.map(()=>5),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0}];}
-  else if(typ==='feldstaerke'){datasets=[{label:'Kreis',data:data.map(d=>d.feld_kreis),borderColor:'#00893d',tension:0.1},{label:'Längs',data:data.map(d=>d.feld_laengs),borderColor:'#006b30',tension:0.1}];}
+  if(typ==='uv'){datasets=[{label:'UV1 (µW/cm²)',data:data.map(d=>d.uv1),borderColor:'#00893d',backgroundColor:'rgba(0,137,61,0.15)',tension:0.1,borderWidth:2,pointRadius:3},{label:'UV2 (µW/cm²)',data:data.map(d=>d.uv2),borderColor:'#d44f00',backgroundColor:'rgba(212,79,0,0.12)',tension:0.1,borderWidth:2,pointRadius:3,borderDash:[6,3]}];}
+  else if(typ==='konzentration'){datasets=[{label:'Konzentration (ml)',data:data.map(d=>d.konz),borderColor:'#00893d',backgroundColor:'rgba(0,137,61,0.1)',tension:0.1},{label:'Grenze 0.4',data:data.map(()=>0.4),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0},{label:'Grenze 0.1',data:data.map(()=>0.1),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0}];}
+  else if(typ==='restmagnetismus'){datasets=[{label:'Restmagnetismus (A/cm)',data:data.map(d=>d.restmag),borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,0.1)',tension:0.1},{label:'Grenze 5 A/cm',data:data.map(()=>5),borderColor:'#d48f00',borderDash:[5,5],pointRadius:0}];}
+  else if(typ==='feldstaerke'){datasets=[{label:'Feldstärke Kreis (A/cm)',data:data.map(d=>d.feld_kreis),borderColor:'#00893d',backgroundColor:'rgba(0,137,61,0.15)',tension:0.1,borderWidth:2,pointRadius:3},{label:'Feldstärke Längs (A/cm)',data:data.map(d=>d.feld_laengs),borderColor:'#2255cc',backgroundColor:'rgba(34,85,204,0.12)',tension:0.1,borderWidth:2,pointRadius:3,borderDash:[6,3]}];}
   statsChart=new Chart(ctx,{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false}});
 }
 
@@ -1441,95 +1288,64 @@ function resetForm(){
   document.getElementById('datum_feld').value=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   document.getElementById('erstell_datum_anzeige').textContent=now.toLocaleDateString('de-DE');
   updateProtocolNumberDisplay();
-  
-  // VK1 Dropdown zurücksetzen
-  const vk1Select = document.getElementById('vk1_seriennummer_auswahl');
-  if(vk1Select) vk1Select.value = '';
+  const vk1Select=document.getElementById('vk1_seriennummer_auswahl');
+  if(vk1Select)vk1Select.value='';
 }
 
-// ===== DRUCK-VORBEREITUNG (Ringnummern und Mengenanzeige) =====
 window.addEventListener('beforeprint', () => {
-  // Stückzahl/Ringanzahl auf Seite 1 anzeigen - NUR DAS AKTIVE
-  const stueckzahlAnzeige = document.getElementById('stueckzahl_druck_anzeige');
-  const ringanzahlAnzeige = document.getElementById('ringanzahl_druck_anzeige');
-  const stueckzahlWert = document.getElementById('stueckzahl_druck_wert');
-  const ringanzahlWert = document.getElementById('ringanzahl_druck_wert');
-  
-  if (currentTrackingMode === 'stueckzahl') {
-    // NUR Stückzahl anzeigen
-    if (stueckzahlWert) stueckzahlWert.textContent = document.getElementById('stueckzahl_input').value || '1';
-    if (stueckzahlAnzeige) {
-      stueckzahlAnzeige.style.display = 'block';
-      stueckzahlAnzeige.style.setProperty('display', 'block', 'important');
-    }
-    if (ringanzahlAnzeige) {
-      ringanzahlAnzeige.style.display = 'none';
-      ringanzahlAnzeige.style.setProperty('display', 'none', 'important');
-    }
-  } else {
-    // NUR Einzelteilverfolgung anzeigen
-    if (ringanzahlWert) ringanzahlWert.textContent = ringnummernListe.length;
-    if (ringanzahlAnzeige) {
-      ringanzahlAnzeige.style.display = 'block';
-      ringanzahlAnzeige.style.setProperty('display', 'block', 'important');
-    }
-    if (stueckzahlAnzeige) {
-      stueckzahlAnzeige.style.display = 'none';
-      stueckzahlAnzeige.style.setProperty('display', 'none', 'important');
-    }
+  const stueckzahlAnzeige=document.getElementById('stueckzahl_druck_anzeige');
+  const ringanzahlAnzeige=document.getElementById('ringanzahl_druck_anzeige');
+  const stueckzahlWert=document.getElementById('stueckzahl_druck_wert');
+  const ringanzahlWert=document.getElementById('ringanzahl_druck_wert');
+  if(currentTrackingMode==='stueckzahl'){
+    if(stueckzahlWert)stueckzahlWert.textContent=document.getElementById('stueckzahl_input').value||'1';
+    if(stueckzahlAnzeige){stueckzahlAnzeige.style.display='block';stueckzahlAnzeige.style.setProperty('display','block','important');}
+    if(ringanzahlAnzeige){ringanzahlAnzeige.style.display='none';ringanzahlAnzeige.style.setProperty('display','none','important');}
+  }else{
+    if(ringanzahlWert)ringanzahlWert.textContent=ringnummernListe.length;
+    if(ringanzahlAnzeige){ringanzahlAnzeige.style.display='block';ringanzahlAnzeige.style.setProperty('display','block','important');}
+    if(stueckzahlAnzeige){stueckzahlAnzeige.style.display='none';stueckzahlAnzeige.style.setProperty('display','none','important');}
   }
-
-  // Ringnummern-Seite (Seite 2) vorbereiten
-  const page = document.getElementById('ringnummern_print_page');
-  if (page) {
-    if (currentTrackingMode === 'ringnummern' && ringnummernListe.length > 0) {
-      document.getElementById('rn_print_nr').textContent = document.getElementById('protokoll_nummer_anzeige').textContent;
-      document.getElementById('rn_print_auftrag').textContent = document.getElementById('auftragsnummer_feld').value || '—';
-      document.getElementById('rn_print_gegenstand').textContent = document.getElementById('pruefgegenstand_feld').value || '—';
-      document.getElementById('rn_print_count').textContent = ringnummernListe.length + ' ' + (ringnummernListe.length === 1 ? 'Teil' : 'Teile');
-      
-      const listContainer = document.getElementById('rn_print_list');
-      let listHtml = '';
-      ringnummernListe.forEach((nummer, index) => {
-        listHtml += `
-          <div class="rn-list-item">
-            <span class="rn-list-number">${String(index + 1).padStart(2, '0')}.</span>
-            <span class="rn-list-value">${nummer}</span>
-          </div>
-        `;
-      });
-      listContainer.innerHTML = listHtml;
+  const page=document.getElementById('ringnummern_print_page');
+  if(page){
+    if(currentTrackingMode==='ringnummern'&&ringnummernListe.length>0){
+      document.getElementById('rn_print_nr').textContent=document.getElementById('protokoll_nummer_anzeige').textContent;
+      document.getElementById('rn_print_auftrag').textContent=document.getElementById('auftragsnummer_feld').value||'—';
+      document.getElementById('rn_print_gegenstand').textContent=document.getElementById('pruefgegenstand_feld').value||'—';
+      document.getElementById('rn_print_count').textContent=ringnummernListe.length+' '+(ringnummernListe.length===1?'Teil':'Teile');
+      const listContainer=document.getElementById('rn_print_list');
+      let listHtml='';
+      ringnummernListe.forEach((nummer,index)=>{listHtml+=`<div class="rn-list-item"><span class="rn-list-number">${String(index+1).padStart(2,'0')}.</span><span class="rn-list-value">${nummer}</span></div>`;});
+      listContainer.innerHTML=listHtml;
       page.classList.remove('no-rings');
-    } else {
+    }else{
       page.classList.add('no-rings');
-      if (document.getElementById('rn_print_list')) {
-        document.getElementById('rn_print_list').innerHTML = '';
-      }
+      if(document.getElementById('rn_print_list'))document.getElementById('rn_print_list').innerHTML='';
     }
   }
 });
 
 window.addEventListener('load', async() => {
-  document.getElementById('erstell_datum_anzeige').textContent = new Date().toLocaleDateString('de-DE');
+  // Dark Mode aus localStorage wiederherstellen
+  const dm=localStorage.getItem('mt_darkmode');
+  if(dm==='dark'){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('darkmode_btn').textContent='☀️ Hell';
+  }
+  document.getElementById('erstell_datum_anzeige').textContent=new Date().toLocaleDateString('de-DE');
   updateProtocolNumberDisplay();
-  githubConfig = loadGithubConfigFromStorage();
-  fillGithubFieldsFromConfig();
-  await autoConnect();
-  setInterval(autoConnect, 300000);
-
-  setTimeout(() => updateAllDropdowns(), 1000);
+  loadDropdownsFromStorage();
   restoreEQ();
   updateLampenAuswahl();
-  const now = new Date();
-  document.getElementById('datum_feld').value = new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  const now=new Date();
+  document.getElementById('datum_feld').value=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   updateEmployeeList();
   setTrackingMode('stueckzahl');
-  document.getElementById('stueckzahl_input').value = 1;
-  ringnummernListe = [];
+  document.getElementById('stueckzahl_input').value=1;
+  ringnummernListe=[];
   updateRingnummernPreview();
   updateRingnummernListe();
 });
 </script>
-
 </body>
 </html>
