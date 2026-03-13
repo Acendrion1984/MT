@@ -8,69 +8,138 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ===== LIGHT MODE (Standard) ===== */
 :root{
   --sg:#00893d;--sg2:#006b30;--sg3:#e8f5ee;--sa:#1a1a1a;--sa2:#333333;--sa3:#555555;
   --gbg:#e8e8e8;--gmid:#bbb;--bdr:#d0d0d0;--wh:#fff;
   --ok-bg:#d6f0dc;--ok-b:#00893d;--ok-t:#005a28;
   --wn-bg:#fff3cd;--wn-b:#d48f00;--wn-t:#7a5200;
   --er-bg:#fde8e8;--er-b:#c0392b;--er-t:#7b241c;
+  --body-bg:#e0e0e0;
+  --card-surf:#fff;
+  --meta-bg:#f0f0f0;
+  --hdr-bg:#fff;
+  --stats-ctrl-bg:#fff;
+  --stat-th-bg:#e8f5ee;
+  --stat-th-color:#006b30;
+  --modal-bg:#fff;
+  --modal-overlay:rgba(0,0,0,0.7);
+  --dropdown-editor-bg:#fff;
+  --ir-alt-bg:#fafafa;
+  --fafcfb:#fafcfb;
+  --f9f9:#f9f9f9;
+  --toggle-btn-bg:#fff;
+  --toggle-btn-color:#555;
+  --toggle-btn-border:#e0e0e0;
+  --toggle-btn-shadow:0 4px 12px rgba(0,0,0,0.15);
+  --sec-bg:#1a1a1a;
+  --svg-ring-fill:#e8e8e8;
+  --svg-ring-stroke:#444444;
+  --svg-ring-inner:#ffffff;
+  --svg-ring-label:#555555;
+  --svg-dim-line:#d0d0d0;
+  --svg-note:#777777;
+  --btn-sec-bg:#444444;
+  --btn-sec-hover:#222222;
+  --btn-special-bg:#444444;
+  --btn-special-hover:#222222;
 }
+
+/* ===== DARK MODE ===== */
+body.dark-mode {
+  --sg:#00a84a;--sg2:#00c957;--sg3:#0a2e17;--sa:#e0e0e0;--sa2:#c0c0c0;--sa3:#999999;
+  --gbg:#2a2a2a;--gmid:#555555;--bdr:#444444;--wh:#1e1e1e;
+  --ok-bg:#0d2e1a;--ok-b:#00893d;--ok-t:#4cde8a;
+  --wn-bg:#2a1f00;--wn-b:#d48f00;--wn-t:#f0b429;
+  --er-bg:#2e0d0d;--er-b:#c0392b;--er-t:#f08080;
+  --body-bg:#121212;
+  --card-surf:#1e1e1e;
+  --meta-bg:#2a2a2a;
+  --hdr-bg:#1e1e1e;
+  --stats-ctrl-bg:#1e1e1e;
+  --stat-th-bg:#0a2e17;
+  --stat-th-color:#00a84a;
+  --modal-bg:#1e1e1e;
+  --modal-overlay:rgba(0,0,0,0.85);
+  --dropdown-editor-bg:#1e1e1e;
+  --ir-alt-bg:#252525;
+  --fafcfb:#1e1e1e;
+  --f9f9:#222222;
+  --toggle-btn-bg:#2a2a2a;
+  --toggle-btn-color:#e0e0e0;
+  --toggle-btn-border:#444;
+  --toggle-btn-shadow:0 4px 12px rgba(0,0,0,0.5);
+  --sec-bg:#0d0d0d;
+  --svg-ring-fill:#3a3a3a;
+  --svg-ring-stroke:#aaaaaa;
+  --svg-ring-inner:#2a2a2a;
+  --svg-ring-label:#aaaaaa;
+  --svg-dim-line:#555555;
+  --svg-note:#999999;
+  --btn-sec-bg:#3a3a3a;
+  --btn-sec-hover:#555555;
+  --btn-special-bg:#2a5a8a;
+  --btn-special-hover:#1e4570;
+}
+
 html{font-size:17px}
-body{background:#e0e0e0;font-family:'Barlow',Arial,sans-serif;color:var(--sa);padding:14px 10px 70px}
+body{background:var(--body-bg);font-family:'Barlow',Arial,sans-serif;color:var(--sa);padding:14px 10px 70px;transition:background-color 0.3s ease,color 0.3s ease}
 .app{max-width:1600px;margin:0 auto}
-.hdr{display:flex;align-items:stretch;justify-content:space-between;background:var(--wh);border:1.5px solid var(--bdr);border-bottom:3px solid var(--sg);overflow:hidden}
+.hdr{display:flex;align-items:stretch;justify-content:space-between;background:var(--hdr-bg);border:1.5px solid var(--bdr);border-bottom:3px solid var(--sg);overflow:hidden;transition:background 0.3s,border-color 0.3s}
 .hdr-left{display:flex;align-items:center;gap:0}
 .hdr-greenbar{width:6px;background:var(--sg);flex-shrink:0}
 .hdr-text{padding:12px 16px}
 .hdr-text h1{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:clamp(15px,3.5vw,20px);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sa)}
 .hdr-text p{font-size:11px;color:var(--sa3);font-style:italic;margin-top:2px}
 .schaeffler-logo{display:flex;align-items:center;padding:10px 16px;flex-shrink:0}
+body.dark-mode .schaeffler-logo img{filter:brightness(1.3) invert(0)}
 .nav{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
 .nav-btn{background:var(--wh);border:2px solid var(--sg);color:var(--sg);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;padding:10px 20px;border-radius:4px;cursor:pointer;transition:all .15s}
-.nav-btn.active{background:var(--sg);color:var(--wh)}
+.nav-btn.active{background:var(--sg);color:#fff}
 .nav-btn:hover{background:var(--sg3)}
-.nav-btn.special{background:var(--sa2);border-color:var(--sa2);color:var(--wh)}
-.nav-btn.special:hover{background:var(--sa)}
+.nav-btn.special{background:var(--btn-special-bg);border-color:var(--btn-special-bg);color:#fff}
+.nav-btn.special:hover{background:var(--btn-special-hover)}
 .view{display:none}.view.active{display:block}
-.github-config{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;border-top:4px solid var(--sg)}
+.github-config{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;border-top:4px solid var(--sg);transition:background 0.3s}
 .github-config h3{color:var(--sg);margin-bottom:15px;font-size:18px;font-family:'Barlow Condensed',sans-serif}
 .config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-bottom:15px}
 .config-item{display:flex;flex-direction:column;gap:5px}
 .config-item label{font-size:13px;font-weight:700;text-transform:uppercase;color:var(--sa2)}
-.config-item input{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:14px;font-family:inherit}
-.config-item input:focus{border-color:var(--sg);outline:none;background:#f0faf4}
+.config-item input{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:14px;font-family:inherit;color:var(--sa)}
+.config-item input:focus{border-color:var(--sg);outline:none;background:var(--sg3)}
 .warning{background:var(--wn-bg);border-left:4px solid var(--wn-b);padding:12px 15px;font-size:13px;margin:15px 0;color:var(--wn-t);border-radius:0 4px 4px 0}
 .github-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
-.dropdown-editor{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px}
+.dropdown-editor{background:var(--dropdown-editor-bg);border:1.5px solid var(--bdr);padding:20px;margin-bottom:20px;border-radius:4px;transition:background 0.3s}
 .dropdown-editor h3{color:var(--sg);margin-bottom:15px;font-size:16px}
 .dropdown-tabs{display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
-.dropdown-tab{background:var(--gbg);border:1.5px solid var(--gmid);padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:600;font-size:13px}
-.dropdown-tab.active{background:var(--sg);border-color:var(--sg);color:var(--wh)}
+.dropdown-tab{background:var(--gbg);border:1.5px solid var(--gmid);padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:600;font-size:13px;color:var(--sa)}
+.dropdown-tab.active{background:var(--sg);border-color:var(--sg);color:#fff}
 .dropdown-panel{display:none}.dropdown-panel.active{display:block}
-.dropdown-list{background:#f9f9f9;border:1.5px solid var(--gmid);border-radius:4px;padding:10px;margin-bottom:15px;max-height:300px;overflow-y:auto}
-.dropdown-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid #eee;background:var(--wh);margin-bottom:5px;border-radius:4px}
+.dropdown-list{background:var(--f9f9);border:1.5px solid var(--gmid);border-radius:4px;padding:10px;margin-bottom:15px;max-height:300px;overflow-y:auto}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid var(--bdr);background:var(--wh);margin-bottom:5px;border-radius:4px}
 .dropdown-item:last-child{border-bottom:none}
-.dropdown-item input{flex:1;padding:6px 8px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px}
+.dropdown-item input{flex:1;padding:6px 8px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px;background:var(--gbg);color:var(--sa)}
 .dropdown-item .remove{color:var(--er-b);cursor:pointer;font-weight:700;padding:0 8px}
 .add-dropdown-item{display:flex;gap:10px;margin-top:10px}
-.add-dropdown-item input{flex:1;padding:8px;border:1.5px solid var(--gmid);border-radius:4px}
-.add-dropdown-item button{background:var(--sg);color:var(--wh);border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:700}
-.card{background:var(--wh);border:1.5px solid var(--bdr);border-top:none;margin-bottom:15px}
-.sec{background:var(--sa);color:var(--wh);font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-left:4px solid var(--sg)}
+.add-dropdown-item input{flex:1;padding:8px;border:1.5px solid var(--gmid);border-radius:4px;background:var(--gbg);color:var(--sa)}
+.add-dropdown-item button{background:var(--sg);color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:700}
+.card{background:var(--card-surf);border:1.5px solid var(--bdr);border-top:none;margin-bottom:15px;transition:background 0.3s,border-color 0.3s}
+.sec{background:var(--sec-bg);color:#fff;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-left:4px solid var(--sg)}
 .g2{display:grid;grid-template-columns:1fr 1fr}
-.g2 .br{border-right:1.5px solid #e0e0e0}
-@media(max-width:580px){.g2{grid-template-columns:1fr}.g2 .br{border-right:none;border-bottom:1.5px solid #e0e0e0}}
-.f{padding:7px 14px;border-bottom:1px solid #f0f0f0;display:flex;flex-direction:column;gap:3px}
+.g2 .br{border-right:1.5px solid var(--bdr)}
+@media(max-width:580px){.g2{grid-template-columns:1fr}.g2 .br{border-right:none;border-bottom:1.5px solid var(--bdr)}}
+.f{padding:7px 14px;border-bottom:1px solid var(--bdr);display:flex;flex-direction:column;gap:3px}
 .lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--sa2)}
-.sub{font-size:12px;color:#888;font-style:italic}
+.sub{font-size:12px;color:var(--sa3);font-style:italic}
 .fv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
 .fs{font-size:15px;color:var(--sa)}
-.ir{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:46px;flex-wrap:wrap}
-.ir.alt{background:#fafafa}
+.ir{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--bdr);gap:10px;min-height:46px;flex-wrap:wrap;background:var(--card-surf)}
+.ir.alt{background:var(--ir-alt-bg)}
 .irl{flex:1;min-width:0}.irr{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .unit{font-size:14px;color:var(--sa3);white-space:nowrap}
-input[type=text],input[type=datetime-local]{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:15px;font-family:inherit;color:var(--sa);transition:border-color .15s,background .15s}
-input[type=text]:focus,input[type=datetime-local]:focus{outline:none;border-color:var(--sg);background:#f0faf4}
+input[type=text],input[type=datetime-local],input[type=password]{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 10px;font-size:15px;font-family:inherit;color:var(--sa);transition:border-color .15s,background .15s}
+input[type=text]:focus,input[type=datetime-local]:focus,input[type=password]:focus{outline:none;border-color:var(--sg);background:var(--sg3)}
 .full{width:100%}.w70{width:76px}.w90{width:96px}.w110{width:116px}
 select{background:var(--gbg);border:1.5px solid var(--gmid);border-radius:4px;padding:8px 30px 8px 10px;font-size:15px;font-family:inherit;color:var(--sa);appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:border-color .15s}
 select:focus{outline:none;border-color:var(--sg)}
@@ -86,43 +155,43 @@ input.tol.er{background:var(--er-bg);border-color:var(--er-b);color:var(--er-t)}
 .badge.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
 .badge.wn{background:var(--wn-bg);color:var(--wn-t);border:1px solid var(--wn-b)}
 .badge.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
-.badge.nu{background:#f0f0f0;color:#999;border:1px solid #ccc}
+.badge.nu{background:var(--gbg);color:var(--sa3);border:1px solid var(--gmid)}
 input.num{border:1.5px solid var(--sg);border-radius:4px;padding:8px;font-size:15px;font-weight:700;color:var(--sg);font-family:inherit;background:var(--wh);width:90px;text-align:center;-moz-appearance:textfield;appearance:textfield}
 input.num:focus{outline:none;border-color:var(--sg2);color:var(--sg2)}
 input.num::-webkit-outer-spin-button,input.num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .magg{display:grid;grid-template-columns:1fr 1fr}
-.magc{border-right:1.5px solid #e0e0e0}.magc:last-child{border-right:none}
-@media(max-width:520px){.magg{grid-template-columns:1fr}.magc{border-right:none;border-bottom:1.5px solid #e0e0e0}.magc:last-child{border-bottom:none}}
-.maghdr{background:var(--sg3);font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:7px 14px;color:var(--sg2);border-bottom:1px solid #c5e3d0;border-left:3px solid var(--sg)}
-.magr{display:flex;align-items:center;padding:9px 14px;border-bottom:1px solid #f0f0f0;gap:10px;min-height:50px}
+.magc{border-right:1.5px solid var(--bdr)}.magc:last-child{border-right:none}
+@media(max-width:520px){.magg{grid-template-columns:1fr}.magc{border-right:none;border-bottom:1.5px solid var(--bdr)}.magc:last-child{border-bottom:none}}
+.maghdr{background:var(--sg3);font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:7px 14px;color:var(--sg2);border-bottom:1px solid var(--bdr);border-left:3px solid var(--sg)}
+.magr{display:flex;align-items:center;padding:9px 14px;border-bottom:1px solid var(--bdr);gap:10px;min-height:50px;background:var(--card-surf)}
 .magl{width:96px;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa2);flex-shrink:0;line-height:1.3}
-.dornesec{padding:10px 14px;border-bottom:1px solid #f0f0f0}
+.dornesec{padding:10px 14px;border-bottom:1px solid var(--bdr)}
 .dorneg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
 @media(max-width:480px){.dorneg{grid-template-columns:1fr}}
 .dorneitem{display:flex;flex-direction:column;gap:4px}
 .dorneitem label{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3);letter-spacing:.3px}
 .dorne-mode{display:flex;gap:0;margin:8px 0 10px;border:1.5px solid var(--sg);border-radius:4px;overflow:hidden;width:fit-content}
-.dorne-toggle{padding:6px 16px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
+.dorne-toggle{padding:6px 16px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;border:none;background:var(--wh);color:var(--sa3);transition:background .15s,color .15s}
 .dorne-toggle.active{background:var(--sg);color:#fff}
 .dorne-toggle:hover:not(.active){background:var(--sg3);color:var(--sg2)}
-.mag-skizze{padding:8px 14px 6px;border-bottom:1px solid #e0e0e0;background:#fafcfb}
+.mag-skizze{padding:8px 14px 6px;border-bottom:1px solid var(--bdr);background:var(--fafcfb)}
 .mag-skizze-title{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--sa3);letter-spacing:.6px;margin-bottom:5px;font-family:'Barlow Condensed','Arial Narrow',sans-serif}
 .card-resolved{margin-top:5px;padding:5px 10px;border-radius:4px;font-size:12px;font-weight:700}
 .card-resolved.ok{background:var(--ok-bg);color:var(--ok-t);border:1px solid var(--ok-b)}
 .card-resolved.er{background:var(--er-bg);color:var(--er-t);border:1px solid var(--er-b)}
-input.card-ok{border-color:var(--sg)!important;background:#f0faf4!important}
+input.card-ok{border-color:var(--sg)!important;background:var(--ok-bg)!important}
 input.card-er{border-color:var(--er-b)!important}
-.cbr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f0f0f0;gap:14px;min-height:50px}
-.cbr.alt{background:#fafafa}
+.cbr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--bdr);gap:14px;min-height:50px;background:var(--card-surf)}
+.cbr.alt{background:var(--ir-alt-bg)}
 .cbl{flex:1;min-width:0}
 .cbl .de{font-size:15px;font-weight:600;color:var(--sa);line-height:1.3}
-.cbl .en{font-size:13px;color:#888;font-style:italic;margin-top:2px}
-input.cbox-inp{width:34px;height:34px;flex-shrink:0;border:2px solid #bbb;border-radius:6px;appearance:none;-webkit-appearance:none;background:#f0f0f0;cursor:pointer;transition:border-color .15s,background .15s;position:relative}
+.cbl .en{font-size:13px;color:var(--sa3);font-style:italic;margin-top:2px}
+input.cbox-inp{width:34px;height:34px;flex-shrink:0;border:2px solid var(--gmid);border-radius:6px;appearance:none;-webkit-appearance:none;background:var(--gbg);cursor:pointer;transition:border-color .15s,background .15s;position:relative}
 input.cbox-inp:checked{border-color:var(--sg);background:var(--sg)}
 input.cbox-inp::after{content:'';position:absolute;left:9px;top:4px;width:12px;height:18px;border-right:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(40deg);opacity:0;transition:opacity .12s}
 input.cbox-inp:checked::after{opacity:1}
 input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
-.leg{display:flex;gap:14px;align-items:center;padding:7px 14px;background:#f8faf9;border-bottom:1.5px solid #d8ead0;flex-wrap:wrap}
+.leg{display:flex;gap:14px;align-items:center;padding:7px 14px;background:var(--sg3);border-bottom:1.5px solid var(--bdr);flex-wrap:wrap}
 .legt{font-size:14px;font-weight:700;text-transform:uppercase;color:var(--sa3)}
 .legi{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--sa2)}
 .legd{width:12px;height:12px;border-radius:2px;border:1.5px solid;flex-shrink:0}
@@ -131,307 +200,203 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 .legd.er{background:var(--er-bg);border-color:var(--er-b)}
 .ergg{display:grid;grid-template-columns:1fr 1fr 1fr}
 @media(max-width:480px){.ergg{grid-template-columns:1fr}}
-.ergo{padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border-right:1px solid #e8e8e8;cursor:pointer;transition:background .15s;user-select:none}
+.ergo{padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border-right:1px solid var(--bdr);cursor:pointer;transition:background .15s;user-select:none;background:var(--card-surf)}
 .ergo:last-child{border-right:none}
-@media(max-width:480px){.ergo{border-right:none;border-bottom:1px solid #e8e8e8}.ergo:last-child{border-bottom:none}}
-.ergo:hover{background:#f5f5f5}
-.ergc{width:36px;height:36px;border-radius:50%;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .15s}
+@media(max-width:480px){.ergo{border-right:none;border-bottom:1px solid var(--bdr)}.ergo:last-child{border-bottom:none}}
+.ergo:hover{background:var(--gbg)}
+.ergc{width:36px;height:36px;border-radius:50%;border:2px solid var(--gmid);display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .15s}
 .ergo.ok{background:var(--ok-bg)}.ergo.ok .ergc{border-color:var(--ok-b);background:var(--ok-b);color:#fff}
 .ergo.er{background:var(--er-bg)}.ergo.er .ergc{border-color:var(--er-b);background:var(--er-b);color:#fff}
 .ergl{font-size:14px;font-weight:700;text-transform:uppercase;text-align:center;color:var(--sa)}
-.ergs{font-size:13px;color:#888;font-style:italic;text-align:center}
+.ergs{font-size:13px;color:var(--sa3);font-style:italic;text-align:center}
 .persg{display:grid;grid-template-columns:1fr 1fr 1fr}
 @media(max-width:600px){.persg{grid-template-columns:1fr}}
-.persg>*:not(:last-child){border-right:1.5px solid #e0e0e0}
-@media(max-width:600px){.persg>*:not(:last-child){border-right:none;border-bottom:1.5px solid #e0e0e0}}
-.meta{background:#f0f0f0;border:1.5px solid var(--bdr);border-top:none;padding:5px 14px;font-size:12px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.persg>*:not(:last-child){border-right:1.5px solid var(--bdr)}
+@media(max-width:600px){.persg>*:not(:last-child){border-right:none;border-bottom:1.5px solid var(--bdr)}}
+.meta{background:var(--meta-bg);border:1.5px solid var(--bdr);border-top:none;padding:5px 14px;font-size:12px;color:var(--sa3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;transition:background 0.3s}
 .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
 .btn{border:none;cursor:pointer;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 24px;font-size:15px;border-radius:4px;transition:background .15s}
-.btn.pri{background:var(--sg);color:var(--wh)}.btn.pri:hover{background:var(--sg2)}
-.btn.sec{background:var(--sa2);color:var(--wh);font-size:14px}.btn.sec:hover{background:var(--sa)}
-.stats-controls{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;display:flex;gap:15px;flex-wrap:wrap;align-items:center;border-top:4px solid var(--sg)}
+.btn.pri{background:var(--sg);color:#fff}.btn.pri:hover{background:var(--sg2)}
+.btn.sec{background:var(--btn-sec-bg);color:#fff;font-size:14px}.btn.sec:hover{background:var(--btn-sec-hover)}
+.stats-controls{background:var(--stats-ctrl-bg);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;display:flex;gap:15px;flex-wrap:wrap;align-items:center;border-top:4px solid var(--sg);transition:background 0.3s}
 .control-group{display:flex;align-items:center;gap:10px}
 .control-group label{font-weight:700;font-size:13px;text-transform:uppercase;color:var(--sa2)}
-.control-group select,.control-group input{padding:8px 12px;border:1.5px solid var(--gmid);border-radius:4px;font-size:14px;background:var(--gbg)}
+.control-group select,.control-group input{padding:8px 12px;border:1.5px solid var(--gmid);border-radius:4px;font-size:14px;background:var(--gbg);color:var(--sa)}
 .control-group input[type=date]{width:140px}
 .control-group input[type=password]{width:140px}
-.stats-table-container{background:var(--wh);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;overflow-x:auto}
+.stats-table-container{background:var(--card-surf);border:1.5px solid var(--bdr);padding:15px;margin-bottom:15px;overflow-x:auto;transition:background 0.3s}
 .stats-table{width:100%;border-collapse:collapse;font-size:14px}
-.stats-table th{background:var(--sg3);color:var(--sg2);padding:12px 10px;text-align:left;font-weight:700;border-bottom:2px solid var(--sg)}
-.stats-table td{padding:10px;border-bottom:1px solid #eee}
-.stats-table tr:hover{background:#f5f5f5}
-.stats-chart{background:var(--wh);border:1.5px solid var(--bdr);padding:20px;margin-bottom:15px;height:350px}
+.stats-table th{background:var(--stat-th-bg);color:var(--stat-th-color);padding:12px 10px;text-align:left;font-weight:700;border-bottom:2px solid var(--sg)}
+.stats-table td{padding:10px;border-bottom:1px solid var(--bdr);color:var(--sa)}
+.stats-table tr:hover{background:var(--gbg)}
+.stats-chart{background:var(--card-surf);border:1.5px solid var(--bdr);padding:20px;margin-bottom:15px;height:350px;transition:background 0.3s}
 .stats-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
 .summary-card{background:var(--sg3);padding:20px;border-radius:4px;text-align:center;border-left:4px solid var(--sg)}
 .summary-card .value{font-size:28px;font-weight:700;color:var(--sg)}
 .summary-card .label{font-size:13px;color:var(--sa3);margin-top:8px;text-transform:uppercase}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--modal-overlay);z-index:1000;align-items:center;justify-content:center}
 .modal.show{display:flex}
-.modal-content{background:var(--wh);border-radius:8px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;border-top:4px solid var(--sg)}
-.modal-header{padding:20px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.modal-content{background:var(--modal-bg);border-radius:8px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;border-top:4px solid var(--sg);transition:background 0.3s}
+.modal-header{padding:20px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
 .modal-header h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:var(--sa)}
-.modal-close{font-size:28px;cursor:pointer;color:#999;line-height:1}
+.modal-close{font-size:28px;cursor:pointer;color:var(--sa3);line-height:1}
 .modal-close:hover{color:var(--er-b)}
-.modal-body{padding:20px}.modal-footer{padding:20px;border-top:1px solid #eee;display:flex;gap:10px;justify-content:flex-end}
+.modal-body{padding:20px}.modal-footer{padding:20px;border-top:1px solid var(--bdr);display:flex;gap:10px;justify-content:flex-end}
 .form-group{margin-bottom:15px}
 .form-group label{display:block;font-weight:700;margin-bottom:5px;color:var(--sa2);text-transform:uppercase;font-size:13px}
-.form-group input{width:100%;padding:10px;border:1.5px solid var(--gmid);border-radius:4px;font-size:15px}
-.employee-list{margin-top:20px;border-top:1px solid #eee;padding-top:15px}
+.form-group input{width:100%;padding:10px;border:1.5px solid var(--gmid);border-radius:4px;font-size:15px;background:var(--gbg);color:var(--sa)}
+.employee-list{margin-top:20px;border-top:1px solid var(--bdr);padding-top:15px}
 .employee-list h3{font-size:14px;color:var(--sa3);margin-bottom:10px}
-.employee-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;margin-bottom:5px;border-radius:4px}
-.employee-info{font-weight:600}
+.employee-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--f9f9);margin-bottom:5px;border-radius:4px}
+.employee-info{font-weight:600;color:var(--sa)}
 .employee-remove{color:var(--er-b);cursor:pointer;font-size:12px;padding:3px 8px;border-radius:3px;background:var(--er-bg);border:1px solid var(--er-b)}
 .pruefer-levels{display:flex;gap:15px;margin-top:10px;flex-wrap:wrap}
 .level-item{display:flex;align-items:center;gap:5px}
 .level-item input[type=checkbox]{width:18px;height:18px;cursor:pointer}
 .level-item label{font-size:14px;font-weight:600;color:var(--sa2);cursor:pointer}
 .tracking-mode{display:flex;gap:0;border:1.5px solid var(--sg);border-radius:4px;overflow:hidden;width:fit-content;margin:5px 0}
-.tracking-toggle{padding:4px 12px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:none;background:#fff;color:var(--sa3);transition:background .15s,color .15s}
+.tracking-toggle{padding:4px 12px;font-size:12px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:none;background:var(--wh);color:var(--sa3);transition:background .15s,color .15s}
 .tracking-toggle.active{background:var(--sg);color:#fff}
 .stueckzahl-compact{display:flex;align-items:center;gap:8px;padding:4px 0}
 .stueckzahl-compact label{font-size:13px;font-weight:600;color:var(--sa2);text-transform:uppercase}
-.stueckzahl-compact input{width:70px;padding:4px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px}
+.stueckzahl-compact input{width:70px;padding:4px;border:1.5px solid var(--gmid);border-radius:4px;font-size:13px;background:var(--gbg);color:var(--sa)}
 .ringnummern-badge{display:inline-block;background:var(--sg3);color:var(--sg2);padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;margin-left:8px}
-.protokoll-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f0f0f0;border-bottom:1px solid #d0d0d0}
+.protokoll-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--meta-bg);border-bottom:1px solid var(--bdr);transition:background 0.3s}
 .protokoll-nummer{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--sg)}
 .protokoll-nummer span{color:var(--sa2);font-weight:400;font-size:13px;margin-right:10px}
 
-/* === DRUCKOPTIMIERUNG === */
+/* ===== SVG MAGNETISIERUNG — Dark Mode responsive ===== */
+.svg-ring-fill{fill:var(--svg-ring-fill);stroke:var(--svg-ring-stroke)}
+.svg-ring-inner{fill:var(--svg-ring-inner);stroke:var(--svg-ring-stroke)}
+.svg-label{fill:var(--svg-ring-label);font-family:Arial,sans-serif}
+.svg-dim{stroke:var(--svg-dim-line)}
+.svg-note{fill:var(--svg-note);font-family:Arial,sans-serif}
+
+/* ===== DARK MODE TOGGLE BUTTON ===== */
+.theme-toggle-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:var(--toggle-btn-bg);
+  border:2px solid var(--toggle-btn-border);
+  color:var(--toggle-btn-color);
+  font-size:22px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--toggle-btn-shadow);
+  transition:all 0.3s ease;
+  z-index:9998;
+}
+.theme-toggle-btn:hover{
+  transform:translateY(-3px) scale(1.05);
+  border-color:var(--sg);
+}
+.theme-toggle-btn:active{
+  transform:translateY(-1px) scale(0.98);
+}
+
+/* ===== DRUCKOPTIMIERUNG (Dark Mode im Druck ignorieren) ===== */
 .print-only {
   display: none !important;
 }
 
 @media print{
+  body.dark-mode {
+    --sa:#1a1a1a;--sa2:#333;--sa3:#555;--gbg:#e8e8e8;--gmid:#bbb;--bdr:#d0d0d0;--wh:#fff;
+    --body-bg:#fff;--card-surf:#fff;--meta-bg:#f0f0f0;--hdr-bg:#fff;--ir-alt-bg:#fafafa;
+    --ok-bg:#d6f0dc;--ok-b:#00893d;--ok-t:#005a28;
+    --wn-bg:#fff3cd;--wn-b:#d48f00;--wn-t:#7a5200;
+    --er-bg:#fde8e8;--er-b:#c0392b;--er-t:#7b241c;
+    --sg3:#e8f5ee;--sg:#00893d;--f9f9:#f9f9f9;--fafcfb:#fafcfb;
+    --sec-bg:#1a1a1a;
+    --svg-ring-fill:#e8e8e8;--svg-ring-stroke:#444444;--svg-ring-inner:#ffffff;
+    --svg-ring-label:#555555;--svg-dim-line:#d0d0d0;--svg-note:#777777;
+  }
+  body.dark-mode .schaeffler-logo img{filter:none}
+  .theme-toggle-btn{display:none!important}
   @page{size:A4;margin:0.7cm 0.8cm}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box}
   html{font-size:8.5px}
   body{background:#fff!important;padding:0!important;margin:0}
   .app{max-width:100%;padding:0}
-
-  /* Ausblenden */
   .nav,.acts,#succ,.modal,.github-config,.dropdown-editor,
   .stats-controls,.stats-table-container,.stats-chart,.stats-summary,
   .nav-btn,.btn,.dorne-mode,.tracking-mode,
   #ringnummern_editor,.stueckzahl-compact input,#ringnummern_preview,
-  .dorne-toggle,.tracking-toggle {display:none!important}
-
-  /* Druck-Elemente einblenden */
-  .print-only {
-    display: block !important;
-  }
-  
-  table.print-only {
-    display: table !important;
-  }
-
-  /* Header */
-  .hdr{margin-bottom:3px!important}
+  .dorne-toggle,.tracking-toggle,.theme-toggle-btn {display:none!important}
+  .print-only {display: block !important;}
+  table.print-only {display: table !important;}
+  .hdr{margin-bottom:3px!important;background:#fff!important}
   .hdr-text h1{font-size:10px!important}
   .hdr-text p{font-size:6.5px!important;margin-top:1px!important}
   .schaeffler-logo img{height:20px!important}
   .hdr-text{padding:6px 10px!important}
-  .protokoll-header{padding:2px 8px!important;font-size:8px!important}
+  .protokoll-header{padding:2px 8px!important;font-size:8px!important;background:#f0f0f0!important}
   .protokoll-nummer{font-size:9px!important}
-
-  /* Section-Balken */
   .sec{font-size:8px!important;padding:2px 6px!important;letter-spacing:0.3px!important}
-
-  /* Cards */
-  .card{border:1px solid #ccc!important;margin-bottom:3px!important}
-
-  /* Zeilen */
-  .ir,.f{padding:2px 6px!important;min-height:15px!important;border-bottom:1px solid #f0f0f0!important}
+  .card{border:1px solid #ccc!important;margin-bottom:3px!important;background:#fff!important}
+  .ir,.f{padding:2px 6px!important;min-height:15px!important;border-bottom:1px solid #f0f0f0!important;background:#fff!important}
+  .ir.alt{background:#fafafa!important}
   .g2{grid-template-columns:1fr 1fr!important}
-
-  /* Labels & Text */
   .lbl,.ir .lbl,.f .lbl,.magl,.dorneitem label,.legt,.legi{font-size:7.5px!important;letter-spacing:0!important}
   .sub,.ir .sub,.f .sub,.ergs,.unit{font-size:6.5px!important}
   .fs{font-size:7.5px!important}
-
-  /* Inputs & Selects */
   input[type=text],input[type=datetime-local],input[type=date],
-  input[type=number],select,input.tol,input.num{
-    font-size:7.5px!important;padding:1px 3px!important}
+  input[type=number],select,input.tol,input.num{font-size:7.5px!important;padding:1px 3px!important}
   input.tol{width:52px!important}
   input.num{width:44px!important}
   select.eq-dd{min-width:80px!important;padding:1px 18px 1px 4px!important;font-size:7.5px!important}
   .badge{font-size:6.5px!important;padding:1px 3px!important}
   .irr{gap:3px!important}
-
-  /* Checkboxen als 3-Spalten-Grid */
   .cbr{display:none!important}
-  .cbr-wrapper{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;
-    border-bottom:1px solid #eee!important}
-  .cbr-wrapper .cbr{display:flex!important;align-items:center!important;gap:4px!important;
-    padding:2px 5px!important;min-height:14px!important;border-bottom:none!important;
-    border-right:1px solid #f0f0f0!important}
+  .cbr-wrapper{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;border-bottom:1px solid #eee!important}
+  .cbr-wrapper .cbr{display:flex!important;align-items:center!important;gap:4px!important;padding:2px 5px!important;min-height:14px!important;border-bottom:none!important;border-right:1px solid #f0f0f0!important}
   .cbr-wrapper .cbr:nth-child(3n){border-right:none!important}
   .cbl .de{font-size:7px!important}
   .cbl .en{font-size:6px!important;margin-top:0!important}
-  .cbox-inp{width:10px!important;height:10px!important;border:1px solid #333!important;
-    border-radius:2px!important;flex-shrink:0!important;position:relative!important;
-    -webkit-appearance:none!important;appearance:none!important;background:#fff!important}
+  .cbox-inp{width:10px!important;height:10px!important;border:1px solid #333!important;border-radius:2px!important;flex-shrink:0!important;position:relative!important;-webkit-appearance:none!important;appearance:none!important;background:#fff!important}
   .cbox-inp:checked{background:var(--sg)!important;border-color:var(--sg)!important}
-  .cbox-inp:checked::after{content:''!important;position:absolute!important;
-    left:2px!important;top:0px!important;width:3px!important;height:6px!important;
-    border-right:1.5px solid #fff!important;border-bottom:1.5px solid #fff!important;
-    transform:rotate(40deg)!important;opacity:1!important}
-
-  /* === LAMPEN-TABELLE FÜR DRUCK === */
-  #lampen_print_table.print-only {
-    display: table !important;
-    width: 100% !important;
-    border-collapse: collapse !important;
-    margin: 10px 0 !important;
-    border: 1px solid #000 !important;
-  }
-  
-  #lampen_print_table td {
-    border: 1px solid #999 !important;
-    padding: 4px !important;
-    vertical-align: top !important;
-    width: 50% !important;
-  }
-  
-  #lampen_print_table .lampen-header {
-    background: #e8f5ee !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    font-size: 9px !important;
-    border-bottom: 2px solid #00893d !important;
-  }
-  
-  #lampen_print_table .label-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    padding: 2px 0 !important;
-    border-bottom: 1px dotted #ccc !important;
-  }
-  
-  #lampen_print_table .label-row:last-child {
-    border-bottom: none !important;
-  }
-  
-  #lampen_print_table .label {
-    font-weight: bold !important;
-  }
-
-  /* Stückzahl-Anzeige im Druck */
-  #stueckzahl_druck_anzeige.print-only {
-    display: block !important;
-    padding: 5px 14px !important;
-    border-top: 1px solid #eee !important;
-    font-size: 9px !important;
-  }
-  
-  /* Ringanzahl-Anzeige im Druck */
-  #ringanzahl_druck_anzeige.print-only {
-    display: block !important;
-    padding: 5px 14px !important;
-    border-top: 1px solid #eee !important;
-    font-size: 9px !important;
-  }
-  
-  /* Stückzahl-Label beibehalten */
-  .stueckzahl-compact label {
-    display: inline !important;
-    font-size: 7.5px !important;
-  }
-
-  /* Magnetisierungs-SVG */
+  .cbox-inp:checked::after{content:''!important;position:absolute!important;left:2px!important;top:0px!important;width:3px!important;height:6px!important;border-right:1.5px solid #fff!important;border-bottom:1.5px solid #fff!important;transform:rotate(40deg)!important;opacity:1!important}
+  #lampen_print_table.print-only{display:table!important;width:100%!important;border-collapse:collapse!important;margin:10px 0!important;border:1px solid #000!important}
+  #lampen_print_table td{border:1px solid #999!important;padding:4px!important;vertical-align:top!important;width:50%!important}
+  #lampen_print_table .lampen-header{background:#e8f5ee!important;font-weight:bold!important;text-align:center!important;font-size:9px!important;border-bottom:2px solid #00893d!important}
+  #stueckzahl_druck_anzeige.print-only{display:block!important;padding:5px 14px!important;border-top:1px solid #eee!important;font-size:9px!important}
+  #ringanzahl_druck_anzeige.print-only{display:block!important;padding:5px 14px!important;border-top:1px solid #eee!important;font-size:9px!important}
+  .stueckzahl-compact label{display:inline!important;font-size:7.5px!important}
   .mag-skizze{padding:2px 6px!important;background:#fff!important}
   .mag-skizze-title{font-size:6.5px!important;margin-bottom:1px!important}
   .mag-skizze svg{max-height:52px!important;display:block!important}
-
-  /* Magnetisierung Grid */
-  .maghdr{font-size:7.5px!important;padding:2px 6px!important;letter-spacing:0!important}
-  .magr{padding:2px 6px!important;min-height:15px!important}
+  .maghdr{font-size:7.5px!important;padding:2px 6px!important;letter-spacing:0!important;background:#e8f5ee!important}
+  .magr{padding:2px 6px!important;min-height:15px!important;background:#fff!important}
   .magl{width:68px!important;font-size:7.5px!important}
-
-  /* Dorn-Sektion */
   .dornesec{padding:2px 6px!important}
   .dorneg{gap:4px!important;margin-top:2px!important}
-
-  /* Legende */
-  .leg{padding:2px 6px!important;gap:6px!important}
+  .leg{padding:2px 6px!important;gap:6px!important;background:#e8f5ee!important}
   .legd{width:8px!important;height:8px!important}
-
-  /* Ergebnis */
   .ergg{grid-template-columns:1fr 1fr 1fr!important}
-  .ergo{padding:3px 4px!important}
+  .ergo{padding:3px 4px!important;background:#fff!important}
   .ergc{width:16px!important;height:16px!important;font-size:9px!important}
   .ergl{font-size:7.5px!important}
-
-  /* Personal */
   .persg{grid-template-columns:1fr 1fr 1fr!important}
   .pruefer-levels{gap:3px!important;margin-top:2px!important}
   .level-item input[type=checkbox]{width:9px!important;height:9px!important}
   .level-item label{font-size:7px!important}
   .card-resolved{font-size:6.5px!important;padding:1px 3px!important;margin-top:1px!important}
-
-  /* Meta */
-  .meta{font-size:6.5px!important;padding:2px 6px!important;margin-top:2px!important}
-
-  /* Ringnummern-Seite (2. Seite) */
-  #ringnummern_print_page.print-only {
-    display: block !important;
-    page-break-before: always !important;
-  }
-  
-  #ringnummern_print_page.print-only.no-rings {
-    display: none !important;
-  }
-  
-  .rn-header {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 8px 12px;
-    background: var(--sa);
-    color: #fff;
-    border-left: 4px solid var(--sg);
-    margin-bottom: 8px;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  
-  .rn-sub {
-    font-size: 9px;
-    color: #666;
-    padding: 4px 12px 6px;
-  }
-  
-  /* Normale Liste für Ringnummern */
-  #rn_print_list {
-    padding: 6px 12px !important;
-    font-family: monospace !important;
-    font-size: 11px !important;
-    line-height: 1.8 !important;
-    column-count: 3 !important;
-    column-gap: 20px !important;
-    column-rule: 1px solid #ddd !important;
-  }
-  
-  .rn-list-item {
-    display: block !important;
-    padding: 2px 0 !important;
-    border-bottom: 1px dotted #eee !important;
-    break-inside: avoid !important;
-  }
-  
-  .rn-list-number {
-    display: inline-block !important;
-    width: 30px !important;
-    color: var(--sg) !important;
-    font-weight: bold !important;
-  }
-  
-  .rn-list-value {
-    display: inline-block !important;
-  }
+  .meta{font-size:6.5px!important;padding:2px 6px!important;margin-top:2px!important;background:#f0f0f0!important}
+  #ringnummern_print_page.print-only{display:block!important;page-break-before:always!important}
+  #ringnummern_print_page.print-only.no-rings{display:none!important}
+  .rn-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;padding:8px 12px;background:#1a1a1a;color:#fff;border-left:4px solid #00893d;margin-bottom:8px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .rn-sub{font-size:9px;color:#666;padding:4px 12px 6px}
+  #rn_print_list{padding:6px 12px!important;font-family:monospace!important;font-size:11px!important;line-height:1.8!important;column-count:3!important;column-gap:20px!important;column-rule:1px solid #ddd!important}
+  .rn-list-item{display:block!important;padding:2px 0!important;border-bottom:1px dotted #eee!important;break-inside:avoid!important}
+  .rn-list-number{display:inline-block!important;width:30px!important;color:#00893d!important;font-weight:bold!important}
+  .rn-list-value{display:inline-block!important}
 }
-/* === ENDE DRUCKOPTIMIERUNG === */
 </style>
 </head>
 <body>
@@ -481,7 +446,7 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <div class="config-item"><label>Personal Access Token (PAT)</label><input type="password" id="github_token_field" placeholder="ghp_..."></div>
       <div class="config-item"><label>Supervisor-Passwort</label><input type="password" id="supervisor_password_field" placeholder="Passwort für Löschen"></div>
     </div>
-    <div id="github_status_message" style="margin:15px 0;padding:10px;background:#f9f9f9;border-radius:4px;font-size:14px">
+    <div id="github_status_message" style="margin:15px 0;padding:10px;background:var(--f9f9);border-radius:4px;font-size:14px">
       <span>⏳ Prüfe gespeicherte Konfiguration...</span>
     </div>
     <div class="github-actions">
@@ -507,17 +472,17 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <button class="dropdown-tab" onclick="showDropdownTab('vk1',event)">VK1 Seriennummern</button>
       <button class="dropdown-tab" onclick="showDropdownTab('lampenzuordnung',event)">💡 Lampen-Zuordnung</button>
     </div>
-    <div id="dropdown-flux-panel" class="dropdown-panel active"><h4>Fluxanlagen (EQ-Nummern)</h4><div class="dropdown-list" id="flux_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_flux_input" placeholder="Neue EQ-Nummer (z.B. 12425560)"><button onclick="addDropdownItem('flux')">Hinzufügen</button></div></div>
-    <div id="dropdown-luxmeter-panel" class="dropdown-panel"><h4>Lux-/UV-Meter (EQ-Nummern)</h4><div class="dropdown-list" id="luxmeter_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_luxmeter_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('luxmeter')">Hinzufügen</button></div></div>
-    <div id="dropdown-feldmesser-panel" class="dropdown-panel"><h4>Feldstärkenmessgerät (EQ-Nummern)</h4><div class="dropdown-list" id="feldmesser_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_feldmesser_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('feldmesser')">Hinzufügen</button></div></div>
-    <div id="dropdown-uvlampen-panel" class="dropdown-panel"><h4>UV-Lampen (EQ-Nummern)</h4><div class="dropdown-list" id="uvlampen_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_uvlampen_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('uvlampen')">Hinzufügen</button></div></div>
-    <div id="dropdown-dorne-panel" class="dropdown-panel"><h4>Dorne (Bezeichnung)</h4><div class="dropdown-list" id="dorne_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_dorne_input" placeholder="z.B. 400x70 mm"><button onclick="addDropdownItem('dorne')">Hinzufügen</button></div></div>
-    <div id="dropdown-vk1-panel" class="dropdown-panel"><h4>VK1 Seriennummern</h4><div class="dropdown-list" id="vk1_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_vk1_input" placeholder="z.B. KD200811"><button onclick="addDropdownItem('vk1')">Hinzufügen</button></div></div>
+    <div id="dropdown-flux-panel" class="dropdown-panel active"><h4 style="color:var(--sa);margin-bottom:8px">Fluxanlagen (EQ-Nummern)</h4><div class="dropdown-list" id="flux_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_flux_input" placeholder="Neue EQ-Nummer (z.B. 12425560)"><button onclick="addDropdownItem('flux')">Hinzufügen</button></div></div>
+    <div id="dropdown-luxmeter-panel" class="dropdown-panel"><h4 style="color:var(--sa);margin-bottom:8px">Lux-/UV-Meter (EQ-Nummern)</h4><div class="dropdown-list" id="luxmeter_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_luxmeter_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('luxmeter')">Hinzufügen</button></div></div>
+    <div id="dropdown-feldmesser-panel" class="dropdown-panel"><h4 style="color:var(--sa);margin-bottom:8px">Feldstärkenmessgerät (EQ-Nummern)</h4><div class="dropdown-list" id="feldmesser_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_feldmesser_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('feldmesser')">Hinzufügen</button></div></div>
+    <div id="dropdown-uvlampen-panel" class="dropdown-panel"><h4 style="color:var(--sa);margin-bottom:8px">UV-Lampen (EQ-Nummern)</h4><div class="dropdown-list" id="uvlampen_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_uvlampen_input" placeholder="Neue EQ-Nummer"><button onclick="addDropdownItem('uvlampen')">Hinzufügen</button></div></div>
+    <div id="dropdown-dorne-panel" class="dropdown-panel"><h4 style="color:var(--sa);margin-bottom:8px">Dorne (Bezeichnung)</h4><div class="dropdown-list" id="dorne_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_dorne_input" placeholder="z.B. 400x70 mm"><button onclick="addDropdownItem('dorne')">Hinzufügen</button></div></div>
+    <div id="dropdown-vk1-panel" class="dropdown-panel"><h4 style="color:var(--sa);margin-bottom:8px">VK1 Seriennummern</h4><div class="dropdown-list" id="vk1_list_container"></div><div class="add-dropdown-item"><input type="text" id="new_vk1_input" placeholder="z.B. KD200811"><button onclick="addDropdownItem('vk1')">Hinzufügen</button></div></div>
     <div id="dropdown-lampenzuordnung-panel" class="dropdown-panel">
-      <h4>💡 Lampen-Zuordnung pro Anlage</h4>
+      <h4 style="color:var(--sa);margin-bottom:8px">💡 Lampen-Zuordnung pro Anlage</h4>
       <p style="font-size:13px;color:var(--sa3);margin-bottom:10px">Welche Lampe wird standardmäßig für welche Anlage vorausgewählt.</p>
       <div class="dropdown-list" id="lampenzuordnung_list_container" style="max-height:400px"></div>
-      <div style="margin-top:20px"><h4>Neue Zuordnung</h4>
+      <div style="margin-top:20px"><h4 style="color:var(--sa);margin-bottom:8px">Neue Zuordnung</h4>
         <div class="add-dropdown-item" style="flex-wrap:wrap">
           <select id="new_zuordnung_anlage" style="width:180px"><option value="">Anlage wählen</option></select>
           <select id="new_zuordnung_lampe1" style="width:180px"><option value="">Lampe 1 wählen</option></select>
@@ -613,16 +578,15 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       </div></div>
     </div>
     <div>
-      <!-- SKIZZE jetzt rechts unter Referenzkörper -->
       <div class="mag-skizze" style="border-bottom:none;margin-top:4px">
         <div class="mag-skizze-title">Magnetisierungsprinzip &mdash; Magnetization principle</div>
         <svg viewBox="0 0 540 105" style="width:100%;max-width:825px;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
           <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#00893d"/></marker></defs>
-          <!-- KREISMAGNETISIERUNG links -->
+          <!-- KREISMAGNETISIERUNG -->
           <text x="8" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">KREISMAGNETISIERUNG / circumferential</text>
-          <text x="8" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Aufsicht / top view</text>
-          <circle cx="105" cy="63" r="36" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
-          <circle cx="105" cy="63" r="17" fill="#ffffff" stroke="#444" stroke-width="1.5"/>
+          <text x="8" y="19" font-family="Arial,sans-serif" font-size="7" class="svg-note" font-style="italic">Aufsicht / top view</text>
+          <circle cx="105" cy="63" r="36" class="svg-ring-fill" stroke-width="1.5"/>
+          <circle cx="105" cy="63" r="17" class="svg-ring-inner" stroke-width="1.5"/>
           <circle cx="105" cy="63" r="8" fill="#888" stroke="#555" stroke-width="1.2"/>
           <text x="105" y="67" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="#fff">I</text>
           <line x1="96" y1="27" x2="114" y2="27" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
@@ -630,15 +594,15 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
           <line x1="114" y1="99" x2="96" y2="99" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
           <line x1="69" y1="71" x2="69" y2="55" stroke="#00893d" stroke-width="1.8" marker-end="url(#arr)"/>
           <text x="148" y="46" font-family="Arial,sans-serif" font-size="9" font-style="italic" font-weight="bold" fill="#00893d">B</text>
-          <text x="105" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="#666">Ring</text>
-          <line x1="228" y1="5" x2="228" y2="102" stroke="#d0d0d0" stroke-width="0.8" stroke-dasharray="3,2"/>
-          <!-- LAENGSMAGNETISIERUNG rechts -->
+          <text x="105" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" class="svg-label">Ring</text>
+          <line x1="228" y1="5" x2="228" y2="102" class="svg-dim" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <!-- LAENGSMAGNETISIERUNG -->
           <text x="240" y="10" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#00893d">LAENGSMAGNETISIERUNG / longitudinal</text>
-          <text x="240" y="19" font-family="Arial,sans-serif" font-size="7" fill="#777" font-style="italic">Seitenansicht / side view</text>
-          <rect x="308" y="31" width="116" height="50" rx="3" fill="#e8e8e8" stroke="#444" stroke-width="1.5"/>
-          <line x1="308" y1="45" x2="424" y2="45" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
-          <line x1="308" y1="68" x2="424" y2="68" stroke="#999" stroke-width="0.8" stroke-dasharray="4,3"/>
-          <text x="366" y="59" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" fill="#555">Ring</text>
+          <text x="240" y="19" font-family="Arial,sans-serif" font-size="7" class="svg-note" font-style="italic">Seitenansicht / side view</text>
+          <rect x="308" y="31" width="116" height="50" rx="3" class="svg-ring-fill" stroke-width="1.5"/>
+          <line x1="308" y1="45" x2="424" y2="45" class="svg-dim" stroke-width="0.8" stroke-dasharray="4,3"/>
+          <line x1="308" y1="68" x2="424" y2="68" class="svg-dim" stroke-width="0.8" stroke-dasharray="4,3"/>
+          <text x="366" y="59" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" class="svg-label">Ring</text>
           <rect x="264" y="39" width="40" height="34" rx="3" fill="#3366cc" stroke="#223" stroke-width="1.2"/>
           <text x="284" y="61" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#fff">N</text>
           <rect x="428" y="39" width="40" height="34" rx="3" fill="#cc3333" stroke="#322" stroke-width="1.2"/>
@@ -751,31 +715,24 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <span style="font-size:12px;color:var(--sa3);margin-left:8px" id="ringnummern_kurzliste"></span>
     </div>
   </div>
-  
-  <!-- DRUCK-ANZEIGEN (nur im Druck sichtbar) -->
-  <!-- DRUCK-ANZEIGEN (nur im Druck sichtbar) -->
-<div id="stueckzahl_druck_anzeige" class="print-only" style="display:none;">
-  <span style="color:var(--sg); font-weight:bold;">📦 Prüfmenge:</span> 
-  <span id="stueckzahl_druck_wert">1</span> Stück
-</div>
-
-<div id="ringanzahl_druck_anzeige" class="print-only" style="display:none;">
-  <span style="color:var(--sg); font-weight:bold;">🔍 Einzelteilverfolgung:</span> 
-  <span id="ringanzahl_druck_wert">0</span> Ringe / Teile
-</div>
-  
-  <div id="ringnummern_editor" style="display:none;padding:10px 14px;border-top:1px solid #eee">
+  <div id="stueckzahl_druck_anzeige" class="print-only" style="display:none;">
+    <span style="color:var(--sg); font-weight:bold;">📦 Prüfmenge:</span>
+    <span id="stueckzahl_druck_wert">1</span> Stück
+  </div>
+  <div id="ringanzahl_druck_anzeige" class="print-only" style="display:none;">
+    <span style="color:var(--sg); font-weight:bold;">🔍 Einzelteilverfolgung:</span>
+    <span id="ringanzahl_druck_wert">0</span> Ringe / Teile
+  </div>
+  <div id="ringnummern_editor" style="display:none;padding:10px 14px;border-top:1px solid var(--bdr)">
     <div style="display:flex;gap:10px;margin-bottom:10px">
-      <input type="text" id="new_ringnummer_input" placeholder="Neue Ringnummer... / new ring number..." style="flex:1;padding:6px;border:1.5px solid var(--gmid);border-radius:4px">
+      <input type="text" id="new_ringnummer_input" placeholder="Neue Ringnummer... / new ring number..." style="flex:1;padding:6px;border:1.5px solid var(--gmid);border-radius:4px;background:var(--gbg);color:var(--sa)">
       <button class="btn sec" style="padding:6px 12px" onclick="addRingnummer()">Hinzufügen / add</button>
     </div>
-    <div id="ringnummern_list" style="max-height:150px;overflow-y:auto;background:#f9f9f9;border:1px solid #eee;border-radius:4px;padding:5px"></div>
+    <div id="ringnummern_list" style="max-height:150px;overflow-y:auto;background:var(--f9f9);border:1px solid var(--bdr);border-radius:4px;padding:5px"></div>
   </div>
 </div>
 
-
-
-<!-- RINGNUMMERN DRUCKSEITE (SEITE 2) - Normale Liste -->
+<!-- RINGNUMMERN DRUCKSEITE -->
 <div id="ringnummern_print_page" class="print-only no-rings" style="display:none">
   <div class="hdr" style="margin-bottom:12px">
     <div class="hdr-left">
@@ -789,20 +746,14 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
       <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Schaeffler_logo.svg" alt="Schaeffler" style="height:38px;width:auto">
     </div>
   </div>
-  
-  <div style="display:flex; gap:30px; padding:6px 12px 10px; font-size:13px; border-bottom:1px solid #eee; margin-bottom:8px">
+  <div style="display:flex; gap:30px; padding:6px 12px 10px; font-size:13px; border-bottom:1px solid var(--bdr); margin-bottom:8px">
     <span><b>Protokoll-Nr.:</b> <span id="rn_print_nr">—</span></span>
     <span><b>Auftrag:</b> <span id="rn_print_auftrag">—</span></span>
     <span><b>Prüfgegenstand:</b> <span id="rn_print_gegenstand">—</span></span>
   </div>
-  
   <div class="rn-header">Geprüfte Einzelteile — Inspected parts</div>
   <div class="rn-sub" id="rn_print_count">0 Teile</div>
-  
-  <!-- Normale Liste (kein Grid) -->
-  <div id="rn_print_list" style="padding:6px 12px; font-family: monospace; font-size: 11px; line-height: 1.6;">
-    <!-- Hier werden die Ringnummern als normale Liste eingefügt -->
-  </div>
+  <div id="rn_print_list" style="padding:6px 12px; font-family: monospace; font-size: 11px; line-height: 1.6;"></div>
 </div>
 
 <div class="meta">
@@ -831,8 +782,8 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
 </div>
 
 <!-- SUCCESS -->
-<div id="succ" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:2000">
-  <div style="background:var(--wh);border-top:4px solid var(--sg);padding:30px;text-align:center;max-width:400px;border-radius:4px">
+<div id="succ" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--modal-overlay);align-items:center;justify-content:center;z-index:2000">
+  <div style="background:var(--card-surf);border-top:4px solid var(--sg);padding:30px;text-align:center;max-width:400px;border-radius:4px;color:var(--sa)">
     <div style="font-size:48px;color:var(--sg);margin-bottom:15px">✓</div>
     <h2 style="margin-bottom:15px">Protokoll gespeichert</h2>
     <p style="margin-bottom:20px;color:var(--sa3)">Protokoll-Nr: <span id="succ_protokoll_nummer"></span></p>
@@ -843,10 +794,53 @@ input.cbox-inp:focus{outline:2px solid var(--sg);outline-offset:2px}
   </div>
 </div>
 
+</div><!-- end .app -->
+
+<!-- DARK/LIGHT MODE TOGGLE BUTTON -->
+<button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Dark/Light Mode umschalten" title="Dark/Light Mode">🌓</button>
+
 <script>
 // ============================================================
-// KERN-FIX: Konfiguration wird aus localStorage geladen,
-// nie mit Hardcoded-Werten überschrieben.
+// DARK / LIGHT MODE — synchronisiert mit ZfP Portal
+// Identischer localStorage-Key: 'zfp-theme-preference'
+// ============================================================
+const THEME_KEY = 'zfp-theme-preference';
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || 'light';
+  applyTheme(saved);
+}
+
+function toggleTheme() {
+  const isDark = document.body.classList.contains('dark-mode');
+  const newTheme = isDark ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, newTheme);
+  localStorage.setItem('theme_timestamp', Date.now().toString()); // Portal-Sync-Signal
+  applyTheme(newTheme);
+}
+
+// Theme sofort anwenden (vor dem Rest des Skripts) 
+initTheme();
+
+// Cross-Tab Sync: wenn Portal umschaltet, folgt diese App
+window.addEventListener('storage', function(e) {
+  if (e.key === THEME_KEY) {
+    applyTheme(e.newValue || 'light');
+  }
+});
+
+document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
+
+// ============================================================
+// KERN-FIX: Konfiguration wird aus localStorage geladen
 // ============================================================
 
 function loadGithubConfigFromStorage() {
@@ -946,7 +940,7 @@ async function connectGithub(){
       if(c.protokolle)localStorage.setItem('mt_protokolle_list',JSON.stringify(c.protokolle));
       if(c.mitarbeiter){CARD_DB=c.mitarbeiter;localStorage.setItem('mt_card_db',JSON.stringify(CARD_DB));updateEmployeeList();}
       s.innerHTML=`<span style="color:var(--sg)">✓ Erfolgreich geladen (${c.protokolle?.length||0} Protokolle)</span>`;
-    }else if(r.status===404){s.innerHTML='<span style="color:#d48f00">⚠ Keine Hauptdatei gefunden</span>';}
+    }else if(r.status===404){s.innerHTML='<span style="color:var(--wn-t)">⚠ Keine Hauptdatei gefunden</span>';}
     else{s.innerHTML=`<span style="color:var(--er-b)">✗ Fehler: ${r.status}</span>`;}
   }catch(e){s.innerHTML=`<span style="color:var(--er-b)">✗ ${e.message}</span>`;}
 }
@@ -993,7 +987,7 @@ async function autoConnect(){
   githubConfig=loadGithubConfigFromStorage();
   fillGithubFieldsFromConfig();
   if(!githubConfig.token||!githubConfig.owner||!githubConfig.repo){
-    if(s)s.innerHTML='<span style="color:#d48f00">⚠ Noch nicht konfiguriert – bitte unter 🔧 GitHub einrichten und speichern.</span>';
+    if(s)s.innerHTML='<span style="color:var(--wn-t)">⚠ Noch nicht konfiguriert – bitte unter 🔧 GitHub einrichten und speichern.</span>';
     return;
   }
   try{await connectGithub();}catch(e){if(s)s.innerHTML=`<span style="color:var(--er-b)">✗ Verbindung fehlgeschlagen: ${e.message}</span>`;}
@@ -1022,8 +1016,8 @@ function loadDropdownsToEditor(){
   });
   if(!dropdownData.lampenzuordnung)dropdownData.lampenzuordnung={};
   let lh='';
-  Object.entries(dropdownData.lampenzuordnung).forEach(([a,z])=>{lh+=`<div class="dropdown-item"><span style="min-width:100px;font-weight:700">${a}</span><span style="margin-left:10px">L1: ${z.lampe1||'-'}</span><span style="margin-left:10px">L2: ${z.lampe2||'-'}</span><span class="remove" onclick="removeLampenZuordnung('${a}')">✕</span></div>`;});
-  document.getElementById('lampenzuordnung_list_container').innerHTML=lh||'<p>Keine Zuordnungen</p>';
+  Object.entries(dropdownData.lampenzuordnung).forEach(([a,z])=>{lh+=`<div class="dropdown-item"><span style="min-width:100px;font-weight:700;color:var(--sa)">${a}</span><span style="margin-left:10px;color:var(--sa3)">L1: ${z.lampe1||'-'}</span><span style="margin-left:10px;color:var(--sa3)">L2: ${z.lampe2||'-'}</span><span class="remove" onclick="removeLampenZuordnung('${a}')">✕</span></div>`;});
+  document.getElementById('lampenzuordnung_list_container').innerHTML=lh||'<p style="color:var(--sa3)">Keine Zuordnungen</p>';
   updateZuordnungDropdowns();
 }
 
@@ -1085,7 +1079,7 @@ function openCardModal(){document.getElementById('cardModal').classList.add('sho
 function closeCardModal(){document.getElementById('cardModal').classList.remove('show');}
 function addNewCard(){const id=document.getElementById('new_card_id_feld').value.trim();const name=document.getElementById('new_card_name_feld').value.trim();if(!id||!name){alert('Bitte ID und Namen eingeben!');return;}CARD_DB[id]=name;saveCardDB();document.getElementById('new_card_id_feld').value='';document.getElementById('new_card_name_feld').value='';}
 function removeCard(name){let id=null;for(let[k,v]of Object.entries(CARD_DB)){if(v===name){id=k;break;}}if(id&&confirm(`Mitarbeiter ${name} löschen?`)){delete CARD_DB[id];saveCardDB();}}
-function updateEmployeeList(){const c=document.getElementById('employee_list_container');if(!c)return;let h='';Object.values(CARD_DB).sort().forEach(n=>{h+=`<div class="employee-item"><span class="employee-info">${n}</span><span class="employee-remove" onclick="removeCard('${n}')">✕ Löschen</span></div>`;});c.innerHTML=h||'<p>Keine Mitarbeiter</p>';}
+function updateEmployeeList(){const c=document.getElementById('employee_list_container');if(!c)return;let h='';Object.values(CARD_DB).sort().forEach(n=>{h+=`<div class="employee-item"><span class="employee-info">${n}</span><span class="employee-remove" onclick="removeCard('${n}')">✕ Löschen</span></div>`;});c.innerHTML=h||'<p style="color:var(--sa3)">Keine Mitarbeiter</p>';}
 
 const EQ_IDS=['vk1_seriennummer_auswahl','eq_flux_auswahl','eq_luxmeter_auswahl','eq_feldmesser_auswahl','dorn_both_auswahl','dorn_kreis_auswahl','dorn_laengs_auswahl','eq_uv1_auswahl','eq_uv2_auswahl'];
 const LS='mt_eq_selections';const LS_MODE='mt_dorn_mode';
@@ -1171,7 +1165,7 @@ function setTrackingMode(mode){
 function addRingnummer(){const inp=document.getElementById('new_ringnummer_input');const n=inp.value.trim();if(!n){alert('Bitte Ringnummer eingeben!');return;}ringnummernListe.push(n);inp.value='';updateRingnummernPreview();updateRingnummernListe();}
 function removeRingnummer(i){ringnummernListe.splice(i,1);updateRingnummernPreview();updateRingnummernListe();}
 function updateRingnummernPreview(){document.getElementById('ringnummern_count_badge').textContent=ringnummernListe.length+(ringnummernListe.length===1?' Nummer':' Nummern');document.getElementById('ringnummern_kurzliste').textContent=ringnummernListe.length>0?ringnummernListe.slice(0,3).join(', ')+(ringnummernListe.length>3?` +${ringnummernListe.length-3}`:''):'';}
-function updateRingnummernListe(){const c=document.getElementById('ringnummern_list');c.innerHTML=ringnummernListe.length?ringnummernListe.map((n,i)=>`<div style="display:flex;align-items:center;padding:5px;border-bottom:1px solid #eee"><span style="flex:1">${n}</span><span onclick="removeRingnummer(${i})" style="color:var(--er-b);cursor:pointer;padding:0 8px">✕</span></div>`).join(''):'<div style="padding:10px;text-align:center;color:#888">Keine Ringnummern</div>';}
+function updateRingnummernListe(){const c=document.getElementById('ringnummern_list');c.innerHTML=ringnummernListe.length?ringnummernListe.map((n,i)=>`<div style="display:flex;align-items:center;padding:5px;border-bottom:1px solid var(--bdr);color:var(--sa)"><span style="flex:1">${n}</span><span onclick="removeRingnummer(${i})" style="color:var(--er-b);cursor:pointer;padding:0 8px">✕</span></div>`).join(''):'<div style="padding:10px;text-align:center;color:var(--sa3)">Keine Ringnummern</div>';}
 function updateStueckzahl(){}
 
 async function submitForm(){
@@ -1247,10 +1241,8 @@ async function submitForm(){
 }
 
 function loadProtocolToForm(p){
-  // Protokollnummer aus dem geladenen Protokoll setzen
   document.getElementById('protokoll_nummer_anzeige').textContent = p.protokollNr || generateProtocolNumber();
   document.getElementById('meta_protokoll_nummer').textContent = p.protokollNr || generateProtocolNumber();
-  
   const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   const sc=(id,c)=>{const el=document.getElementById(id);if(el)el.checked=c||false;};
   sv('pruefgegenstand_feld',p.pruefgegenstand);sv('auftragsnummer_feld',p.auftrag);
@@ -1263,17 +1255,13 @@ function loadProtocolToForm(p){
   sv('laengs_stufe_feld',p.laengsStufe);sv('laengs_anzeige_feld',p.laengsAnzeige);sv('laengs_feld_feld',p.feldLaengs);
   if(p.feldLaengs) chkFeld(document.getElementById('laengs_feld_feld'));
   sv('eq_luxmeter_auswahl',p.luxmeterEq);sv('eq_feldmesser_auswahl',p.feldmesserEq);
-  
-  // VK1 Seriennummer sofort laden
   sv('vk1_seriennummer_auswahl', p.vk1Seriennummer || '');
-  
   setTimeout(()=>{
     sv('eq_uv1_auswahl',p.uv1_eq);sv('uv1_uw_feld',p.uv1_uw);if(p.uv1_uw)chkUV(document.getElementById('uv1_uw_feld'));
     sv('uv1_lx_feld',p.uv1_lx);if(p.uv1_lx)chkMax(document.getElementById('uv1_lx_feld'),15,20);
     sv('eq_uv2_auswahl',p.uv2_eq);sv('uv2_uw_feld',p.uv2_uw);if(p.uv2_uw)chkUV(document.getElementById('uv2_uw_feld'));
     sv('uv2_lx_feld',p.uv2_lx);if(p.uv2_lx)chkMax(document.getElementById('uv2_lx_feld'),15,20);
   },500);
-  
   sv('weiss_raum_feld',p.weissRaum);if(p.weissRaum)chkMax(document.getElementById('weiss_raum_feld'),15,20);
   sv('konzentration_feld',p.konzentration);if(p.konzentration)chkRange(document.getElementById('konzentration_feld'),0.1,0.4);
   sv('ansatz_datum_feld',p.ansatzDatum||'2026-01-01');
@@ -1287,8 +1275,7 @@ function loadProtocolToForm(p){
     if(p.tracking.modus==='stueckzahl'){setTrackingMode('stueckzahl');document.getElementById('stueckzahl_input').value=p.tracking.stueckzahl||1;}
     else{setTrackingMode('ringnummern');ringnummernListe=p.tracking.ringnummern?[...p.tracking.ringnummern]:[];updateRingnummernPreview();updateRingnummernListe();}
   }
-  saveEQ('eq_flux_auswahl');saveEQ('eq_luxmeter_auswahl');saveEQ('eq_feldmesser_auswahl');saveEQ('dorn_both_auswahl');saveEQ('dorn_kreis_auswahl');saveEQ('dorn_laengs_auswahl');
-  saveEQ('vk1_seriennummer_auswahl');
+  saveEQ('eq_flux_auswahl');saveEQ('eq_luxmeter_auswahl');saveEQ('eq_feldmesser_auswahl');saveEQ('dorn_both_auswahl');saveEQ('dorn_kreis_auswahl');saveEQ('dorn_laengs_auswahl');saveEQ('vk1_seriennummer_auswahl');
 }
 
 function enableAllFields(enable){
@@ -1441,45 +1428,25 @@ function resetForm(){
   document.getElementById('datum_feld').value=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
   document.getElementById('erstell_datum_anzeige').textContent=now.toLocaleDateString('de-DE');
   updateProtocolNumberDisplay();
-  
-  // VK1 Dropdown zurücksetzen
   const vk1Select = document.getElementById('vk1_seriennummer_auswahl');
   if(vk1Select) vk1Select.value = '';
 }
 
-// ===== DRUCK-VORBEREITUNG (Ringnummern und Mengenanzeige) =====
+// ===== DRUCK-VORBEREITUNG =====
 window.addEventListener('beforeprint', () => {
-  // Stückzahl/Ringanzahl auf Seite 1 anzeigen - NUR DAS AKTIVE
   const stueckzahlAnzeige = document.getElementById('stueckzahl_druck_anzeige');
   const ringanzahlAnzeige = document.getElementById('ringanzahl_druck_anzeige');
   const stueckzahlWert = document.getElementById('stueckzahl_druck_wert');
   const ringanzahlWert = document.getElementById('ringanzahl_druck_wert');
-  
   if (currentTrackingMode === 'stueckzahl') {
-    // NUR Stückzahl anzeigen
     if (stueckzahlWert) stueckzahlWert.textContent = document.getElementById('stueckzahl_input').value || '1';
-    if (stueckzahlAnzeige) {
-      stueckzahlAnzeige.style.display = 'block';
-      stueckzahlAnzeige.style.setProperty('display', 'block', 'important');
-    }
-    if (ringanzahlAnzeige) {
-      ringanzahlAnzeige.style.display = 'none';
-      ringanzahlAnzeige.style.setProperty('display', 'none', 'important');
-    }
+    if (stueckzahlAnzeige) stueckzahlAnzeige.style.setProperty('display', 'block', 'important');
+    if (ringanzahlAnzeige) ringanzahlAnzeige.style.setProperty('display', 'none', 'important');
   } else {
-    // NUR Einzelteilverfolgung anzeigen
     if (ringanzahlWert) ringanzahlWert.textContent = ringnummernListe.length;
-    if (ringanzahlAnzeige) {
-      ringanzahlAnzeige.style.display = 'block';
-      ringanzahlAnzeige.style.setProperty('display', 'block', 'important');
-    }
-    if (stueckzahlAnzeige) {
-      stueckzahlAnzeige.style.display = 'none';
-      stueckzahlAnzeige.style.setProperty('display', 'none', 'important');
-    }
+    if (ringanzahlAnzeige) ringanzahlAnzeige.style.setProperty('display', 'block', 'important');
+    if (stueckzahlAnzeige) stueckzahlAnzeige.style.setProperty('display', 'none', 'important');
   }
-
-  // Ringnummern-Seite (Seite 2) vorbereiten
   const page = document.getElementById('ringnummern_print_page');
   if (page) {
     if (currentTrackingMode === 'ringnummern' && ringnummernListe.length > 0) {
@@ -1487,36 +1454,25 @@ window.addEventListener('beforeprint', () => {
       document.getElementById('rn_print_auftrag').textContent = document.getElementById('auftragsnummer_feld').value || '—';
       document.getElementById('rn_print_gegenstand').textContent = document.getElementById('pruefgegenstand_feld').value || '—';
       document.getElementById('rn_print_count').textContent = ringnummernListe.length + ' ' + (ringnummernListe.length === 1 ? 'Teil' : 'Teile');
-      
       const listContainer = document.getElementById('rn_print_list');
-      let listHtml = '';
-      ringnummernListe.forEach((nummer, index) => {
-        listHtml += `
-          <div class="rn-list-item">
-            <span class="rn-list-number">${String(index + 1).padStart(2, '0')}.</span>
-            <span class="rn-list-value">${nummer}</span>
-          </div>
-        `;
-      });
-      listContainer.innerHTML = listHtml;
+      listContainer.innerHTML = ringnummernListe.map((nummer, index) => `<div class="rn-list-item"><span class="rn-list-number">${String(index + 1).padStart(2, '0')}.</span><span class="rn-list-value">${nummer}</span></div>`).join('');
       page.classList.remove('no-rings');
     } else {
       page.classList.add('no-rings');
-      if (document.getElementById('rn_print_list')) {
-        document.getElementById('rn_print_list').innerHTML = '';
-      }
+      document.getElementById('rn_print_list').innerHTML = '';
     }
   }
 });
 
 window.addEventListener('load', async() => {
+  // Theme zuerst anwenden
+  initTheme();
   document.getElementById('erstell_datum_anzeige').textContent = new Date().toLocaleDateString('de-DE');
   updateProtocolNumberDisplay();
   githubConfig = loadGithubConfigFromStorage();
   fillGithubFieldsFromConfig();
   await autoConnect();
   setInterval(autoConnect, 300000);
-
   setTimeout(() => updateAllDropdowns(), 1000);
   restoreEQ();
   updateLampenAuswahl();
