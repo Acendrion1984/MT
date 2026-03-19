@@ -1488,4 +1488,14 @@ window.addEventListener('load', async() => {
 </script>
 
 </body>
-</html>
+</html><script> 
+// PATCH: Feldstärken leeren bei Prüfgegenstandswechsel 
+document.getElementById('pruefgegenstand_feld').addEventListener('change', function() { 
+    var feld1 = document.getElementById('kreis_stufe_feld'); if(feld1) feld1.value = ''; 
+    var feld2 = document.getElementById('kreis_anzeige_feld'); if(feld2) feld2.value = ''; 
+    var feld3 = document.getElementById('kreis_feld_feld'); if(feld3) feld3.value = ''; 
+    var feld4 = document.getElementById('laengs_stufe_feld'); if(feld4) feld4.value = ''; 
+    var feld5 = document.getElementById('laengs_anzeige_feld'); if(feld5) feld5.value = ''; 
+    var feld6 = document.getElementById('laengs_feld_feld'); if(feld6) feld6.value = ''; 
+}); 
+</script> 
